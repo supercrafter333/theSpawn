@@ -6,6 +6,7 @@ Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plu
 
 # TO-DOs:
 - [ ] Aliases (hilfe gesucht xD)
+- [ ] English Version
 
 # Lizens:
 Dieses Plugin ist mit der GNU General Public Lizens ausgestattet!
