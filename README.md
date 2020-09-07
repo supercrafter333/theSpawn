@@ -2,10 +2,10 @@
 Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plugin immer besser zu machen! (English version coming sooooon)
 
 # Bugs:
-- [] Lobby Teleport (hilfe gesucht|search help)
+- [ ] Lobby Teleport (hilfe gesucht|search help)
 
 # TO-DOs:
-- [] Aliases 
+- [ ] Aliases
 
 # Lizens:
 Dieses Plugin ist mit der GNU General Public Lizens ausgestattet!
