@@ -2,7 +2,7 @@
 Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plugin immer besser zu machen! (English version coming sooooon)
 
 # Bugs:
-- [X] Lobby Teleport (Danke an: RexZetronYT23)
+- [ ] Lobby Teleport  (Hilfe gesucht)
 
 # TO-DOs:
 - [ ] Aliases (hilfe gesucht xD)
