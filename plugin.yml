@@ -1,0 +1,42 @@
+name: theSpawn
+version: 0.1.0
+api: 3.0.0
+main: supercrafter333\theSpawn\theSpawn
+author: supercrafter333
+
+commands:
+  setthespawn:
+    description: §r§aSetze den Spawn dieser Welt!
+    permission: setthespawn.cmd
+    aliases: ["addthespawn"]
+  delthespawn:
+    description: §r§aEntferne den Spawn dieser Welt!
+    permission: delthespawn.cmd
+    aliases: ["deletethespawn", "removethespawn", "rmthespawn"]
+  spawn:
+    description: §r§9Teleportiere dich zum Spawn dieser Welt!
+    aliases: ["thespawn", "tpthespawn"]
+  setthehub:
+    description: §r§aSetze die Lobby!
+    permission: setthehub.cmd
+    aliases: ["addthehub", "setthelobby", "addthelobby"]
+  delthehub:
+    description: §r§aEntferne den Lobby Spawnpunkt!
+    permission: delthehub.cmd
+    aliases: ["rmthehub", "rmthelobby", "delthelobby"]
+  hub:
+    description: §r§9Teleportiere dich in die Lobby!
+    aliases: ["lobby", "thelobby", "thehub"]
+
+permissions:
+  theSpawn.bypass:
+    default: op
+    children:
+      setthespawn.cmd:
+        default: op
+      delthespawn.cmd:
+        default: op
+      setthehub:
+        default: op
+      delthehub:
+        default: op
