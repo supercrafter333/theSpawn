@@ -130,7 +130,7 @@ class theSpawn extends PluginBase implements Listener
                     $y = $s->getY();
                     $z = $s->getZ();
                     $slevelname = $s->getLevel()->getName();
-                    if ($config->get("use-hub-server") == "1") {
+                    if ($config->get("use-hub-server") == 1) {
                         if (!$hub->exists("hub")) {
                             $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $slevelname];
                             $hub->set("hub", $hubcoords);
@@ -146,7 +146,7 @@ class theSpawn extends PluginBase implements Listener
                             $s->getLevel()->addSound(new DoorBumpSound($s));
                             return true;
                         }
-                    } elseif ($config->get("use-hub-server") == "2") {
+                    } elseif ($config->get("use-hub-server") == 2) {
                         $s->sendMessage($prefix . "§7'use-hub-server' §cist auf §7'2' §cweswegen du keine Lobby setzen kannst!");
                         return true;
                     } else {
@@ -183,7 +183,7 @@ class theSpawn extends PluginBase implements Listener
         }
         if ($cmd->getName() == "hub") {
             if ($s instanceof Player) {
-                if ($config->get("use-hub-server" == "1")) {
+                if ($config->get("use-hub-server" == 1)) {
                     if ($hub->exists("hub")) {
                         $hX = $hub->get("hub")["X"];
                         $hY = $hub->get("hub")["Y"];
@@ -196,7 +196,7 @@ class theSpawn extends PluginBase implements Listener
                         $s->sendMessage($prefix . "§4ERROR! --> §cEs wurde noch keine Lobby festgelegt!");
                         return true;
                     }
-                } elseif ($config->get("use-hub-server") == "2") {
+                } elseif ($config->get("use-hub-server") == 2) {
                     $hubserver = new TransferPacket();
                     $hubserver->address = $config->get("hub-server-ip");
                     $hubserver->port = $config->get("hub-server-port");
