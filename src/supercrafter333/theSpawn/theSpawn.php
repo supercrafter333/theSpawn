@@ -190,6 +190,8 @@ class theSpawn extends PluginBase implements Listener
                         $hublevelxd = $this->getServer()->getLevelByName($hublevel);
                         $hubcoords2 = new Position($hX, $hY, $hZ, $hublevelxd);
                         $s->teleport($hubcoords2);
+                        $s->sendMessage($prefix."§aDu wurdest zum Spawn der Lobby Teleportiert!");
+                        $s->getLevel()->addSound(new PopSound($s));
                         return true;
                     } else {
                         $s->sendMessage($prefix . "§4ERROR! --> §cEs wurde noch keine Lobby festgelegt!");
