@@ -26,8 +26,6 @@ class theSpawn extends PluginBase implements Listener
         $this->saveResource("config.yml");
         $config = new Config($this->getDataFolder()."config.yml", Config::YAML);
         $config->save();
-        $config->set("#1", "Gebe bei use-hub-server eine 1 für Nein und eine 2 für Ja ein");
-        $config->save();
     }
 
     public function onCommand(CommandSender $s, Command $cmd, string $label, array $args): bool
