@@ -7,7 +7,7 @@ Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plu
 # TO-DOs:
 - [ ] Aliases (hilfe gesucht xD)
 - [ ] Hub-Teleport-Message (hab ich vergessen xD)
-- [ ] English Version
+- [ ] Custom-Messages
 
 # Changelog:
 - Fix Lobby Teleport Bug
