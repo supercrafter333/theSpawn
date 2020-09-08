@@ -187,7 +187,8 @@ class theSpawn extends PluginBase implements Listener
                         $hY = $hub->get("hub")["Y"];
                         $hZ = $hub->get("hub")["Z"];
                         $hublevel = $hub->get("hub")["level"];
-                        $hubcoords2 = new Position($hX, $hY, $hZ, $hublevel);
+                        $hublevelxd = $this->getServer()->getLevelByName($hublevel);
+                        $hubcoords2 = new Position($hX, $hY, $hZ, $hublevelxd);
                         $s->teleport($hubcoords2);
                         return true;
                     } else {
