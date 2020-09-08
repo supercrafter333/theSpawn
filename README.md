@@ -10,6 +10,7 @@ Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plu
 - [ ] Custom-Messages
 
 # Changelog:
+- [DEU/GER] Hub-Teleport-Message wurde hinzugefügt (ich hatte sie halt einfach vergessen xD)   [ENG] Add Hub-Teleport-Message (i have forgot the message)
 - Fix Lobby Teleport Bug
 - Update Config ([DEU/GER] von use-hub-server <1|2> zu use-hub-server <true|false>  [ENG] from use-hub-server <1|2> to use-hub-server <true|false>)
 
