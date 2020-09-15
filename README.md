@@ -23,4 +23,4 @@ Dieses Plugin ist ein Plugin von supercrafter333!
 # Info:
 Dieses Plugin ist von MSpawns inspiriert!
 [ENG]: This Plugin is inpirated from MSpawns!
-English Texts has "[ENG]" bevore the message xD
+English texts have "[ENG]" in front of them xD
