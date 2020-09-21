@@ -1,6 +1,7 @@
 # theSpawn
-**Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plugin immer besser zu machen!
-[ENG]: This plugin will soon replace MSpawns! Help me to make this plugin better!**
+**Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plugin immer besser zu machen!**
+
+**[ENG]: This plugin will soon replace MSpawns! Help me to make this plugin better!**
 
 
 
