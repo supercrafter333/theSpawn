@@ -189,9 +189,18 @@ class theSpawn extends PluginBase implements Listener
                         $hublevel = $hub->get("hub")["level"];
                         $hublevelxd = $this->getServer()->getLevelByName($hublevel);
                         $hubcoords2 = new Position($hX, $hY, $hZ, $hublevelxd);
-                        $s->teleport($hubcoords2);
-                        $s->sendMessage($prefix."§aDu wurdest zum Spawn der Lobby Teleportiert!");
-                        $s->getLevel()->addSound(new PopSound($s));
+                        if ($this->getServer()->isLevelLoaded($hublevel) == true && !$hublevelxd == null) {
+                            $s->teleport($hubcoords2);
+                            $s->sendMessage($prefix."§aDu wurdest zum Spawn der Lobby Teleportiert!");
+                            $s->getLevel()->addSound(new PopSound($s));
+                        } elseif ($hublevelxd == null) {
+                            $s->sendMessage($prefix . "§4Welt konnte nicht gefunden werden!");
+                        } elseif (!$this->getServer()->isLevelLoaded($hublevel)) {
+                            $this->getServer()->loadLevel($hublevel);
+                            $s->teleport($hubcoords2);
+                            $s->sendMessage($prefix."§aDu wurdest zum Spawn der Lobby Teleportiert!");
+                            $s->getLevel()->addSound(new PopSound($s));
+                        }
                         return true;
                     } else {
                         $s->sendMessage($prefix . "§4ERROR! --> §cEs wurde noch keine Lobby festgelegt!");
@@ -217,6 +226,7 @@ class theSpawn extends PluginBase implements Listener
 
     public function onPlayerRespawn(PlayerRespawnEvent $event)
     {
+        $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $s = $event->getPlayer();
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $slevelname = $s->getLevel()->getName();
@@ -226,8 +236,16 @@ class theSpawn extends PluginBase implements Listener
             $Z = $spawn->get($slevelname)["Z"];
             $levelname = $spawn->get($slevelname)["level"];
             $level = $this->getServer()->getLevelByName($levelname);
-            $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
-            $s->getLevel()->addSound(new PopSound($s));
+            if ($this->getServer()->isLevelLoaded($levelname) == true && !$level == null) {
+                $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
+                $s->getLevel()->addSound(new PopSound($s));
+            } elseif ($level == null) {
+                $s->sendMessage($prefix . "§4Welt konnte nicht gefunden werden!");
+            } elseif (!$this->getServer()->isLevelLoaded($levelname)) {
+                $this->getServer()->loadLevel($levelname);
+                $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
+                $s->getLevel()->addSound(new PopSound($s));
+            }
         }
     }
 }
