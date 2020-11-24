@@ -21,7 +21,7 @@
 - Update Config ( von use-hub-server <1|2> zu use-hub-server <true|false>)
 
 ### Lizens:
-Dieses Plugin ist mit der [GNU General Public License](/LICENSE) ausgestattet!
+Dieses Plugin ist mit der [Apache License 2.0](/LICENSE) ausgestattet!
 Dieses Plugin ist ein Plugin von supercrafter333!
 
 ### Info:
