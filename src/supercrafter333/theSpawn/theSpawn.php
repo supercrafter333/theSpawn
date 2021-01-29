@@ -6,6 +6,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\level\sound\GhastShootSound;
@@ -28,6 +29,13 @@ class theSpawn extends PluginBase implements Listener
         $config->save();
     }
 
+    /**
+     * @param CommandSender $s
+     * @param Command $cmd
+     * @param string $label
+     * @param array $args
+     * @return bool
+     */
     public function onCommand(CommandSender $s, Command $cmd, string $label, array $args): bool
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
@@ -45,21 +53,14 @@ class theSpawn extends PluginBase implements Listener
                     $y = $s->getY();
                     $z = $s->getZ();
                     $levelname = $s->getLevel()->getName();
-                    if (!$spawn->exists("hub")) {
-                        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => "hub"];
-                        $spawn->set("hub", $coords);
-                        $spawn->save();
+                    $level = $s->getLevel();
+                    if (!$spawn->exists($levelname)) {
+                        $this->setSpawn($s, $level);
                         $s->sendMessage($prefix . "§aDu hast den Spawn dieser Welt gesetzt!");
                         $s->getLevel()->addSound(new DoorBumpSound($s));
                         return true;
                     } else {
-                        $x = $s->getX();
-                        $y = $s->getY();
-                        $z = $s->getZ();
-                        $levelname = $s->getLevel()->getName();
-                        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => "hub"];
-                        $spawn->set("hub", $coords);
-                        $spawn->save();
+                        $this->setSpawn($s, $level);
                         $s->sendMessage($prefix . "§aDer Spawn wurde umgesetzt!");
                         $s->getLevel()->addSound(new DoorBumpSound($s));
                         return true;
@@ -80,8 +81,8 @@ class theSpawn extends PluginBase implements Listener
                     $y = $s->getY();
                     $z = $s->getZ();
                     $levelname = $s->getLevel()->getName();
-                    if ($spawn->exists("hub")) {
-                        $spawn->remove("hub");
+                    if ($spawn->exists($levelname)) {
+                        $spawn->remove($levelname);
                         $spawn->save();
                         $s->sendMessage($prefix . "§aDer Spawn dieser Welt wurde entfernt!");
                         $s->getLevel()->addSound(new GhastShootSound($s));
@@ -102,13 +103,9 @@ class theSpawn extends PluginBase implements Listener
         if ($cmd->getName() == "spawn") {
             if ($s instanceof Player) {
                 $levelname = $s->getLevel()->getName();
-                if ($spawn->exists("hub")) {
-                    $X = $spawn->get("hub")["X"];
-                    $Y = $spawn->get("hub")["Y"];
-                    $Z = $spawn->get("hub")["Z"];
-                    $levelname = $spawn->get("hub")["level"];
-                    $level = $this->getServer()->getLevelByName($levelname);
-                    $s->teleport(new Position($X, $Y, $Z, $level));
+                $level = $s->getLevel();
+                if ($spawn->exists($levelname)) {
+                    $s->teleport($this->getSpawn($level));
                     $s->sendMessage($prefix . "§aDu wurdest zum Spawn dieser Welt Teleportiert!");
                     $s->getLevel()->addSound(new PopSound($s));
                     return true;
@@ -261,7 +258,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $levelname
      * @return bool
      */
-    public function setHub(float|int $x, float|int $y, float|int $z, string $levelname)
+    public function setHub(float $x, float $y, float $z, string $levelname)
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
@@ -289,5 +286,33 @@ class theSpawn extends PluginBase implements Listener
             $this->getLogger()->error("!!Es wurde noch keine Lobby/Hub gesetzt! Bitte setze dringend eine Lobby/Hub!!");
             return false;
         }
+    }
+
+    /**
+     * @param Level $level
+     */
+    public function getSpawn(Level $level)
+    {
+        $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
+        $spawn->get($level->getName());
+        if ($spawn->exists($level->getName())) {
+            $X = $spawn->get($level->getName())["X"];
+            $Y = $spawn->get($level->getName())["Y"];
+            $Z = $spawn->get($level->getName())["Z"];
+            return new Position($X, $Y, $Z, $level);
+            } else {
+            return false;
+        }
+    }
+
+    public function setSpawn(Player $s, Level $level)
+    {
+        $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
+        $x = $s->getX();
+        $y = $s->getY();
+        $z = $s->getZ();
+        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
+        $spawn->set($level->getName(), $coords);
+        return $spawn->save();
     }
 }
