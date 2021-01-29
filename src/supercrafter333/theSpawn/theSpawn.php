@@ -263,6 +263,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function setHub(float|int $x, float|int $y, float|int $z, string $levelname)
     {
+        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => "hub"];
         $hub->set("hub", $hubcoords);
