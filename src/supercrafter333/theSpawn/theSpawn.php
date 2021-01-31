@@ -12,9 +12,11 @@ use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\level\sound\PopSound;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 
 class theSpawn extends PluginBase implements Listener
@@ -198,11 +200,11 @@ class theSpawn extends PluginBase implements Listener
                         $s->sendMessage($prefix . "§4ERROR! --> §cEs wurde noch keine Lobby festgelegt!");
                         return true;
                     }
-                } elseif ($this->getUseHubServer() == true) {
-                    $hubserver = new TransferPacket();
-                    $hubserver->address = $config->get("hub-server-ip");
-                    $hubserver->port = $config->get("hub-server-port");
-                    $s->dataPacket($hubserver);
+                } elseif ($this->getUseHubServer() == true && $this->getUseWaterdogTransfer() == false) {
+                    $this->teleportToHubServer($s);
+                    return true;
+                } elseif ($this->getUseHubServer() == true && $this->getUseWaterdogTransfer() == true) {
+                    $this->teleportToHubServerWithWaterdog($s, $config->get("waterdog-servername"));
                     return true;
                 } else {
                     $s->sendMessage($prefix . "§l§4FATALER FEHLER --> §eFalsche einstellung in der Config! §r§7(§buse-hub-server: <true|false>§7)");
@@ -374,6 +376,19 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
+     * @return bool
+     */
+    public function getUseWaterdogTransfer(): bool
+    {
+        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        if ($config->get("waterdog-hub-teleport") === "true") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @param Player $s
      * @return bool
      */
@@ -385,5 +400,13 @@ class theSpawn extends PluginBase implements Listener
         } else {
             return false;
         }
+    }
+
+    public function teleportToHubServerWithWaterdog(Player $player, string $server) //Thanks to FlxiBoy
+    {
+        $pk = new ScriptCustomEventPacket();
+        $pk->eventName = "bungeecord:main";
+        $pk->eventData = Binary::writeShort(strlen("Connect"))."Connect".Binary::writeShort(strlen($server)).$server;
+        $player->sendDataPacket($pk);
     }
 }
