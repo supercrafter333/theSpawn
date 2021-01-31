@@ -8,22 +8,22 @@ commands:
   setthespawn:
     description: §r§aSetze den Spawn dieser Welt!
     permission: setthespawn.cmd
-    aliases: ["addthespawn"]
+    aliases: ["addthespawn", "setspawn"]
   delthespawn:
     description: §r§aEntferne den Spawn dieser Welt!
     permission: delthespawn.cmd
-    aliases: ["deletethespawn", "removethespawn", "rmthespawn"]
+    aliases: ["deletethespawn", "removethespawn", "rmthespawn", "delspawn"]
   spawn:
     description: §r§9Teleportiere dich zum Spawn dieser Welt!
-    aliases: ["thespawn", "tpthespawn"]
+    aliases: ["tpthespawn"]
   setthehub:
     description: §r§aSetze die Lobby!
     permission: setthehub.cmd
-    aliases: ["addthehub", "setthelobby", "addthelobby"]
+    aliases: ["addthehub", "setthelobby", "addthelobby", "sethub", "setlobby"]
   delthehub:
     description: §r§aEntferne den Lobby Spawnpunkt!
     permission: delthehub.cmd
-    aliases: ["rmthehub", "rmthelobby", "delthelobby"]
+    aliases: ["rmthehub", "rmthelobby", "delthelobby", "delhub", "dellobby"]
   hub:
     description: §r§9Teleportiere dich in die Lobby!
     aliases: ["lobby", "thelobby", "thehub"]
