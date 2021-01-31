@@ -44,7 +44,7 @@ Dieses Plugin ist von MSpawns inspiriert!
 - Update Config from use-hub-server <1|2> to use-hub-server <true|false>)
 
 ### License:
-This Plugin has the [GNU General Public License](/LICENSE)! This Plugin is from supercrafter333!
+This Plugin has the [Apache License 2.0](/LICENSE)! This Plugin is from supercrafter333!
 
 ### Information:
 This Plugin is inpirated from MSpawns!
