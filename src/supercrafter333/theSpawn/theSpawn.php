@@ -11,9 +11,7 @@ use pocketmine\level\Position;
 use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\level\sound\PopSound;
-use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
-use pocketmine\network\mcpe\protocol\TransferPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Binary;
@@ -248,15 +246,14 @@ class theSpawn extends PluginBase implements Listener
         }
     }
 
-
     /**
-     * @param Vector3 $x
-     * @param Vector3 $y
-     * @param Vector3 $z
+     * @param $x
+     * @param $y
+     * @param $z
      * @param Level $level
      * @return bool
      */
-    public function setHub(Vector3 $x, Vector3 $y , Vector3 $z , Level $level)
+    public function setHub($x, $y , $z , Level $level)
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
