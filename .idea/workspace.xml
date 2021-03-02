@@ -19,8 +19,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Edit permissions, Add new permissions for Aliases">
-      <change beforePath="$PROJECT_DIR$/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.yml" afterDir="false" />
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Version bump">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,7 +84,7 @@
       <workItem from="1613854531593" duration="103000" />
       <workItem from="1613856626265" duration="893000" />
       <workItem from="1614632489075" duration="1882000" />
-      <workItem from="1614690407615" duration="3186000" />
+      <workItem from="1614690407615" duration="3690000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -161,7 +163,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614693817403</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Version bump">
+      <created>1614693843244</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1614693843244</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -186,12 +195,12 @@
     <MESSAGE value="Bug fixes, add API funtions, Code cleanups" />
     <MESSAGE value="Bug fixes, add API funtions, Code cleanups, License update" />
     <MESSAGE value="add Commmand Aliases" />
-    <MESSAGE value="Version bump" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="add Waterdog Server transfer Support, add API functions" />
     <MESSAGE value="API Bugfix --&gt; setHub(...) Bug Fixed" />
     <MESSAGE value="Add Aliases [Alpha]" />
     <MESSAGE value="Edit permissions, Add new permissions for Aliases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Edit permissions, Add new permissions for Aliases" />
+    <MESSAGE value="Version bump" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version bump" />
   </component>
 </project>

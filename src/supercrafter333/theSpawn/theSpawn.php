@@ -224,7 +224,7 @@ class theSpawn extends PluginBase implements Listener
         }
         if ($cmd->getName() == "setalias") {
             if ($s instanceof Player) {
-                if (!count($args) >= 0) {
+                if (!count($args) >= 2) {
                     $s->sendMessage("§4Benutze: §r/setalias <Alias> <Weltname>");
                     return true;
                 }

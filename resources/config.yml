@@ -5,3 +5,6 @@ waterdog-hub-teleport: "false"
 waterdog-servername: "name"
 #aliases
 use-aliases: "true"
+
+#don't change this
+version: "0.3.0"
