@@ -40,11 +40,15 @@ permissions:
   theSpawn.bypass:
     default: op
     children:
-      setthespawn.cmd:
+      theSpawn.setthespawn.cmd:
         default: op
-      delthespawn.cmd:
+      theSpawn.delthespawn.cmd:
         default: op
-      setthehub:
+      theSpawn.setthehub.cmd:
         default: op
-      delthehub:
+      theSpawn.delthehub.cmd:
+        default: op
+      theSpawn.setalias.cmd:
+        default: op
+      theSpawn.removealias.cmd:
         default: op
