@@ -17,10 +17,15 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 
+/**
+ * Class theSpawn
+ * @package supercrafter333\theSpawn
+ */
 class theSpawn extends PluginBase implements Listener
 {
 
     public static $instance;
+    public $aliasCfg;
 
     public function onEnable()
     {
@@ -31,6 +36,10 @@ class theSpawn extends PluginBase implements Listener
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $config->save();
         self::$instance = $this;
+        $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
+        if ($this->aliasCfg->get("use-aliases") == "true") {
+            $this->reactivateAliases();
+        }
     }
 
     public static function getInstance(): self
@@ -57,7 +66,7 @@ class theSpawn extends PluginBase implements Listener
         $config->save();
         if ($cmd->getName() == "setthespawn") {
             if ($s instanceof Player) {
-                if ($s->hasPermission("setthespawn.cmd")) {
+                if ($s->hasPermission("theSpawn.setthespawn.cmd")) {
                     $levelname = $s->getLevel()->getName();
                     $level = $s->getLevel();
                     if (!$spawn->exists($levelname)) {
@@ -82,7 +91,7 @@ class theSpawn extends PluginBase implements Listener
         }
         if ($cmd->getName() == "delthespawn") {
             if ($s instanceof Player) {
-                if ($s->hasPermission("delthespawn.cmd")) {
+                if ($s->hasPermission("theSpawn.delthespawn.cmd")) {
                     $levelname = $s->getLevel()->getName();
                     $level = $this->getServer()->getLevelByName($levelname);
                     if ($spawn->exists($levelname)) {
@@ -123,7 +132,7 @@ class theSpawn extends PluginBase implements Listener
         }
         if ($cmd->getName() == "setthehub") {
             if ($s instanceof Player) {
-                if ($s->hasPermission("setthehub.cmd")) {
+                if ($s->hasPermission("theSpawn.setthehub.cmd")) {
                     $x = $s->getX();
                     $y = $s->getY();
                     $z = $s->getZ();
@@ -158,7 +167,7 @@ class theSpawn extends PluginBase implements Listener
         }
         if ($cmd->getName() == "delthehub") {
             if ($s instanceof Player) {
-                if ($s->hasPermission("delthehub.cmd")) {
+                if ($s->hasPermission("theSpawn.delthehub.cmd")) {
                     if ($hub->exists("hub")) {
                         $this->removeHub();
                         $s->sendMessage($prefix . "§aDu hast den Hub Spawnpunkt entfernt!");
@@ -212,6 +221,43 @@ class theSpawn extends PluginBase implements Listener
                 $s->sendMessage("Nur In-Game verfügbar!");
                 return true;
             }
+        }
+        if ($cmd->getName() == "setalias") {
+            if ($s instanceof Player) {
+                if (!count($args) >= 0) {
+                    $s->sendMessage("§4Benutze: §r/setalias <Alias> <Weltname>");
+                    return true;
+                }
+                if (!$s->hasPermission("theSpawn.setalias.cmd")) {
+                    $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                    return true;
+                }
+                if (!is_string($args[0]) || !is_string($args[1])) {
+                    $s->sendMessage("§4Falsche eingabe!\n§4Benutze: §r/setalias <Alias> <Weltname>");
+                }
+                $this->addAlias($args[0], $args[1]);
+                return true;
+            }
+        }
+        if ($cmd->getName() == "removealias") {
+            if (!$s instanceof Player) {
+                $s->sendMessage("Nur In-Game!");
+                return true;
+            }
+            if (!$s->hasPermission("theSpawn.removealias.cmd")) {
+                $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                return true;
+            }
+            if (!count($args) >= 1) {
+                $s->sendMessage("§4Benutze: §r/removealias <Alias>");
+            }
+            if ($this->existsAlias($args[0]) == false) {
+                $s->sendMessage($prefix . "§4Dieser Alias existiert nicht!");
+                return true;
+            }
+            $this->rmAlias($args[0]);
+            $s->sendMessage($prefix . "§aDer Alias §b" . $args[0] . "§a wurde erfolgreich von gelöscht!");
+            return true;
         }
         return true;
     }
@@ -405,5 +451,51 @@ class theSpawn extends PluginBase implements Listener
         $pk->eventName = "bungeecord:main";
         $pk->eventData = Binary::writeShort(strlen("Connect"))."Connect".Binary::writeShort(strlen($server)).$server;
         $player->sendDataPacket($pk);
+    }
+
+    public function useAliases(): bool
+    {
+        if ($this->aliasCfg->get("use-aliases") == "true") {
+            return true;
+        }
+        return false;
+    }
+
+    public function existsAlias(string $alias): bool
+    {
+        if ($this->aliasCfg->exists($alias)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function rmAlias(string $alias): bool
+    {
+        if ($this->existsAlias($alias) == true) {
+            $cmd = $this->getServer()->getCommandMap()->getCommand($alias);
+            $this->getServer()->getCommandMap()->unregister($cmd);
+            $this->aliasCfg->remove($alias);
+            $this->aliasCfg->save();
+        }
+        return false;
+    }
+
+    public function addAlias(string $alias, string $levelName): bool
+    {
+        $level = $this->getServer()->getLevelByName($levelName);
+        if ($this->getSpawn($level) == false) {
+            return false;
+        }
+        $this->aliasCfg->set($alias, $levelName);
+        $this->aliasCfg->save();
+        $this->getServer()->getCommandMap()->register($alias, new Aliases($this, $alias, "§r§7the§eSpawn§r Alias für die Welt §e" . $levelName . "§r!"));
+        return true;
+    }
+
+    public function reactivateAliases()
+    {
+        foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
+            $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, "MSpawns alias for world " . $worldName . "'s spawn"));
+        }
     }
 }

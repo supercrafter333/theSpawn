@@ -11,9 +11,9 @@
 - [X] Lobby Teleport
 
 ### TO-DOs:
-- [ ] Aliases (hilfe gesucht xD)
+- [ ] Aliases (WIP)
 - [X] Lobby-Teleport-Message (hab ich vergessen xD)
-- [ ] Custom-Messages
+- [ ] Custom-Messages (soon)
 
 ### Changelog:
 - Hub-Teleport-Message wurde hinzugefügt (ich hatte sie halt einfach vergessen xD)
@@ -34,9 +34,9 @@ Dieses Plugin ist von MSpawns inspiriert!
 - [X] Hub Teleport
 
 ### TO-DOs:
-- [ ] Aliases (Help Searched)
+- [ ] Aliases (WIP)
 - [X] Hub-Teleport-Message (I had forget this xD)
-- [ ] Custom-Messages
+- [ ] Custom-Messages (soon)
 
 ### Changelog:
 - Add Hub-Teleport-Message (i have forgot the message)

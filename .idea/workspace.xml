@@ -19,8 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="add Waterdog Server transfer Support, add API functions">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="API Bugfix --&gt; setHub(...) Bug Fixed">
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,6 +36,11 @@
     <execution />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GithubDefaultAccount">
@@ -73,7 +82,12 @@
       <workItem from="1612881354801" duration="23000" />
       <workItem from="1612885188135" duration="6000" />
       <workItem from="1612892776470" duration="197000" />
-      <workItem from="1613321236732" duration="106000" />
+      <workItem from="1613321236732" duration="1375000" />
+      <workItem from="1613408824807" duration="65000" />
+      <workItem from="1613854531593" duration="103000" />
+      <workItem from="1613856626265" duration="893000" />
+      <workItem from="1614632489075" duration="1882000" />
+      <workItem from="1614690407615" duration="2983000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -131,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1612123131416</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="API Bugfix --&gt; setHub(...) Bug Fixed">
+      <created>1613321395027</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1613321395027</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -159,6 +180,7 @@
     <MESSAGE value="Version bump" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="add Waterdog Server transfer Support, add API functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="add Waterdog Server transfer Support, add API functions" />
+    <MESSAGE value="API Bugfix --&gt; setHub(...) Bug Fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="API Bugfix --&gt; setHub(...) Bug Fixed" />
   </component>
 </project>

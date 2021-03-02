@@ -27,6 +27,14 @@ commands:
   hub:
     description: §r§9Teleportiere dich in die Lobby!
     aliases: ["lobby", "thelobby", "thehub"]
+  setalias:
+    description: §r§aSetze einen Alias für eine Welt!
+    aliases:
+      - addalias
+  removealias:
+    description: §r§aEntferne einen Alias!
+    aliases:
+      - rmalias
 
 permissions:
   theSpawn.bypass:

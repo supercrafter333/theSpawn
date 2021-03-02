@@ -3,3 +3,5 @@ hub-server-ip: "000.00.000.00"
 hub-server-port: "19132"
 waterdog-hub-teleport: "false"
 waterdog-servername: "name"
+#aliases
+use-aliases: "true"
