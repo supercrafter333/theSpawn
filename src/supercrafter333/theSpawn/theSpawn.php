@@ -25,6 +25,7 @@ class theSpawn extends PluginBase implements Listener
 {
 
     public static $instance;
+    public $config;
     public $aliasCfg;
 
     public function onEnable()
@@ -33,11 +34,11 @@ class theSpawn extends PluginBase implements Listener
         $this->getConfig();
         @mkdir($this->getDataFolder());
         $this->saveResource("config.yml");
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
+        $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         self::$instance = $this;
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
-        if ($this->aliasCfg->get("use-aliases") == "true") {
+        $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
+        if ($this->useAliases() == true) {
             $this->reactivateAliases();
         }
     }
@@ -234,6 +235,15 @@ class theSpawn extends PluginBase implements Listener
                 }
                 if (!is_string($args[0]) || !is_string($args[1])) {
                     $s->sendMessage("§4Falsche eingabe!\n§4Benutze: §r/setalias <Alias> <Weltname>");
+                    return true;
+                }
+                if ($this->existsLevel($args[1]) == false) {
+                    $s->sendMessage($prefix . "§cDie angegeben Welt existiert nicht!");
+                    return true;
+                }
+                if ($this->aliasCfg->get("use-aliases") == "false") {
+                    $s->sendMessage($prefix . "§cAliases sind auf diesem Server deaktiviert! die können in der config.yml aktiviert werden!");
+                    return true;
                 }
                 $this->addAlias($args[0], $args[1]);
                 $s->sendMessage($prefix . "§aDu hast den Alias §b" . $args[0] . "§a für die Welt §b" . $args[1] . "§a erfolgreich erstellt!");
@@ -300,7 +310,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @return bool
      */
-    public function setHub($x, $y , $z , Level $level)
+    public function setHub($x, $y , $z , Level $level): bool
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
@@ -332,6 +342,8 @@ class theSpawn extends PluginBase implements Listener
 
     /**
      * @param Level $level
+     * @return false|Position
+     * @return false|Position
      */
     public function getSpawn(Level $level)
     {
@@ -352,7 +364,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @return bool
      */
-    public function setSpawn(Player $s, Level $level)
+    public function setSpawn(Player $s, Level $level): bool
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $x = $s->getX();
@@ -366,7 +378,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @return false|mixed
      */
-    public function getHubLevel()
+    public function getHubLevel(): bool
     {
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         if ($hub->exists("hub")) {
@@ -380,7 +392,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @return bool
      */
-    public function removeHub()
+    public function removeHub(): bool
     {
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         if ($hub->exists("hub")) {
@@ -395,7 +407,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @return bool
      */
-    public function removeSpawn(Level $level)
+    public function removeSpawn(Level $level): bool
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         if ($spawn->exists($level->getName())) {
@@ -436,7 +448,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Player $s
      * @return bool
      */
-    public function teleportToHubServer(Player $s)
+    public function teleportToHubServer(Player $s): bool
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         if ($this->getUseHubServer() == true) {
@@ -456,18 +468,33 @@ class theSpawn extends PluginBase implements Listener
 
     public function useAliases(): bool
     {
-        if ($this->aliasCfg->get("use-aliases") == "true") {
+        if ($this->config->get("use-aliases") == "true") {
             return true;
         }
         return false;
+    }
+
+    public function getWorldOfAlias(string $alias): string
+    {
+        return $this->aliasCfg->get($alias);
+    }
+
+    public function existsLevel(string $levelName): bool
+    {
+        if ($this->getServer()->isLevelGenerated($levelName)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function existsAlias(string $alias): bool
     {
         if ($this->aliasCfg->exists($alias)) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public function rmAlias(string $alias): bool
@@ -477,8 +504,10 @@ class theSpawn extends PluginBase implements Listener
             $this->getServer()->getCommandMap()->unregister($cmd);
             $this->aliasCfg->remove($alias);
             $this->aliasCfg->save();
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     public function addAlias(string $alias, string $levelName): bool
@@ -496,7 +525,7 @@ class theSpawn extends PluginBase implements Listener
     public function reactivateAliases()
     {
         foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
-            $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, "MSpawns alias for world " . $worldName . "'s spawn"));
+            $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, "§r§7the§eSpawn§r Alias für die Welt §e" . $worldName . "§r!"));
         }
     }
 }

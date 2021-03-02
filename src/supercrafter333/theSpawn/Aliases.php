@@ -23,13 +23,19 @@ class Aliases extends AliasMap
         $pl = theSpawn::getInstance();
         if ($s instanceof Player) {
             if (theSpawn::getInstance()->useAliases() == true) {
-                if ($lvl = $pl->existsAlias($this->cmdName) == true) {
-                    $level = Server::getInstance()->getLevelByName($lvl);
-                    if (Server::getInstance()->isLevelLoaded($level) == true) {
+                $lvl = $pl->getWorldOfAlias($this->cmdName);
+                if ($pl->existsAlias($this->cmdName) == true) {
+                    if (theSpawn::getInstance()->getServer()->isLevelGenerated($lvl) == false) {
+                        $s->sendMessage($prefix . "§cDie angegeben Welt existiert nicht!");
+                        return true;
+                    }
+                    if (Server::getInstance()->isLevelLoaded($lvl) == true) {
+                        $level = Server::getInstance()->getLevelByName($lvl);
                         $s->teleport($pl->getSpawn($level));
                         return true;
                     } else {
                         Server::getInstance()->loadLevel($lvl);
+                        $level = Server::getInstance()->getLevelByName($lvl);
                         $s->teleport($pl->getSpawn($level));
                         return true;
                     }
