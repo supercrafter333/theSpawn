@@ -5,7 +5,6 @@ namespace supercrafter333\theSpawn;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\Server;
-use supercrafter333\theSpawn\theSpawn;
 
 class Aliases extends AliasMap
 {
@@ -23,25 +22,27 @@ class Aliases extends AliasMap
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $pl = theSpawn::getInstance();
         if ($s instanceof Player) {
-            if (theSpawn::getInstance()->useAliases() == false) {
+            if (theSpawn::getInstance()->useAliases() == true) {
+                if ($lvl = $pl->existsAlias($this->cmdName) == true) {
+                    $level = Server::getInstance()->getLevelByName($lvl);
+                    if (Server::getInstance()->isLevelLoaded($level) == true) {
+                        $s->teleport($pl->getSpawn($level));
+                        return true;
+                    } else {
+                        Server::getInstance()->loadLevel($lvl);
+                        $s->teleport($pl->getSpawn($level));
+                        return true;
+                    }
+                } else {
+                    $s->sendMessage($prefix . "§4FEHLER --> §cIrgendetwas ist schiefgelaufen!");
+                }
+            } else {
                 $s->sendMessage($prefix . "§cAliases sind auf diesem Server deaktiviert! Sie können in der config.yml aktiviert werden!");
                 return true;
             }
-            if ($lvl = $pl->existsAlias($this->cmdName) == true) {
-                $level = Server::getInstance()->getLevelByName($lvl);
-                if (Server::getInstance()->isLevelLoaded($level) == true) {
-                    $s->teleport($pl->getSpawn($level));
-                    return true;
-                } else {
-                    Server::getInstance()->loadLevel($lvl);
-                    $s->teleport($pl->getSpawn($level));
-                    return true;
-                }
-            } else {
-                $s->sendMessage($prefix . "§4FEHLER --> §cIrgendetwas ist schiefgelaufen!");
-            }
         } else {
             $s->sendMessage("Nur In-Game!");
+            return true;
         }
         return false;
     }

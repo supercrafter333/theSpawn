@@ -236,6 +236,7 @@ class theSpawn extends PluginBase implements Listener
                     $s->sendMessage("§4Falsche eingabe!\n§4Benutze: §r/setalias <Alias> <Weltname>");
                 }
                 $this->addAlias($args[0], $args[1]);
+                $s->sendMessage($prefix . "§aDu hast den Alias §b" . $args[0] . "§a für die Welt §b" . $args[1] . "§a erfolgreich erstellt!");
                 return true;
             }
         }
