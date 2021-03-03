@@ -73,12 +73,12 @@ class theSpawn extends PluginBase implements Listener
                     $level = $s->getLevel();
                     if (!$spawn->exists($levelname)) {
                         $this->setSpawn($s, $level);
-                        $s->sendMessage($prefix . "§aDu hast den Spawn dieser Welt gesetzt!");
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-set")));
                         $s->getLevel()->addSound(new DoorBumpSound($s));
                         return true;
                     } else {
                         $this->setSpawn($s, $level);
-                        $s->sendMessage($prefix . "§aDer Spawn wurde umgesetzt!");
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-changed")));
                         $s->getLevel()->addSound(new DoorBumpSound($s));
                         return true;
                     }
@@ -87,7 +87,7 @@ class theSpawn extends PluginBase implements Listener
                     return true;
                 }
             } else {
-                $s->sendMessage("Nur In-Game vefügbar!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
         }
@@ -98,11 +98,11 @@ class theSpawn extends PluginBase implements Listener
                     $level = $this->getServer()->getLevelByName($levelname);
                     if ($spawn->exists($levelname)) {
                         $this->removeSpawn($level);
-                        $s->sendMessage($prefix . "§aDer Spawn dieser Welt wurde entfernt!");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
                         $s->getLevel()->addSound(new GhastShootSound($s));
                         return true;
                     } else {
-                        $s->sendMessage($prefix . "§cIn dieser Welt existiert noch kein Spawn!");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
                         return true;
                     }
                 } else {
@@ -110,7 +110,7 @@ class theSpawn extends PluginBase implements Listener
                     return true;
                 }
             } else {
-                $s->sendMessage("Nur In-Game vefügbar!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
         }
@@ -143,12 +143,12 @@ class theSpawn extends PluginBase implements Listener
                     if ($this->getUseHubServer() == false) {
                         if (!$hub->exists("hub")) {
                             $this->setHub($x, $y, $z, $level);
-                            $s->sendMessage($prefix . MsgMgr::getMsg("hub-set"));
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
                             $s->getLevel()->addSound(new DoorBumpSound($s));
                             return true;
                         } else {
                             $this->setHub($x, $y, $z, $level);
-                            $s->sendMessage($prefix . MsgMgr::getMsg("hub-changed"));
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
                             $s->getLevel()->addSound(new DoorBumpSound($s));
                             return true;
                         }
@@ -156,7 +156,7 @@ class theSpawn extends PluginBase implements Listener
                         $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
                         return true;
                     } else {
-                        $s->sendMessage("§l§4FATALER FEHLER --> §eFalsche einstellung in der Config! §r§7(§buse-hub-server: <true|false>§7)");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));
                     }
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
@@ -172,11 +172,11 @@ class theSpawn extends PluginBase implements Listener
                 if ($s->hasPermission("theSpawn.delthehub.cmd")) {
                     if ($hub->exists("hub")) {
                         $this->removeHub();
-                        $s->sendMessage($prefix . "§aDu hast den Hub Spawnpunkt entfernt!");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
                         $s->getLevel()->addSound(new GhastShootSound($s));
                         return true;
                     } else {
-                        $s->sendMessage($prefix . "§cEs wurde noch keine Lobby gesetzt!");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
                     }
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
@@ -194,19 +194,19 @@ class theSpawn extends PluginBase implements Listener
                         $hublevelxd = $this->getServer()->getLevelByName($hublevel);
                         if ($this->getServer()->isLevelLoaded($hublevel) == true && !$hublevelxd == null) {
                             $s->teleport($this->getHub());
-                            $s->sendMessage($prefix . "§aDu wurdest zum Spawn der Lobby Teleportiert!");
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$hublevelxd->getName()], MsgMgr::getMsg("hub-tp")));
                             $s->getLevel()->addSound(new PopSound($s));
                         } elseif ($hublevelxd == null) {
-                            $s->sendMessage($prefix . "§4Welt konnte nicht gefunden werden!");
+                            $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                         } elseif (!$this->getServer()->isLevelLoaded($hublevel)) {
                             $this->getServer()->loadLevel($hublevel);
                             $s->teleport($this->getHub());
-                            $s->sendMessage($prefix . "§aDu wurdest zum Spawn der Lobby Teleportiert!");
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$hublevelxd->getName()], MsgMgr::getMsg("hub-tp")));
                             $s->getLevel()->addSound(new PopSound($s));
                         }
                         return true;
                     } else {
-                        $s->sendMessage($prefix . "§4ERROR! --> §cEs wurde noch keine Lobby festgelegt!");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
                         return true;
                     }
                 } elseif ($this->getUseHubServer() == true && $this->getUseWaterdogTransfer() == false) {
@@ -216,7 +216,7 @@ class theSpawn extends PluginBase implements Listener
                     $this->teleportToHubServerWithWaterdog($s, $config->get("waterdog-servername"));
                     return true;
                 } else {
-                    $s->sendMessage($prefix . "§l§4FATALER FEHLER --> §eFalsche einstellung in der Config! §r§7(§buse-hub-server: <true|false>§7)");
+                    $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));
                     return true;
                 }
             } else {
@@ -227,7 +227,7 @@ class theSpawn extends PluginBase implements Listener
         if ($cmd->getName() == "setalias") {
             if ($s instanceof Player) {
                 if (!count($args) >= 2) {
-                    $s->sendMessage("§4Benutze: §r/setalias <Alias> <Weltname>");
+                    $s->sendMessage("§4Use: §r/setalias <alias> <worldname>");
                     return true;
                 }
                 if (!$s->hasPermission("theSpawn.setalias.cmd")) {
@@ -235,25 +235,25 @@ class theSpawn extends PluginBase implements Listener
                     return true;
                 }
                 if (!is_string($args[0]) || !is_string($args[1])) {
-                    $s->sendMessage("§4Falsche eingabe!\n§4Benutze: §r/setalias <Alias> <Weltname>");
+                    $s->sendMessage("§4Use: §r/setalias <alias> <worldname>");
                     return true;
                 }
                 if ($this->existsLevel($args[1]) == false) {
-                    $s->sendMessage($prefix . "§cDie angegeben Welt existiert nicht!");
+                    $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
                     return true;
                 }
                 if ($this->aliasCfg->get("use-aliases") == "false") {
-                    $s->sendMessage($prefix . "§cAliases sind auf diesem Server deaktiviert! die können in der config.yml aktiviert werden!");
+                    $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
                     return true;
                 }
                 $this->addAlias($args[0], $args[1]);
-                $s->sendMessage($prefix . "§aDu hast den Alias §b" . $args[0] . "§a für die Welt §b" . $args[1] . "§a erfolgreich erstellt!");
+                $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
                 return true;
             }
         }
         if ($cmd->getName() == "removealias") {
             if (!$s instanceof Player) {
-                $s->sendMessage("Nur In-Game!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
             if (!$s->hasPermission("theSpawn.removealias.cmd")) {
@@ -261,14 +261,14 @@ class theSpawn extends PluginBase implements Listener
                 return true;
             }
             if (!count($args) >= 1) {
-                $s->sendMessage("§4Benutze: §r/removealias <Alias>");
+                $s->sendMessage("§4Use: §r/removealias <alias>");
             }
             if ($this->existsAlias($args[0]) == false) {
-                $s->sendMessage($prefix . "§4Dieser Alias existiert nicht!");
+                $s->sendMessage($prefix . MsgMgr::getMsg("alias-not-found"));
                 return true;
             }
             $this->rmAlias($args[0]);
-            $s->sendMessage($prefix . "§aDer Alias §b" . $args[0] . "§a wurde erfolgreich von gelöscht!");
+            $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], MsgMgr::getMsg("alias-removed")));
             return true;
         }
         return true;
@@ -293,9 +293,9 @@ class theSpawn extends PluginBase implements Listener
                 $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
                 $s->getLevel()->addSound(new PopSound($s));
             } elseif ($level == null) {
-                $s->sendMessage($prefix . "§4Welt konnte nicht gefunden werden!");
+                $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
                 $s->teleport($this->getHub());
-                $s->kick("§cDie Welt konnte nicht gefunden werden!\n§rBitte rejoine. Sollte das Problem weiterhin bestehen,\nKontaktiere bitte den Support!");
+                $s->kick(MsgMgr::getMsg("no-spawn-found-kick"));
             } elseif (!$this->getServer()->isLevelLoaded($levelname)) {
                 $this->getServer()->loadLevel($levelname);
                 $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
@@ -336,7 +336,7 @@ class theSpawn extends PluginBase implements Listener
             $coords = new Position($X, $Y, $Z, $level);
             return $coords;
         } else {
-            $this->getLogger()->error("!!Es wurde noch keine Lobby/Hub gesetzt! Bitte setze dringend eine Lobby/Hub!!");
+            $this->getLogger()->error("!!Please set a Hub!!");
             return false;
         }
     }
@@ -519,14 +519,14 @@ class theSpawn extends PluginBase implements Listener
         }
         $this->aliasCfg->set($alias, $levelName);
         $this->aliasCfg->save();
-        $this->getServer()->getCommandMap()->register($alias, new Aliases($this, $alias, "§r§7the§eSpawn§r Alias für die Welt §e" . $levelName . "§r!"));
+        $this->getServer()->getCommandMap()->register($alias, new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$levelName], MsgMgr::getMsg("alias-command-description")))));
         return true;
     }
 
     public function reactivateAliases()
     {
         foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
-            $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, "§r§7the§eSpawn§r Alias für die Welt §e" . $worldName . "§r!"));
+            $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, str_replace(["{alias}"], [$cmd], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
         }
     }
 }

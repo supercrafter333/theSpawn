@@ -2,19 +2,36 @@
 #setup and tp messages
 #uses: {world}
 spawn-tp: "§aYou're successfully teleported to the spawn of this world! §7[§b{world}§7]"
+hub-tp: "§aYou're successfully teleported to the spawn the hub! §7[§b{world}§7]"
 spawn-set: "§aYou've successfully §7set §athe spawn for this world! §7[§b{world}§7]"
+spawn-changed: "§aYou've successfully §7changed §athe spawn for this world! §7[§b{world}§7]"
 hub-set: "§aYou've successfully §7set§a the hub to world §b{world}§a!"
 hub-changed: "§aYou've successfully §7changed§a the hub to world §b{world}§a!"
 #
 #remove messages
 #uses: none
-
+spawn-removed: "§aYou've successfully removed the spawn of this world!"
+hub-removed: "§aYou've successfully removed the hub spawn."
+#
+#alias messages
+#uses: {alias} {world}
+alias-set: "§aYou've successfully set the alias §b{alias}§a for world §b{world}§a!"
+alias-command-description: "§r§aAlias for world §b{world}§a!"
+#uses: {alias}
+alias-removed: "§aYou've successfully removed the alias §b{alias}§a!"
 #
 #errors
 #uses: none
 no-spawn-set: "§4ERROR --> §cNo spawn was set for this world!"
 no-hub-set: "§4ERROR --> §cNo hub set for this server!"
+alias-not-found: "§cThis alias doesn't exists!"
 hub-server-is-enabled: "§7'use-hub-server' §cis §7true §cin config, you can't set a hubspawn if this is on true!"
 something-went-wrong: "§4Something went wrong!"
 no-perms: "§cYou don't have permissions to use this!"
+world-not-found: "§cThe selected world does not exists!"
+world-not-found-hub: "§cHub world not found!"
+no-spawn-set-in-this-world: "§cThere's no spawn set for this world!"
+aliases-deactivated: "§cAliases are deactivated on this server! Aliases can activate in the config.yml of theSpawn!"
 only-In-Game: "Only In-Game!"
+false-config-setting: "§4FATAL ERROR --> §cFalse setting in config, 'use-hub-server' <true|false> but their don't is true or false!"
+no-spawn-found-kick: "§4No spawn found for your world! You was kicked for debug!"
