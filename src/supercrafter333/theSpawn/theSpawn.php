@@ -60,6 +60,7 @@ class theSpawn extends PluginBase implements Listener
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
+        $msgs = MsgMgr::getMsgs();
         $this->getConfig();
         @mkdir($this->getDataFolder());
         $this->saveResource("config.yml");
@@ -82,7 +83,7 @@ class theSpawn extends PluginBase implements Listener
                         return true;
                     }
                 } else {
-                    $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                    $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                     return true;
                 }
             } else {
@@ -105,7 +106,7 @@ class theSpawn extends PluginBase implements Listener
                         return true;
                     }
                 } else {
-                    $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                    $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                     return true;
                 }
             } else {
@@ -119,15 +120,15 @@ class theSpawn extends PluginBase implements Listener
                 $level = $s->getLevel();
                 if ($spawn->exists($levelname)) {
                     $s->teleport($this->getSpawn($level));
-                    $s->sendMessage($prefix . "§aDu wurdest zum Spawn dieser Welt Teleportiert!");
+                    $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
                     $s->getLevel()->addSound(new PopSound($s));
                     return true;
                 } else {
-                    $s->sendMessage($prefix . "§4ERROR! --> §cIn dieser Welt existiert noch kein Spawn!");
+                    $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
                     return true;
                 }
             } else {
-                $s->sendMessage("Nur In-Game verfügbar!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
         }
@@ -142,27 +143,27 @@ class theSpawn extends PluginBase implements Listener
                     if ($this->getUseHubServer() == false) {
                         if (!$hub->exists("hub")) {
                             $this->setHub($x, $y, $z, $level);
-                            $s->sendMessage($prefix . "§aDu hast den Hub dieses Servers gesetzt!");
+                            $s->sendMessage($prefix . MsgMgr::getMsg("hub-set"));
                             $s->getLevel()->addSound(new DoorBumpSound($s));
                             return true;
                         } else {
                             $this->setHub($x, $y, $z, $level);
-                            $s->sendMessage($prefix . "§aDu hast den Hub dieses Servers umgesetzt!");
+                            $s->sendMessage($prefix . MsgMgr::getMsg("hub-changed"));
                             $s->getLevel()->addSound(new DoorBumpSound($s));
                             return true;
                         }
                     } elseif ($this->getUseHubServer() == true) {
-                        $s->sendMessage($prefix . "§7'use-hub-server' §cist auf §7'true' §cweswegen du keine Lobby setzen kannst!");
+                        $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
                         return true;
                     } else {
                         $s->sendMessage("§l§4FATALER FEHLER --> §eFalsche einstellung in der Config! §r§7(§buse-hub-server: <true|false>§7)");
                     }
                 } else {
-                    $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                    $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                     return true;
                 }
             } else {
-                $s->sendMessage("Nur In-Game verfügbar!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
         }
@@ -178,10 +179,10 @@ class theSpawn extends PluginBase implements Listener
                         $s->sendMessage($prefix . "§cEs wurde noch keine Lobby gesetzt!");
                     }
                 } else {
-                    $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                    $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                 }
             } else {
-                $s->sendMessage("Nur In-Game verfügbar!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
         }
@@ -219,7 +220,7 @@ class theSpawn extends PluginBase implements Listener
                     return true;
                 }
             } else {
-                $s->sendMessage("Nur In-Game verfügbar!");
+                $s->sendMessage(MsgMgr::getOnlyIGMsg());
                 return true;
             }
         }
@@ -230,7 +231,7 @@ class theSpawn extends PluginBase implements Listener
                     return true;
                 }
                 if (!$s->hasPermission("theSpawn.setalias.cmd")) {
-                    $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                    $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                     return true;
                 }
                 if (!is_string($args[0]) || !is_string($args[1])) {
@@ -256,7 +257,7 @@ class theSpawn extends PluginBase implements Listener
                 return true;
             }
             if (!$s->hasPermission("theSpawn.removealias.cmd")) {
-                $s->sendMessage($prefix . "§cDu bist dazu nicht berechtigt!");
+                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                 return true;
             }
             if (!count($args) >= 1) {
