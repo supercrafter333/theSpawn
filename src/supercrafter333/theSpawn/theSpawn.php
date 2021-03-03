@@ -31,9 +31,8 @@ class theSpawn extends PluginBase implements Listener
     public function onEnable()
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->getConfig();
-        @mkdir($this->getDataFolder());
         $this->saveResource("config.yml");
+        $this->saveResource("messages.yml");
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         self::$instance = $this;
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
