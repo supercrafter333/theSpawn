@@ -45,12 +45,12 @@ class MsgMgr
         return self::$Me;
     }
 
-    public function getMsgs(): Config
+    public function getMsgsX(): Config
     {
         return new Config(theSpawn::getInstance()->getDataFolder() . "messages.yml", Config::YAML);
     }
 
-    public function getMsg(string $message)
+    public function getMsgX(string $message)
     {
         return self::$msgs->get($message);
     }

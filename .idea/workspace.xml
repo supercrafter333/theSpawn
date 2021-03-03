@@ -22,9 +22,9 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Fix Aliases">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="a begin for custom messages">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/MsgMgr.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/MsgMgr.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +100,7 @@
       <workItem from="1614705450385" duration="3101000" />
       <workItem from="1614710821921" duration="17000" />
       <workItem from="1614787296912" duration="1553000" />
-      <workItem from="1614790253216" duration="1834000" />
+      <workItem from="1614790253216" duration="1994000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -207,7 +207,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614708179932</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="a begin for custom messages">
+      <created>1614792224338</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1614792224338</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -252,6 +259,7 @@
     <MESSAGE value="Oups xD" />
     <MESSAGE value="Bug fixes" />
     <MESSAGE value="Fix Aliases" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix Aliases" />
+    <MESSAGE value="a begin for custom messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="a begin for custom messages" />
   </component>
 </project>
