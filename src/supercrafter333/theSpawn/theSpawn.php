@@ -31,8 +31,8 @@ class theSpawn extends PluginBase implements Listener
     public function onEnable()
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->saveResource("config.yml");
         $this->saveResource("messages.yml");
+        $this->saveResource("config.yml");
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         self::$instance = $this;
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
@@ -314,9 +314,10 @@ class theSpawn extends PluginBase implements Listener
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
-        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $level];
+        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
         $hub->set("hub", $hubcoords);
-        return $hub->save();
+        $hub->save();
+        return true;
     }
 
     /**
@@ -372,13 +373,14 @@ class theSpawn extends PluginBase implements Listener
         $z = $s->getZ();
         $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
         $spawn->set($level->getName(), $coords);
-        return $spawn->save();
+        $spawn->save();
+        return true;
     }
 
     /**
      * @return false|mixed
      */
-    public function getHubLevel(): bool
+    public function getHubLevel(): string
     {
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         if ($hub->exists("hub")) {

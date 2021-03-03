@@ -7,12 +7,10 @@ use pocketmine\utils\Config;
 class MsgMgr
 {
 
-    private static $msgs;
     private static $Me;
 
     public function __construct()
     {
-        self::$msgs = new Config(theSpawn::getInstance()->getDataFolder() . "messages.yml", Config::YAML);
         self::$Me = $this;
     }
 
@@ -24,7 +22,7 @@ class MsgMgr
     public static function getMsg(string $message): string
     {
         if (self::getMsgs()->exists($message)) {
-            return self::$msgs->get($message);
+            return self::getMsgs()->get($message);
         } else {
             return "ERROR";
         }
@@ -32,12 +30,12 @@ class MsgMgr
 
     public static function getNoPermMsg(): string
     {
-        return self::$msgs->get("no-perms");
+        return self::getMsgs()->get("no-perms");
     }
 
     public static function getOnlyIGMsg(): string
     {
-        return self::$msgs->get("only-In-Game");
+        return self::getMsgs()->get("only-In-Game");
     }
 
     public static function getMe(): self
@@ -52,6 +50,6 @@ class MsgMgr
 
     public function getMsgX(string $message)
     {
-        return self::$msgs->get($message);
+        return self::getMsgs()->get($message);
     }
 }
