@@ -8,10 +8,10 @@
   - set/change/remove Lobbyspawn
   - Aliases
   - use/dont' use hub server
-  - waterdog teleport hub server support
   - API
   - Custom Messages
   - Config
+- waterdog teleport hub server support
     
 ### TODOs
 - [ ] Warps
