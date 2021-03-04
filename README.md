@@ -1,50 +1,41 @@
-# theSpawn - Alpha
-**Dieses Plugin soll schon bald MSpawns ersetzen! Helfen sie mir dabei, dieses Plugin immer besser zu machen!**
-**[ENG]: This plugin will soon replace MSpawns! Help me to make this plugin better!**
+# theSpawn - `BETA`
 
+**This plugin will soon replace MSpawns! Help me to make this plugin better!**
 
+### Features
+- All MSpawns features:
+  - set/change/remove Spawns
+  - set/change/remove Lobbyspawn
+  - Teleport to spawn/hub
+  - Aliases
+  - use/dont' use hub server
+  - API
+  - Custom Messages
+  - Config
+- waterdog teleport hub server support
+    
+### TODOs
+- [ ] Warps
+- [ ] Homes
 
-## Deutsch/German
-
-
-### Bugs:
-- [X] Lobby Teleport
-
-### TO-DOs:
-- [ ] Aliases (hilfe gesucht xD)
-- [X] Lobby-Teleport-Message (hab ich vergessen xD)
-- [ ] Custom-Messages
-
-### Changelog:
-- Hub-Teleport-Message wurde hinzugefügt (ich hatte sie halt einfach vergessen xD)
-- Fix Lobby Teleport Bug
-- Update Config ( von use-hub-server <1|2> zu use-hub-server <true|false>)
-
-### Lizens:
-Dieses Plugin ist mit der [Apache License 2.0](/LICENSE) ausgestattet!
-Dieses Plugin ist ein Plugin von supercrafter333!
-
-### Info:
-Dieses Plugin ist von MSpawns inspiriert!
-
-## English
-
-
-### Bugs:
-- [X] Hub Teleport
-
-### TO-DOs:
-- [ ] Aliases (Help Searched)
-- [X] Hub-Teleport-Message (I had forget this xD)
-- [ ] Custom-Messages
-
-### Changelog:
-- Add Hub-Teleport-Message (i have forgot the message)
-- Fix Lobby Teleport Bug
-- Update Config from use-hub-server <1|2> to use-hub-server <true|false>)
+### Bugs - none
+You've found a Bug?
+- Go to [Issues](https://github.com/supercrafter333/theSpawn/issues)
+- Click on [New Issue](https://github.com/supercrafter333/theSpawn/issues/new/choose)
+- Write your bug with all Informations that you have down
+- Send Issue
+- Wait, I where answer you
 
 ### License:
-This Plugin has the [Apache License 2.0](/LICENSE)! This Plugin is from supercrafter333!
+This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
 
-### Information:
-This Plugin is inpirated from MSpawns!
+### Credits
+**Information:** This plugin is inspired by [MSpawns](https://github.com/EvolSoft/MSpawns).
+
+Owner: supercrafter333
+
+Helper: ---
+
+Icon: ---
+
+Discord-Tag: `supercrafter333#4062`
