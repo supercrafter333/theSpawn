@@ -2,7 +2,7 @@
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
-This plugin is not out of date and will get better developed from time to time. If you need an MSpawns alternative, theSpawn is for it :)
+This plugin is not out of date and will get better developed from time to time. If you need an MSpawns alternative, theSpawn is the alternativ :)
 
 ### Features
 - All MSpawns features:
