@@ -6,6 +6,7 @@
 - All MSpawns features:
   - set/change/remove Spawns
   - set/change/remove Lobbyspawn
+  - Teleport to spawn/hub
   - Aliases
   - use/dont' use hub server
   - API
