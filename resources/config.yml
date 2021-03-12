@@ -7,4 +7,4 @@ waterdog-servername: "name"
 use-aliases: "true"
 
 #don't change this
-version: "0.3.0"
+version: "0.4.1"
