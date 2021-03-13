@@ -1,13 +1,7 @@
 name: theSpawn
-version: 0.4.1
+version: 1.0.0
 api: 3.0.0
 main: supercrafter333\theSpawn\theSpawn
-mcpe-protocols:
-  - 407
-  - 408
-  - 419
-  - 422
-  - 428
 author: supercrafter333
 
 commands:
@@ -33,16 +27,14 @@ commands:
   hub:
     description: §r§9Teleport you to hub!
     aliases: ["lobby", "thelobby", "thehub"]
-  setalias:
-    description: §r§aSet an alias for a world!
-    aliases:
-      - addalias
-  removealias:
-    description: §r§aRemove an alias!
-    aliases:
-      - rmalias
 
 permissions:
+  theSpawn.sethome.cmd:
+    default: true
+  theSpawn.delhome.cmd:
+    default: true
+  theSpawn.home.cmd:
+    default: true
   theSpawn.bypass:
     default: op
     children:

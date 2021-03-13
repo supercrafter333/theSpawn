@@ -11,11 +11,17 @@ use pocketmine\level\Position;
 use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\level\sound\PopSound;
-use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
+use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
+use supercrafter333\theSpawn\Commands\DelhomeCommand;
+use supercrafter333\theSpawn\Commands\HomeCommand;
+use supercrafter333\theSpawn\Commands\RemovealiasCommand;
+use supercrafter333\theSpawn\Commands\SetaliasCommand;
+use supercrafter333\theSpawn\Commands\SethomeCommand;
+use supercrafter333\theSpawn\Others\HomeInfo;
+use waterdog\transfercommand\API;
 
 /**
  * Class theSpawn
@@ -24,27 +30,121 @@ use pocketmine\utils\Config;
 class theSpawn extends PluginBase implements Listener
 {
 
+    /**
+     * @var
+     */
     public static $instance;
+
+    /**
+     *
+     */
+    public const PREFIX = "§f[§7the§eSpawn§f] §8»§r ";
+    /**
+     * @var
+     */
     public $config;
+    /**
+     * @var
+     */
+    public $msgCfg;
+    /**
+     * @var
+     */
     public $aliasCfg;
 
+    /**
+     * @var string
+     */
+    public $version = "1.0.0";
+
+    /**
+     *
+     */
     public function onEnable()
     {
+        self::$instance = $this;
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $cmdMap = $this->getServer()->getCommandMap();
         $this->saveResource("messages.yml");
         $this->saveResource("config.yml");
+        if ($this->checkCfgVersion($this->version) == false) {
+            $this->updateCfg();
+            $this->getLogger()->warning("The config.yml data was updated automatically for version " . $this->version . " of theSpawn!");
+        }
+        if (MsgMgr::checkMsgCfgVersion($this->version) == false) {
+            MsgMgr::updateMsgCfg();
+            $this->getLogger()->warning("The messages.yml data was updated automatically for version " . $this->version . " of theSpawn!");
+        }
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        self::$instance = $this;
+        $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
+        @mkdir($this->getDataFolder() . "homes");
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         if ($this->useAliases() == true) {
+            $this->getLogger()->info("Aliases are enabled! Load alias commands...");
+            $cmdMap->registerAll("theSpawn",
+            [
+                new SetaliasCommand("setalias"),
+                new RemovealiasCommand("removealias")
+            ]);
             $this->reactivateAliases();
+        }
+        if ($this->useHomes() == true) {
+            $this->getLogger()->info("Homes are enabled! Load home commands...");
+            $cmdMap->registerAll("theSpawn",
+            [
+                new SethomeCommand("sethome"),
+                new DelhomeCommand("delhome"),
+                new HomeCommand("home")
+            ]);
         }
     }
 
+    /**
+     * @return static
+     */
     public static function getInstance(): self
     {
         return self::$instance;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCfg()
+    {
+        return new Config($this->getDataFolder() . "config.yml", Config::YAML);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMsgCfg()
+    {
+        return MsgMgr::getMsgs();
+    }
+
+    /**
+     * @param string $version
+     * @return bool
+     */
+    public function checkCfgVersion(string $version): bool
+    {
+        if ($this->getCfg()->exists("version")) {
+            if ($this->getCfg()->get("version") == $version) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     */
+    public function updateCfg()
+    {
+        unlink($this->getDataFolder() . "config.yml");
+        $this->saveResource("config.yml");
     }
 
     /**
@@ -223,7 +323,7 @@ class theSpawn extends PluginBase implements Listener
                 return true;
             }
         }
-        if ($cmd->getName() == "setalias") {
+        /*if ($cmd->getName() == "setalias") {
             if ($s instanceof Player) {
                 if (!count($args) >= 2) {
                     $s->sendMessage("§4Use: §r/setalias <alias> <worldname>");
@@ -247,6 +347,7 @@ class theSpawn extends PluginBase implements Listener
                 }
                 $this->addAlias($args[0], $args[1]);
                 $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
+                $s->getLevel()->addSound(new DoorBumpSound($s));
                 return true;
             }
         }
@@ -270,6 +371,85 @@ class theSpawn extends PluginBase implements Listener
             $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], MsgMgr::getMsg("alias-removed")));
             return true;
         }
+        if ($cmd->getName() == "sethome") {
+            if (!$s->hasPermission("theSpawn.sethome.cmd")) {
+                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
+                return true;
+            }
+            if (!$s instanceof Player) {
+                $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
+                return true;
+            }
+            if (!count($args) >= 1) {
+                $s->sendMessage("§4Use: §r/sethome <name>");
+                return true;
+            }
+            $x = $s->getX();
+            $y = $s->getY();
+            $z = $s->getZ();
+            $level = $s->getLevel();
+            if ($this->setHome($s, $args[0], $x, $y, $z, $level) == false) {
+                $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
+                return true;
+            } else {
+                $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));
+                return true;
+            }
+        }
+        if ($cmd->getName() == "delhome") {
+            if (!$s->hasPermission("theSpawn.delhome.cmd")) {
+                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
+                return true;
+            }
+            if (!$s instanceof Player) {
+                $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
+                return true;
+            }
+            if (!count($args) >= 1) {
+                $s->sendMessage("§4Use: §r/delhome <name>");
+                return true;
+            }
+            if ($this->rmHome($s, $args[0]) == false) {
+                $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
+                return true;
+            } else {
+                $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
+                return true;
+            }
+        }
+        if ($cmd->getName() == "home") {
+            if (!$s->hasPermission("theSpawn.home.cmd")) {
+                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
+                return true;
+            }
+            if (!$s instanceof Player) {
+                $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
+                return true;
+            }
+            if (!isset($args[0])) {
+                if ($this->listHomes($s) !== null) {
+                    $s->sendMessage($prefix . str_replace(["{homelist}"], [$this->listHomes($s)], MsgMgr::getMsg("homelist")));
+                    $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, (int)mt_rand());
+                    return true;
+                } else {
+                    $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
+                    return true;
+                }
+            }
+            $lvlName = $this->getHomeInfo($s, $args[0])->getLevelName();
+            if ($this->getServer()->isLevelGenerated($lvlName) == false) {
+                $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
+                return true;
+            }
+            if ($this->getHomeInfo($s, $args[0])->existsHome() == false) {
+                $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
+                return true;
+            }
+            $this->teleportToHome($s, $args[0]);
+            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-teleport")));
+            $s->getLevel()->addSound(new PopSound($s));
+            return true;
+        }*/
         return true;
     }
 
@@ -460,14 +640,22 @@ class theSpawn extends PluginBase implements Listener
         }
     }
 
+    /**
+     * @param Player $player
+     * @param string $server
+     */
     public function teleportToHubServerWithWaterdog(Player $player, string $server) //Thanks to FlxiBoy
     {
-        $pk = new ScriptCustomEventPacket();
+        API::transfer($player, $server);
+        /*$pk = new ScriptCustomEventPacket();
         $pk->eventName = "bungeecord:main";
         $pk->eventData = Binary::writeShort(strlen("Connect"))."Connect".Binary::writeShort(strlen($server)).$server;
-        $player->sendDataPacket($pk);
+        $player->sendDataPacket($pk);*/
     }
 
+    /**
+     * @return bool
+     */
     public function useAliases(): bool
     {
         if ($this->config->get("use-aliases") == "true") {
@@ -476,11 +664,19 @@ class theSpawn extends PluginBase implements Listener
         return false;
     }
 
+    /**
+     * @param string $alias
+     * @return string
+     */
     public function getWorldOfAlias(string $alias): string
     {
         return $this->aliasCfg->get($alias);
     }
 
+    /**
+     * @param string $levelName
+     * @return bool
+     */
     public function existsLevel(string $levelName): bool
     {
         if ($this->getServer()->isLevelGenerated($levelName)) {
@@ -490,6 +686,10 @@ class theSpawn extends PluginBase implements Listener
         }
     }
 
+    /**
+     * @param string $alias
+     * @return bool
+     */
     public function existsAlias(string $alias): bool
     {
         if ($this->aliasCfg->exists($alias)) {
@@ -499,6 +699,10 @@ class theSpawn extends PluginBase implements Listener
         }
     }
 
+    /**
+     * @param string $alias
+     * @return bool
+     */
     public function rmAlias(string $alias): bool
     {
         if ($this->existsAlias($alias) == true) {
@@ -512,6 +716,11 @@ class theSpawn extends PluginBase implements Listener
         }
     }
 
+    /**
+     * @param string $alias
+     * @param string $levelName
+     * @return bool
+     */
     public function addAlias(string $alias, string $levelName): bool
     {
         $level = $this->getServer()->getLevelByName($levelName);
@@ -524,10 +733,167 @@ class theSpawn extends PluginBase implements Listener
         return true;
     }
 
+    /**
+     *
+     */
     public function reactivateAliases()
     {
         foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
             $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, str_replace(["{alias}"], [$cmd], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
+        }
+    }
+
+    /**
+     * @param string $playerName
+     * @return Config
+     */
+    public function getHomeCfg(string $playerName): Config
+    {
+        return new Config($this->getDataFolder() . "homes/" . $playerName . ".yml", Config::YAML);
+    }
+
+    /**
+     * @param string $homeName
+     * @param Player $player
+     * @return bool
+     */
+    public function existsHome(string $homeName, Player $player): bool
+    {
+        if (file_exists($this->getDataFolder() . "homes/" . $player->getName() . ".yml")) {
+            if ($this->getHomeCfg($player->getName())->exists($homeName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param Player $player
+     * @param string $homeName
+     * @param $x
+     * @param $y
+     * @param $z
+     * @param Level $level
+     * @return bool
+     */
+    public function setHome(Player $player, string $homeName, $x, $y, $z, Level $level): bool
+    {
+        if ($this->existsHome($homeName, $player) == false) {
+            $home = $this->getHomeCfg($player->getName());
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "homeName" => $homeName];
+            $home->set($homeName, $setThis);
+            $home->save();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param Player $player
+     * @param string $homeName
+     * @return bool
+     */
+    public function rmHome(Player $player, string $homeName): bool
+    {
+        if ($this->existsHome($homeName, $player) == true) {
+            $home = $this->getHomeCfg($player->getName());
+            $home->remove($homeName);
+            $home->save();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param Player $player
+     * @param string $homeName
+     * @return false|Position
+     */
+    public function getHomePos(Player $player, string $homeName)
+    {
+        if ($this->existsHome($homeName, $player) == true) {
+            $home = $this->getHomeCfg($player->getName());
+            $x = $home->get($homeName)["X"];
+            $y = $home->get($homeName)["Y"];
+            $z = $home->get($homeName)["Z"];
+            $levelName = $home->get($homeName)["level"];
+            if ($this->getServer()->isLevelGenerated($levelName)) {
+                if ($this->getServer()->isLevelLoaded($levelName)) {
+                    $level = $this->getServer()->getLevelByName($levelName);
+                    return new Position($x, $y, $z, $level);
+                } else {
+                    $this->getServer()->loadLevel($levelName);
+                    $level = $this->getServer()->getLevelByName($levelName);
+                    return new Position($x, $y, $z, $level);
+                }
+            } else {
+                return "LevelError";
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @param string $homeName
+     * @return bool|string
+     */
+    public function teleportToHome(Player $player, string $homeName)
+    {
+        if ($this->existsHome($homeName, $player) == true) {
+            if ($this->getHomePos($player, $homeName) == false) {
+                return false;
+            } elseif ($this->getHomePos($player, $homeName) == "LevelError") {
+                return "LevelError";
+            } else {
+                $pos = $this->getHomePos($player, $homeName);
+                $player->teleport($pos);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param Player $player
+     * @return string|null
+     */
+    public function listHomes(Player $player)
+    {
+        $homes = null;
+        if (file_exists($this->getDataFolder() . "homes/" . $player->getName() . ".yml")) {
+            $home = $this->getHomeCfg($player->getName());
+            $all = $home->getAll();
+            $getRight = $all;
+            foreach ($getRight as $homex => $homez) {
+                $right = [$homez["homeName"] . ", "];
+                $homes .= implode(", ", $right);
+            }
+            return $homes;
+        }
+        return $homes;
+    }
+
+    /**
+     * @param Player $player
+     * @param string $homeName
+     * @return HomeInfo
+     */
+    public function getHomeInfo(Player $player, string $homeName)
+    {
+        return new HomeInfo($player, $homeName);
+    }
+
+    /**
+     * @return bool
+     */
+    public function useHomes(): bool
+    {
+        if ($this->getCfg()->get("use-homes") == "true" || $this->getCfg()->get("use-homes") == "on") {
+            return true;
+        } else {
+            return false;
         }
     }
 }

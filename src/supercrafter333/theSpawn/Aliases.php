@@ -3,12 +3,23 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\command\CommandSender;
+use pocketmine\level\sound\PopSound;
 use pocketmine\Player;
 use pocketmine\Server;
 
+/**
+ * Class Aliases
+ * @package supercrafter333\theSpawn
+ */
 class Aliases extends AliasMap
 {
 
+    /**
+     * Aliases constructor.
+     * @param theSpawn $main
+     * @param $cmdName
+     * @param $cmdDescription
+     */
     public function __construct(theSpawn $main, $cmdName, $cmdDescription)
     {
         parent::__construct($main, $cmdName, $cmdDescription);
@@ -17,6 +28,12 @@ class Aliases extends AliasMap
         $this->pl = $main;
     }
 
+    /**
+     * @param CommandSender $s
+     * @param string $commandLabel
+     * @param array $args
+     * @return bool
+     */
     public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
@@ -37,6 +54,8 @@ class Aliases extends AliasMap
                         Server::getInstance()->loadLevel($lvl);
                         $level = Server::getInstance()->getLevelByName($lvl);
                         $s->teleport($pl->getSpawn($level));
+                        $s->sendMessage(theSpawn::PREFIX . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getName()], MsgMgr::getMsg("alias-teleport"))));
+                        $s->getLevel()->addSound(new PopSound($s));
                         return true;
                     }
                 } else {

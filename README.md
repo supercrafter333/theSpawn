@@ -1,4 +1,4 @@
-# theSpawn - `BETA`
+# theSpawn - V1.0.0
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -9,16 +9,18 @@ This plugin is not out of date and will get better developed from time to time. 
   - set/change/remove Spawns
   - set/change/remove Lobbyspawn
   - Teleport to spawn/hub
-  - Aliases
+  - Aliases [default: activ]
   - use/dont' use hub server
   - API
   - Custom Messages
   - Config
 - waterdog teleport hub server support
+- Homes [default: activ]
     
 ### TODOs
+- [X] Homes [Finished]
 - [ ] Warps
-- [ ] Homes
+- [ ] Command files
 
 ### Bugs - none
 You've found a Bug?
@@ -38,6 +40,6 @@ Owner: supercrafter333
 
 Helper: ---
 
-Icon: ---
+Icon: HannesTheDev [Thank you]
 
 Discord-Tag: `supercrafter333#4062`

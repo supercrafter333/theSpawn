@@ -22,8 +22,19 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="add changelogs">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Oups... xD">
       <change beforePath="$PROJECT_DIR$/.changlogs.md" beforeDir="false" afterPath="$PROJECT_DIR$/.changlogs.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.poggit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.poggit.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/messages.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/messages.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Aliases.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Aliases.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/MsgMgr.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/MsgMgr.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +67,15 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="JsbtTreeLayoutManager">
+    <layout place="tools.popupGrunt">
+      <scroll-view-position x="0" y="0" />
+    </layout>
+  </component>
   <component name="ProjectId" id="1kW7vBTTkaW5MPMFmLz7MB8wEui" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -71,6 +90,11 @@
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\meine Plugins lol lul\theSpawn" />
+    </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -112,7 +136,11 @@
       <workItem from="1615050066663" duration="97000" />
       <workItem from="1615381113417" duration="11000" />
       <workItem from="1615587885788" duration="609000" />
-      <workItem from="1615591614703" duration="176000" />
+      <workItem from="1615591614703" duration="194000" />
+      <workItem from="1615631554273" duration="3948000" />
+      <workItem from="1615638687496" duration="3995000" />
+      <workItem from="1615647339450" duration="5702000" />
+      <workItem from="1615657021788" duration="7527000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -317,7 +345,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615591676136</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Oups... xD">
+      <created>1615591799682</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1615591799682</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,13 +399,13 @@
     <MESSAGE value="a begin for custom messages..." />
     <MESSAGE value="add CustomMessages :)" />
     <MESSAGE value="Version bump" />
-    <MESSAGE value="Oups... xD" />
     <MESSAGE value="Fix bug, translate command descriptions to english" />
     <MESSAGE value="New README.md" />
     <MESSAGE value="Update README.md" />
     <MESSAGE value="Ups... xD" />
     <MESSAGE value="Add support for MCPE 1.16.210&#10;- add protocol 428 for 1.16.210 update&#10;- version bump" />
     <MESSAGE value="add changelogs" />
-    <option name="LAST_COMMIT_MESSAGE" value="add changelogs" />
+    <MESSAGE value="Oups... xD" />
+    <option name="LAST_COMMIT_MESSAGE" value="Oups... xD" />
   </component>
 </project>

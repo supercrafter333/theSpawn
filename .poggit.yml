@@ -4,5 +4,6 @@ branches:
 - master
 projects:
   theSpawn:
+    icon: "icon.png"
     path: ""
 ...
