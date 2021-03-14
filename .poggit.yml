@@ -6,7 +6,3 @@ projects:
   theSpawn:
     icon: "icon.png"
     path: ""
-    libs:
-      - src: https://github.com/yesdog/WaterdogTools/tree/master/transfercommand-pocketmine
-        version: ^0.0.1
-...
