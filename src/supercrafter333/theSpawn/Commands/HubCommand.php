@@ -74,7 +74,7 @@ class HubCommand extends Command
                 $pl->teleportToHubServer($s);
                 return true;
             } elseif ($pl->getUseHubServer() == true && $pl->getUseWaterdogTransfer() == true) {
-                $pl->teleportToHubServerWithWaterdog($s, $config->get("waterdog-servername"));
+                $pl->transferToProxyServer($s, $config->get("waterdog-servername"));
                 return true;
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));

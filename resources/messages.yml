@@ -51,7 +51,7 @@ no-homes-set: "§cYou do not have set any homes!"
 
 
 #don't change this
-version: "1.1.0-dev"
+version: "1.1.0"
 
 
 ############################

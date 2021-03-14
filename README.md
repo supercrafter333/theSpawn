@@ -1,4 +1,4 @@
-# theSpawn - V1.0.0
+# theSpawn - V1.1.0
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -18,9 +18,9 @@ This plugin is not out of date and will get better developed from time to time. 
 - Homes [default: activ]
     
 ### TODOs
-- [X] Homes [Finished]
+- [X] Homes
+- [X] Command files
 - [ ] Warps
-- [ ] Command files
 
 ### Bugs - none
 You've found a Bug?
