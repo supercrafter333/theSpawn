@@ -22,19 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Release V1.0.0">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Release development build V1.1.0-dev">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.poggit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.poggit.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/messages.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/messages.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/plugin.yml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/src/waterdog/transfercommand/API.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/src/waterdog/transfercommand/Main.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/src/waterdog/transfercommand/TransferCommand.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/.commandInfo.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/RemovealiasCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/RemovealiasCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SetaliasCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SetaliasCommand.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -142,7 +133,7 @@
       <workItem from="1615647339450" duration="5702000" />
       <workItem from="1615657021788" duration="8172000" />
       <workItem from="1615670844665" duration="365000" />
-      <workItem from="1615721560148" duration="5646000" />
+      <workItem from="1615721560148" duration="7039000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -361,7 +352,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615666369238</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="Release development build V1.1.0-dev">
+      <created>1615727568019</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1615727568019</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,6 +414,7 @@
     <MESSAGE value="add changelogs" />
     <MESSAGE value="Oups... xD" />
     <MESSAGE value="Release V1.0.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release V1.0.0" />
+    <MESSAGE value="Release development build V1.1.0-dev" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release development build V1.1.0-dev" />
   </component>
 </project>

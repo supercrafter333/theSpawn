@@ -39,7 +39,7 @@ class SetaliasCommand extends Command
         $prefix = theSpawn::PREFIX;
         $pl = theSpawn::getInstance();
         if ($s instanceof Player) {
-            if (!count($args) >= 2) {
+            if (count($args) < 2) {
                 $s->sendMessage($this->usageMessage);
                 return true;
             }

@@ -48,6 +48,7 @@ class RemovealiasCommand extends Command
         }
         if (!count($args) >= 1) {
             $s->sendMessage($this->usageMessage);
+            return true;
         }
         if ($pl->existsAlias($args[0]) == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("alias-not-found"));
