@@ -1,32 +1,8 @@
 name: theSpawn
-version: 1.0.0
+version: 1.1.0-dev
 api: 3.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
-
-commands:
-  setthespawn:
-    description: §r§aSet the spawn for this world!
-    permission: setthespawn.cmd
-    aliases: ["addthespawn", "setspawn"]
-  delthespawn:
-    description: §r§aRemove the spawn of this world!
-    permission: delthespawn.cmd
-    aliases: ["deletethespawn", "removethespawn", "rmthespawn", "delspawn"]
-  spawn:
-    description: §r§9Teleport you to spawn of this world!
-    aliases: ["tpthespawn"]
-  setthehub:
-    description: §r§aSet the hub!
-    permission: setthehub.cmd
-    aliases: ["addthehub", "setthelobby", "addthelobby", "sethub", "setlobby"]
-  delthehub:
-    description: §r§aRemove the hub spawnpoint!
-    permission: delthehub.cmd
-    aliases: ["rmthehub", "rmthelobby", "delthelobby", "delhub", "dellobby"]
-  hub:
-    description: §r§9Teleport you to hub!
-    aliases: ["lobby", "thelobby", "thehub"]
 
 permissions:
   theSpawn.sethome.cmd:
@@ -38,13 +14,13 @@ permissions:
   theSpawn.bypass:
     default: op
     children:
-      theSpawn.setthespawn.cmd:
+      theSpawn.setspawn.cmd:
         default: op
-      theSpawn.delthespawn.cmd:
+      theSpawn.delspawn.cmd:
         default: op
-      theSpawn.setthehub.cmd:
+      theSpawn.sethub.cmd:
         default: op
-      theSpawn.delthehub.cmd:
+      theSpawn.delhub.cmd:
         default: op
       theSpawn.setalias.cmd:
         default: op

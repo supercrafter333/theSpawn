@@ -16,10 +16,16 @@ use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\Commands\DelhomeCommand;
+use supercrafter333\theSpawn\Commands\DelhubCommand;
+use supercrafter333\theSpawn\Commands\DelspawnCommand;
 use supercrafter333\theSpawn\Commands\HomeCommand;
+use supercrafter333\theSpawn\Commands\HubCommand;
 use supercrafter333\theSpawn\Commands\RemovealiasCommand;
 use supercrafter333\theSpawn\Commands\SetaliasCommand;
 use supercrafter333\theSpawn\Commands\SethomeCommand;
+use supercrafter333\theSpawn\Commands\SethubCommand;
+use supercrafter333\theSpawn\Commands\SetspawnCommand;
+use supercrafter333\theSpawn\Commands\SpawnCommand;
 use supercrafter333\theSpawn\Others\HomeInfo;
 use waterdog\transfercommand\API;
 
@@ -55,7 +61,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.0.0";
+    public $version = "1.1.0-dev";
 
     /**
      *
@@ -80,6 +86,15 @@ class theSpawn extends PluginBase implements Listener
         @mkdir($this->getDataFolder() . "homes");
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
+        $cmdMap->registerAll("theSpawn",
+        [
+            new SpawnCommand("spawn"),
+            new SetspawnCommand("setspawn"),
+            new DelspawnCommand("delspawn"),
+            new HubCommand("hub"),
+            new SethubCommand("sethub"),
+            new DelhubCommand("delhub")
+        ]);
         if ($this->useAliases() == true) {
             $this->getLogger()->info("Aliases are enabled! Load alias commands...");
             $cmdMap->registerAll("theSpawn",
@@ -147,14 +162,14 @@ class theSpawn extends PluginBase implements Listener
         $this->saveResource("config.yml");
     }
 
-    /**
+    /*/**
      * @param CommandSender $s
      * @param Command $cmd
      * @param string $label
      * @param array $args
      * @return bool
      */
-    public function onCommand(CommandSender $s, Command $cmd, string $label, array $args): bool
+    /*public function onCommand(CommandSender $s, Command $cmd, string $label, array $args): bool
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
@@ -323,7 +338,7 @@ class theSpawn extends PluginBase implements Listener
                 return true;
             }
         }
-        /*if ($cmd->getName() == "setalias") {
+        if ($cmd->getName() == "setalias") {
             if ($s instanceof Player) {
                 if (!count($args) >= 2) {
                     $s->sendMessage("§4Use: §r/setalias <alias> <worldname>");
@@ -449,9 +464,9 @@ class theSpawn extends PluginBase implements Listener
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-teleport")));
             $s->getLevel()->addSound(new PopSound($s));
             return true;
-        }*/
+        }
         return true;
-    }
+    }*/
 
     /**
      * @param PlayerRespawnEvent $event

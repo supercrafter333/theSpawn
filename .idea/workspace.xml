@@ -22,18 +22,18 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Oups... xD">
-      <change beforePath="$PROJECT_DIR$/.changlogs.md" beforeDir="false" afterPath="$PROJECT_DIR$/.changlogs.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Release V1.0.0">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.poggit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.poggit.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/messages.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/messages.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Aliases.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Aliases.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/MsgMgr.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/MsgMgr.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/plugin.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/src/waterdog/transfercommand/API.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/src/waterdog/transfercommand/Main.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/libs/transfercommand-pocketmine/src/waterdog/transfercommand/TransferCommand.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/.commandInfo.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,7 +54,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="CustomMessages+Aliases" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -85,7 +85,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../BlockAPI" />
     <property name="php.override.implement.member.chooser.php.doc" value="DEFAULT" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -140,7 +140,9 @@
       <workItem from="1615631554273" duration="3948000" />
       <workItem from="1615638687496" duration="3995000" />
       <workItem from="1615647339450" duration="5702000" />
-      <workItem from="1615657021788" duration="7527000" />
+      <workItem from="1615657021788" duration="8172000" />
+      <workItem from="1615670844665" duration="365000" />
+      <workItem from="1615721560148" duration="5646000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -352,7 +354,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615591799682</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Release V1.0.0">
+      <created>1615666369237</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1615666369238</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -369,7 +378,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="Aliases" />
+                        <option value="Dev" />
                       </list>
                     </value>
                   </entry>
@@ -406,6 +415,7 @@
     <MESSAGE value="Add support for MCPE 1.16.210&#10;- add protocol 428 for 1.16.210 update&#10;- version bump" />
     <MESSAGE value="add changelogs" />
     <MESSAGE value="Oups... xD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Oups... xD" />
+    <MESSAGE value="Release V1.0.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release V1.0.0" />
   </component>
 </project>
