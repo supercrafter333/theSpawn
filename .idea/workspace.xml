@@ -22,9 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Oups... xD">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="poggit fix, remove a PHP7.4 code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -136,7 +135,7 @@
       <workItem from="1615670844665" duration="365000" />
       <workItem from="1615721560148" duration="9080000" />
       <workItem from="1615744658137" duration="82000" />
-      <workItem from="1615826819169" duration="446000" />
+      <workItem from="1615826819169" duration="962000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -376,7 +375,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615732127911</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="poggit fix, remove a PHP7.4 code">
+      <created>1615827294524</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1615827294524</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -408,7 +414,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <confirmMoveToFailedCommit value="2" />
-    <MESSAGE value="Bug fixes, add API funtions" />
     <MESSAGE value="Bug fixes, add API funtions, Code cleanups" />
     <MESSAGE value="Bug fixes, add API funtions, Code cleanups, License update" />
     <MESSAGE value="add Commmand Aliases" />
@@ -433,6 +438,7 @@
     <MESSAGE value="Release development build V1.1.0-dev" />
     <MESSAGE value="Fix a bug" />
     <MESSAGE value="Oups... xD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Oups... xD" />
+    <MESSAGE value="poggit fix, remove a PHP7.4 code" />
+    <option name="LAST_COMMIT_MESSAGE" value="poggit fix, remove a PHP7.4 code" />
   </component>
 </project>
