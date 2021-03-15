@@ -34,7 +34,7 @@ class DelspawnCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn"]);
+        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn", "delthespawn"]);
     }
 
     /**

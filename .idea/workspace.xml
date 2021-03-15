@@ -22,20 +22,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="poggit fix2">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="poggit fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/DelhomeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/DelhomeCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/DelhubCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/DelhubCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/DelspawnCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/DelspawnCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/HomeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/HomeCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/HubCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/HubCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/RemovealiasCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/RemovealiasCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SetaliasCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SetaliasCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SethomeCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SethomeCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SethubCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SethubCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SetspawnCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SetspawnCommand.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SpawnCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/Commands/SpawnCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +140,9 @@
       <workItem from="1615670844665" duration="365000" />
       <workItem from="1615721560148" duration="9080000" />
       <workItem from="1615744658137" duration="82000" />
-      <workItem from="1615826819169" duration="2322000" />
+      <workItem from="1615826819169" duration="2431000" />
+      <workItem from="1615830283776" duration="753000" />
+      <workItem from="1615832945343" duration="293000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -400,7 +396,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615827793745</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="poggit fixes">
+      <created>1615829153291</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1615829153291</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -432,7 +435,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <confirmMoveToFailedCommit value="2" />
-    <MESSAGE value="Bug fixes, add API funtions, Code cleanups, License update" />
     <MESSAGE value="add Commmand Aliases" />
     <MESSAGE value="add Waterdog Server transfer Support, add API functions" />
     <MESSAGE value="API Bugfix --&gt; setHub(...) Bug Fixed" />
@@ -457,6 +459,7 @@
     <MESSAGE value="Oups... xD" />
     <MESSAGE value="poggit fix, remove a PHP7.4 code" />
     <MESSAGE value="poggit fix2" />
-    <option name="LAST_COMMIT_MESSAGE" value="poggit fix2" />
+    <MESSAGE value="poggit fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="poggit fixes" />
   </component>
 </project>

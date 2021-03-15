@@ -34,7 +34,7 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("spawn", "Teleport you to the spawn of this world!", $usageMessage, $aliases);
+        parent::__construct("spawn", "Teleport you to the spawn of this world!", $usageMessage, ["spawntp"]);
     }
 
     /**

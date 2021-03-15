@@ -34,7 +34,7 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("delhub", "Delete the hub/lobby of this server!", $usageMessage, ["dellobby", "rmhub", "rmlobby"]);
+        parent::__construct("delhub", "Delete the hub/lobby of this server!", $usageMessage, ["dellobby", "rmhub", "rmlobby", "delthehub"]);
     }
 
     /**

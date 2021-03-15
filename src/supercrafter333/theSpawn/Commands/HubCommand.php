@@ -34,7 +34,7 @@ class HubCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("hub", "Teleport you to the hub/lobby of this server!", $usageMessage, ["lobby"]);
+        parent::__construct("hub", "Teleport you to the hub/lobby of this server!", $usageMessage, ["lobby", "hubtp", "lobbytp"]);
     }
 
     /**

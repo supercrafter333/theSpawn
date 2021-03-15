@@ -35,7 +35,7 @@ class SetspawnCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("setspawn", "Set the spawn of this world!", $usageMessage, $aliases);
+        parent::__construct("setspawn", "Set the spawn of this world!", $usageMessage, ["setthespawn"]);
     }
 
     /**

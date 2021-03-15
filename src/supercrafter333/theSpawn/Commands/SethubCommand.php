@@ -34,7 +34,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("sethub", "Set the lobby of this server!", $usageMessage, ["setlobby"]);
+        parent::__construct("sethub", "Set the lobby of this server!", $usageMessage, ["setlobby", "setthehub", "setthelobby"]);
     }
 
     /**
