@@ -92,7 +92,6 @@ class theSpawn extends PluginBase implements Listener
             new DelhubCommand("delhub")
         ]);
         if ($this->useAliases() == true) {
-            $this->getLogger()->info("Aliases are enabled! Load alias commands...");
             $cmdMap->registerAll("theSpawn",
             [
                 new SetaliasCommand("setalias"),
@@ -101,7 +100,6 @@ class theSpawn extends PluginBase implements Listener
             $this->reactivateAliases();
         }
         if ($this->useHomes() == true) {
-            $this->getLogger()->info("Homes are enabled! Load home commands...");
             $cmdMap->registerAll("theSpawn",
             [
                 new SethomeCommand("sethome"),

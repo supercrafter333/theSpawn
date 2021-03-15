@@ -16,7 +16,7 @@ abstract class AliasMap extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private theSpawn $plugin;
+    private $plugin;
 
     /**
      * AliasMap constructor.

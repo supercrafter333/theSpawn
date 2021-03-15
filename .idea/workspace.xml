@@ -22,9 +22,10 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Fix a bug">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="Oups... xD">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.poggit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.poggit.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/AliasMap.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +45,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Dev" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -134,6 +135,8 @@
       <workItem from="1615657021788" duration="8172000" />
       <workItem from="1615670844665" duration="365000" />
       <workItem from="1615721560148" duration="9080000" />
+      <workItem from="1615744658137" duration="82000" />
+      <workItem from="1615826819169" duration="446000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -366,7 +369,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615729136172</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Oups... xD">
+      <created>1615732127911</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1615732127911</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -419,10 +429,10 @@
     <MESSAGE value="Ups... xD" />
     <MESSAGE value="Add support for MCPE 1.16.210&#10;- add protocol 428 for 1.16.210 update&#10;- version bump" />
     <MESSAGE value="add changelogs" />
-    <MESSAGE value="Oups... xD" />
     <MESSAGE value="Release V1.0.0" />
     <MESSAGE value="Release development build V1.1.0-dev" />
     <MESSAGE value="Fix a bug" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fix a bug" />
+    <MESSAGE value="Oups... xD" />
+    <option name="LAST_COMMIT_MESSAGE" value="Oups... xD" />
   </component>
 </project>
