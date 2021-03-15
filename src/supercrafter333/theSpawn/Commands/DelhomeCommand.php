@@ -4,8 +4,10 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -13,8 +15,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class DelhomeCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class DelhomeCommand extends Command
+class DelhomeCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * SethomeCommand constructor.
@@ -25,6 +32,7 @@ class DelhomeCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
+        $this->plugin = theSpawn::getInstance();
         parent::__construct("delhome", "Delete a home!", "§4Use: §r/delhome <name>", ["deletehome", "rmhome"]);
     }
 
@@ -58,5 +66,13 @@ class DelhomeCommand extends Command
             $s->getLevel()->addSound(new GhastShootSound($s));
             return true;
         }
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }

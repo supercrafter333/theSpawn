@@ -4,8 +4,10 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -13,8 +15,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SethomeCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SethomeCommand extends Command
+class SethomeCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * DelhomeCommand constructor.
@@ -25,6 +32,7 @@ class SethomeCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
+        $this->plugin = theSpawn::getInstance();
         parent::__construct("sethome", "Set a new home!", "§4Use: §r/sethome <name>", ["addhome"]);
     }
 
@@ -62,5 +70,13 @@ class SethomeCommand extends Command
             $s->getLevel()->addSound(new DoorBumpSound($s));
             return true;
         }
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }

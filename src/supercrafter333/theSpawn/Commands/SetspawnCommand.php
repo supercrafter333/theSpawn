@@ -4,9 +4,11 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\level\sound\PopSound;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -15,8 +17,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SetspawnCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SetspawnCommand extends Command
+class SetspawnCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * SetspawnCommand constructor.
@@ -27,6 +34,7 @@ class SetspawnCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
+        $this->plugin = theSpawn::getInstance();
         parent::__construct("setspawn", "Set the spawn of this world!", $usageMessage, $aliases);
     }
 
@@ -72,5 +80,13 @@ class SetspawnCommand extends Command
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;
         }
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }

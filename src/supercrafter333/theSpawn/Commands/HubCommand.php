@@ -4,8 +4,10 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\PopSound;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -14,8 +16,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class HubCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class HubCommand extends Command
+class HubCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * HubCommand constructor.
@@ -26,6 +33,7 @@ class HubCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
+        $this->plugin = theSpawn::getInstance();
         parent::__construct("hub", "Teleport you to the hub/lobby of this server!", $usageMessage, ["lobby"]);
     }
 
@@ -84,5 +92,13 @@ class HubCommand extends Command
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;
         }
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }
