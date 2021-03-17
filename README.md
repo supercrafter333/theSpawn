@@ -17,6 +17,9 @@ This plugin is not out of date and will get better developed from time to time. 
 - waterdog teleport hub server support
 - Homes [default: activ]
     
+### Dowloads
+Poggit: [Here](https://poggit.pmmp.io/p/theSpawn)
+
 ### TODOs
 - [X] Homes
 - [X] Command files
