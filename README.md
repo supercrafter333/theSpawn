@@ -1,4 +1,4 @@
-# theSpawn - V1.1.0
+# theSpawn - V1.1.0    [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
