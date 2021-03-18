@@ -47,11 +47,13 @@ only-In-Game: "Only In-Game!"
 false-config-setting: "§4FATAL ERROR --> §cFalse setting in config, 'use-hub-server' <true|false> but their don't is true or false!"
 no-spawn-found-kick: "§4No spawn found for your world! You was kicked for debug!"
 no-homes-set: "§cYou do not have set any homes!"
+#uses: {world}
+no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 
 #don't change this
-version: "1.1.0"
+version: "1.1.1-dev"
 
 
 ############################

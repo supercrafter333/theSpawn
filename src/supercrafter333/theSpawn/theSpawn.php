@@ -57,7 +57,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.1.0";
+    public $version = "1.1.1-dev";
 
     /**
      *
@@ -458,6 +458,22 @@ class theSpawn extends PluginBase implements Listener
     {
         foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
             $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, str_replace(["{alias}"], [$cmd], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
+        }
+    }
+
+    /**
+     * @param string $levelName
+     * @return Level
+     */
+    public function levelCheck(string $levelName): Level
+    {
+        if ($this->getServer()->isLevelLoaded($levelName)) {
+            $level = $this->getServer()->getLevelByName($levelName);
+            return $level;
+        } else {
+            $this->getServer()->loadLevel($levelName);
+            $level = $this->getServer()->getLevelByName($levelName);
+            return $level;
         }
     }
 
