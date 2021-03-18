@@ -59,14 +59,14 @@ class Aliases extends AliasMap
                         return true;
                     }
                 } else {
-                    $s->sendMessage($prefix . "§4FEHLER --> §cIrgendetwas ist schiefgelaufen!");
+                    $s->sendMessage($prefix . MsgMgr::getMsg("something-went-wrong"));
                 }
             } else {
-                $s->sendMessage($prefix . "§cAliases sind auf diesem Server deaktiviert! Sie können in der config.yml aktiviert werden!");
+                $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
                 return true;
             }
         } else {
-            $s->sendMessage("Nur In-Game!");
+            $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;
         }
         return false;
