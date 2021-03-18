@@ -4,8 +4,10 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\DoorBumpSound;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -13,8 +15,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SetaliasCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SetaliasCommand extends Command
+class SetaliasCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * SetaliasCommand constructor.
@@ -25,6 +32,7 @@ class SetaliasCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
+        $this->plugin = theSpawn::getInstance();
         parent::__construct("setalias", "Register a new alias!", "§4Use: §r/setalias <alias> <worldname>", ["addalias"]);
     }
 
@@ -69,5 +77,13 @@ class SetaliasCommand extends Command
             return true;
         }
         return true;
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }

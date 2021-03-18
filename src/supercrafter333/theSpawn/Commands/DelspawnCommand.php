@@ -4,8 +4,10 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -14,8 +16,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class DelspawnCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class DelspawnCommand extends Command
+class DelspawnCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * DelspawnCommand constructor.
@@ -26,7 +33,8 @@ class DelspawnCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn"]);
+        $this->plugin = theSpawn::getInstance();
+        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn", "delthespawn"]);
     }
 
     /**
@@ -69,5 +77,13 @@ class DelspawnCommand extends Command
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;
         }
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }

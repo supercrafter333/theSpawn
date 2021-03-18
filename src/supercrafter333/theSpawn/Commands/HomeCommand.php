@@ -4,9 +4,11 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
+use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\PopSound;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -14,8 +16,13 @@ use supercrafter333\theSpawn\theSpawn;
  * Class HomeCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class HomeCommand extends Command
+class HomeCommand extends Command implements PluginIdentifiableCommand
 {
+
+    /**
+     * @var theSpawn
+     */
+    private $plugin;
 
     /**
      * HomeCommand constructor.
@@ -26,6 +33,7 @@ class HomeCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
+        $this->plugin = theSpawn::getInstance();
         parent::__construct("home", "Teleport you to a home or see your homes!", "§4Use: §r/home [name]", $aliases);
     }
 
@@ -70,5 +78,13 @@ class HomeCommand extends Command
         $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-teleport")));
         $s->getLevel()->addSound(new PopSound($s));
         return true;
+    }
+
+    /**
+     * @return Plugin
+     */
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }
