@@ -22,11 +22,8 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="merge master into dev">
+    <list default="true" id="b605ad25-df2e-4b50-bc0d-b2b1fcafe595" name="Default Changelist" comment="add warps (not working yet)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/messages.yml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/messages.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/supercrafter333/theSpawn/theSpawn.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +134,7 @@
       <workItem from="1615657021788" duration="8172000" />
       <workItem from="1615670844665" duration="365000" />
       <workItem from="1615721560148" duration="9080000" />
-      <workItem from="1616445458376" duration="3206000" />
+      <workItem from="1616445458376" duration="3360000" />
     </task>
     <task id="LOCAL-00001" summary="Bug fixes">
       <created>1611922854448</created>
@@ -391,7 +388,21 @@
       <option name="project" value="LOCAL" />
       <updated>1616096089911</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="add warps (not working yet)">
+      <created>1616448727563</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1616448727563</updated>
+    </task>
+    <task id="LOCAL-00038" summary="add warps (not working yet)">
+      <created>1616448773809</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1616448773809</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -423,7 +434,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <confirmMoveToFailedCommit value="2" />
-    <MESSAGE value="add Commmand Aliases" />
     <MESSAGE value="add Waterdog Server transfer Support, add API functions" />
     <MESSAGE value="API Bugfix --&gt; setHub(...) Bug Fixed" />
     <MESSAGE value="Add Aliases [Alpha]" />
@@ -448,6 +458,7 @@
     <MESSAGE value="changes for V1.1.1-dev" />
     <MESSAGE value="add missing messages on Aliases.php" />
     <MESSAGE value="merge master into dev" />
-    <option name="LAST_COMMIT_MESSAGE" value="merge master into dev" />
+    <MESSAGE value="add warps (not working yet)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add warps (not working yet)" />
   </component>
 </project>
