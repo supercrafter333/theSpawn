@@ -640,4 +640,94 @@ class theSpawn extends PluginBase implements Listener
         $pk->eventData = Binary::writeShort(strlen("Connect")) . "Connect" . Binary::writeShort(strlen($server)) . $server;
         $player->sendDataPacket($pk);
     }
+
+    /**
+     * @return Config
+     */
+    public function getWarpCfg(): Config
+    {
+        return new Config($this->getDataFolder() . "warps.yml", Config::YAML);
+    }
+
+    /**
+     * @param string $warpName
+     * @return bool
+     */
+    public function existsWarp(string $warpName): bool
+    {
+        if ($this->getWarpCfg()->exists($warpName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param $x
+     * @param $y
+     * @param $z
+     * @param Level $level
+     * @param string $warpName
+     */
+    public function addWarp($x, $y, $z, Level $level, string $warpName)
+    {
+        $warp = $this->getWarpCfg();
+        if ($this->existsWarp($warpName) == true) {
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
+            $warp->set($warpName, $setThis);
+            $warp->save();
+        }
+    }
+
+    /**
+     * @param string $warpName
+     */
+    public function removeWarp(string $warpName)
+    {
+        $warp = $this->getWarpCfg();
+        if ($this->existsWarp($warpName) == true) {
+            $warp->remove($warpName);
+            $warp->save();
+        }
+    }
+
+    /**
+     * @param string $warpName
+     * @return false|Position
+     */
+    public function getWarpPosition(string $warpName)
+    {
+        $warpCfg = $this->getWarpCfg();
+        if ($this->existsWarp($warpName) == false) {
+            return false;
+        }
+        $warp = $warpCfg->get($warpName);
+        $x = $warp["X"];
+        $y = $warp["Y"];
+        $z = $warp["Z"];
+        $levelName = $warp["level"];
+        if (!$this->getServer()->isLevelGenerated($levelName)) {
+            return false;
+        }
+        if ($this->getServer()->isLevelLoaded($levelName)) {
+            $level = $this->getServer()->getLevelByName($levelName);
+            return new Position($x, $y, $z, $level);
+        } else {
+            $this->getServer()->loadLevel($levelName);
+            $level = $this->getServer()->getLevelByName($levelName);
+            return new Position($x, $y, $z, $level);
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function useWarps(): bool
+    {
+        if ($this->getCfg()->get("use-warps") == "true" || $this->getCfg()->get("use-warps") == "on") {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
