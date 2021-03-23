@@ -31,6 +31,14 @@ home-already-exists: "§cYour home §b{home}§c already exists!"
 #uses: {homelist}
 homelist: "§eYour homes: §7{homelist}"
 #
+#warp messages
+#uses: {warp} {position} {world}
+warp-set: "§aYou've set the warp §b{warp}§a at §7{position}§a in world §7{world}§a!"
+#uses: {warp} {position} {world}
+warp-teleport: "§aYou was teleported to warp §b{warp}§a in world §7{world}§a!"
+#uses: {warpname}
+warp-not-exists: "§cThe warp called §7{warpname}§c does not exists!"
+#
 #errors
 #uses: none
 no-spawn-set: "§4ERROR --> §cNo spawn was set for this world!"

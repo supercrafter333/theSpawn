@@ -24,6 +24,7 @@ use supercrafter333\theSpawn\Commands\SethubCommand;
 use supercrafter333\theSpawn\Commands\SetspawnCommand;
 use supercrafter333\theSpawn\Commands\SpawnCommand;
 use supercrafter333\theSpawn\Others\HomeInfo;
+use supercrafter333\theSpawn\Others\WarpInfo;
 
 /**
  * Class theSpawn
@@ -729,5 +730,14 @@ class theSpawn extends PluginBase implements Listener
         } else {
             return false;
         }
+    }
+
+    /**
+     * @param string $warpName
+     * @return WarpInfo
+     */
+    public function getWarpInfo(string $warpName)
+    {
+        return WarpInfo::getWarpInfo($warpName);
     }
 }

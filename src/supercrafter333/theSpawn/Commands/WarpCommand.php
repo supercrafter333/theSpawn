@@ -6,10 +6,11 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\Player;
+use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
-class SetwarpCommand extends Command implements PluginIdentifiableCommand
+class WarpCommand extends Command implements PluginIdentifiableCommand
 {
 
     private $plugin;
@@ -17,7 +18,7 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname>", $aliases);
+        parent::__construct("warp", "Teleport you to a warp!", "§4Use: §r/warp <warpname>", $aliases);
     }
 
     public function execute(CommandSender $s, string $commandLabel, array $args): void
@@ -32,26 +33,32 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage($this->usageMessage);
             return;
         }
-        if (!$s->hasPermission("theSpawn.setwarp.cmd")) {
+        if (!$s->hasPermission("theSpawn.warp.cmd")) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return;
-        }
-        if (!is_string($args[0])) {
-            $s->sendMessage($this->usageMessage);
             return;
         }
         if ($pl->useWarps() == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("warps-deactivated"));
             return;
         }
-        if ($pl->existsWarp($args[0]) == false) {
-            $pl->addWarp($s->getX(), $s->getY(), $s->getZ(), $s->getLevel(), $args[0]);
-            $posMsg = $s->getX() . $s->getY() . $s->getZ();
-            $s->sendMessage($prefix . str_replace(["{warp}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getLevel()->getName()], MsgMgr::getMsg("warp-set")))));
-            return;
-        } else {
-            $s->sendMessage($prefix . str_replace(["{warp}"], [$args[0]], MsgMgr::getMsg("warp-not-found")));
+        if (!$pl->existsWarp($args[0])) {
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
+        $warpPos = $pl->getWarpPosition($args[0]);
+        if ($warpPos == false) {
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            return;
+        }
+        $warpInfo = $pl->getWarpInfo($args[0]);
+        $posMsg = $warpInfo->getX() . $warpInfo->getY() . $warpInfo->getZ();
+        $worldName = $warpInfo->getLevelName();
+        $s->teleport($warpPos);
+        $s->sendMessage($prefix . str_replace(["{warp}"], [$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
+    }
+
+    public function getPlugin(): Plugin
+    {
+        return $this->plugin;
     }
 }

@@ -17,6 +17,8 @@ permissions:
     default: true
   theSpawn.home.cmd:
     default: true
+  theSpawn.warp.cmd:
+    default: true
   theSpawn.bypass:
     default: op
     children:
@@ -31,4 +33,6 @@ permissions:
       theSpawn.setalias.cmd:
         default: op
       theSpawn.removealias.cmd:
+        default: op
+      theSpawn.setwarp.cmd:
         default: op
