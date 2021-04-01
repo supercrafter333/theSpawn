@@ -659,6 +659,9 @@ class theSpawn extends PluginBase implements Listener
         $player->sendDataPacket($pk);
     }
 
+    /**
+     * @return Config
+     */
     public function getWarpCfg(): Config
     {
         $cfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
