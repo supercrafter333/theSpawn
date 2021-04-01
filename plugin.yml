@@ -36,3 +36,5 @@ permissions:
         default: op
       theSpawn.setwarp.cmd:
         default: op
+      theSpawn.delwarp.cmd:
+        default: op

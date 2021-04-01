@@ -5,17 +5,17 @@ namespace supercrafter333\theSpawn\Commands;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\network\mcpe\protocol\LevelEventPacket;
+use pocketmine\level\sound\GhastShootSound;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
 /**
- * Class WarpCommand
+ * Class DelwarpCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class WarpCommand extends Command implements PluginIdentifiableCommand
+class DelwarpCommand extends Command implements PluginIdentifiableCommand
 {
 
     /**
@@ -24,16 +24,17 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
     private $plugin;
 
     /**
-     * WarpCommand constructor.
+     * DelwarpCommand constructor.
      * @param string $name
      * @param string $description
      * @param string|null $usageMessage
      * @param array $aliases
      */
-    public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
+    function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("warp", "Teleport you to a warp!", "§4Use: §r/warp [name]", $aliases);
+        $this->setPermission("theSpawn.delwarp.cmd");
+        parent::__construct("delwarp", "Delete a warp!", "§4Use:§r /delwarp <warpname>", ["rmwarp", "deletewarp", "removewarp"]);
     }
 
     /**
@@ -49,17 +50,7 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return;
         }
-        if (count($args) < 1) {
-            if ($pl->listWarps() !== null) {
-                $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
-                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, (int)mt_rand());
-                return;
-            } else {
-                $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
-                return;
-            }
-        }
-        if (!$s->hasPermission("theSpawn.warp.cmd")) {
+        if (!$s->hasPermission($this->getPermission())) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
             return;
         }
@@ -67,20 +58,17 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage($prefix . MsgMgr::getMsg("warps-deactivated"));
             return;
         }
+        if (empty($args[0])) {
+            $s->sendMessage($prefix . $this->getUsage());
+            return;
+        }
         if (!$pl->existsWarp($args[0])) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
-        $warpPos = $pl->getWarpPosition($args[0]);
-        if ($warpPos == false) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
-            return;
-        }
-        $warpInfo = $pl->getWarpInfo($args[0]);
-        $posMsg = $warpInfo->getX() . $warpInfo->getY() . $warpInfo->getZ();
-        $worldName = $warpInfo->getLevelName();
-        $s->teleport($warpPos);
-        $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
+        $pl->removeWarp($args[0]);
+        $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-deleted")));
+        $s->getLevel()->addSound(new GhastShootSound($s));
     }
 
     /**

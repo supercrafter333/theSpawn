@@ -20,7 +20,7 @@ This plugin is not out of date and will get better developed from time to time. 
 ### TODOs
 - [X] Homes
 - [X] Command files
-- [ ] Warps
+- [X] Warps
 
 ### Bugs - none
 You've found a Bug?

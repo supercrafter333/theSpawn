@@ -56,11 +56,7 @@ class WarpInfo
      */
     public function exists(): bool
     {
-        if ($this->getWarpCfg()->exists($this->warpName)) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->getWarpCfg()->exists($this->warpName);
     }
 
     /**

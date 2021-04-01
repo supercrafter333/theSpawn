@@ -15,6 +15,7 @@ use pocketmine\utils\Config;
 use supercrafter333\theSpawn\Commands\DelhomeCommand;
 use supercrafter333\theSpawn\Commands\DelhubCommand;
 use supercrafter333\theSpawn\Commands\DelspawnCommand;
+use supercrafter333\theSpawn\Commands\DelwarpCommand;
 use supercrafter333\theSpawn\Commands\HomeCommand;
 use supercrafter333\theSpawn\Commands\HubCommand;
 use supercrafter333\theSpawn\Commands\RemovealiasCommand;
@@ -22,7 +23,9 @@ use supercrafter333\theSpawn\Commands\SetaliasCommand;
 use supercrafter333\theSpawn\Commands\SethomeCommand;
 use supercrafter333\theSpawn\Commands\SethubCommand;
 use supercrafter333\theSpawn\Commands\SetspawnCommand;
+use supercrafter333\theSpawn\Commands\SetwarpCommand;
 use supercrafter333\theSpawn\Commands\SpawnCommand;
+use supercrafter333\theSpawn\Commands\WarpCommand;
 use supercrafter333\theSpawn\Others\HomeInfo;
 use supercrafter333\theSpawn\Others\WarpInfo;
 
@@ -56,6 +59,11 @@ class theSpawn extends PluginBase implements Listener
     public $aliasCfg;
 
     /**
+     * @var
+     */
+    public $warpCfg;
+
+    /**
      * @var string
      */
     public $version = "1.2.0-dev";
@@ -82,31 +90,40 @@ class theSpawn extends PluginBase implements Listener
         $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
         @mkdir($this->getDataFolder() . "homes");
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
+        $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
         $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $cmdMap->registerAll("theSpawn",
-        [
-            new SpawnCommand("spawn"),
-            new SetspawnCommand("setspawn"),
-            new DelspawnCommand("delspawn"),
-            new HubCommand("hub"),
-            new SethubCommand("sethub"),
-            new DelhubCommand("delhub")
-        ]);
+            [
+                new SpawnCommand("spawn"),
+                new SetspawnCommand("setspawn"),
+                new DelspawnCommand("delspawn"),
+                new HubCommand("hub"),
+                new SethubCommand("sethub"),
+                new DelhubCommand("delhub")
+            ]);
         if ($this->useAliases() == true) {
             $cmdMap->registerAll("theSpawn",
-            [
-                new SetaliasCommand("setalias"),
-                new RemovealiasCommand("removealias")
-            ]);
+                [
+                    new SetaliasCommand("setalias"),
+                    new RemovealiasCommand("removealias")
+                ]);
             $this->reactivateAliases();
         }
         if ($this->useHomes() == true) {
             $cmdMap->registerAll("theSpawn",
-            [
-                new SethomeCommand("sethome"),
-                new DelhomeCommand("delhome"),
-                new HomeCommand("home")
-            ]);
+                [
+                    new SethomeCommand("sethome"),
+                    new DelhomeCommand("delhome"),
+                    new HomeCommand("home")
+                ]);
+        }
+        if ($this->useWarps() == true) {
+            $cmdMap->registerAll("theSpawn",
+                [
+                    new SetwarpCommand("setwarp"),
+                    new DelwarpCommand("delwarp"),
+                    new WarpCommand("warp")
+                ]);
         }
     }
 
@@ -207,7 +224,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @return bool
      */
-    public function setHub($x, $y , $z , Level $level): bool
+    public function setHub($x, $y, $z, Level $level): bool
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
@@ -642,12 +659,10 @@ class theSpawn extends PluginBase implements Listener
         $player->sendDataPacket($pk);
     }
 
-    /**
-     * @return Config
-     */
     public function getWarpCfg(): Config
     {
-        return new Config($this->getDataFolder() . "warps.yml", Config::YAML);
+        $cfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
+        return $cfg;
     }
 
     /**
@@ -656,11 +671,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function existsWarp(string $warpName): bool
     {
-        if ($this->getWarpCfg()->exists($warpName)) {
-            return true;
-        } else {
-            return false;
-        }
+        return WarpInfo::getWarpInfo($warpName)->exists();
     }
 
     /**
@@ -670,14 +681,16 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @param string $warpName
      */
-    public function addWarp($x, $y, $z, Level $level, string $warpName)
+    public function addWarp($x, $y, $z, Level $level, string $warpName): bool
     {
+        //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
-        if ($this->existsWarp($warpName) == true) {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
-            $warp->set($warpName, $setThis);
-            $warp->save();
-        }
+        $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName];
+        $warp->set($warpName, $setThis);
+        $warp->save();
+        return true;
+        //}
+        //return false;
     }
 
     /**
@@ -739,5 +752,24 @@ class theSpawn extends PluginBase implements Listener
     public function getWarpInfo(string $warpName)
     {
         return WarpInfo::getWarpInfo($warpName);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function listWarps()
+    {
+        $warps = null;
+        if (file_exists($this->getDataFolder() . "warps.yml")) {
+            $warp = $this->getWarpCfg();
+            $all = $warp->getAll();
+            $getRight = $all;
+            foreach ($getRight as $warpx => $warpz) {
+                $right = [$warpz["warpName"] . ", "];
+                $warps .= implode(", ", $right);
+            }
+            return $warps;
+        }
+        return $warps;
     }
 }
