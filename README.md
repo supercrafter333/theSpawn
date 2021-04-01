@@ -16,6 +16,7 @@ This plugin is not out of date and will get better developed from time to time. 
   - Config
 - waterdog teleport hub server support
 - Homes [default: activ]
+- Warps [default: activ]
     
 ### TODOs
 - [X] Homes
