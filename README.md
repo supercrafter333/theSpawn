@@ -1,4 +1,4 @@
-# theSpawn - V1.2.0-dev
+# theSpawn - V1.2.0
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
