@@ -187,8 +187,15 @@ class theSpawn extends PluginBase implements Listener
         if ($spawn->exists($levelname)) {
             $event->setRespawnPosition($this->getSpawn($level));
             $s->getLevel()->addSound(new PopSound($s));
+        } elseif ($this->getHub() !== false) {
+            $event->setRespawnPosition($this->getHub());
+            $s->getLevel()->addSound(new PopSound($s));
         } else {
-            $event->setRespawnPosition($level->getSafeSpawn());
+            if ($level->getSafeSpawn() === null) {
+                $event->setRespawnPosition($this->getServer()->getDefaultLevel()->getSafeSpawn());
+            } else {
+                $event->setRespawnPosition($level->getSafeSpawn());
+            }
             $s->getLevel()->addSound(new PopSound($s));
         }
         /*if ($this->getSpawn($levelname)) {
