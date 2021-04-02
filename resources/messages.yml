@@ -1,4 +1,6 @@
 #here you can select the messages of theSpawn
+
+
 #setup and tp messages
 #uses: {world}
 spawn-tp: "§aYou're successfully teleported to the spawn of this world! §7[§b{world}§7]"
@@ -7,12 +9,12 @@ spawn-set: "§aYou've successfully §7set §athe spawn for this world! §7[§b{w
 spawn-changed: "§aYou've successfully §7changed §athe spawn for this world! §7[§b{world}§7]"
 hub-set: "§aYou've successfully §7set§a the hub to world §b{world}§a!"
 hub-changed: "§aYou've successfully §7changed§a the hub to world §b{world}§a!"
-#
+
 #remove messages
 #uses: none
 spawn-removed: "§aYou've successfully removed the spawn of this world!"
 hub-removed: "§aYou've successfully removed the hub spawn."
-#
+
 #alias messages
 #uses: {alias} {world}
 alias-teleport: "§aYou was teleported to the alias §7{alias}§a! §7§b{world}§7]"
@@ -20,7 +22,7 @@ alias-set: "§aYou've successfully set the alias §b{alias}§a for world §b{wor
 alias-command-description: "§r§aAlias for world §b{world}§a!"
 #uses: {alias}
 alias-removed: "§aYou've successfully removed the alias §b{alias}§a!"
-#
+
 #home messages
 #uses: {home}
 home-teleport: "§aYou was successfully teleported to your home §b{home}§a!"
@@ -30,7 +32,21 @@ home-deleted: "§aYou've successfully deleted your home §b{home}§a!"
 home-already-exists: "§cYour home §b{home}§c already exists!"
 #uses: {homelist}
 homelist: "§eYour homes: §7{homelist}"
-#
+
+#warp messages
+#uses: {warpname} {position} {world}
+warp-set: "§aYou've set the warp §b{warpname}§a at §7{position}§a in world §7{world}§a!"
+#uses: {warpname} {position} {world}
+warp-teleport: "§aYou was teleported to warp §b{warpname}§a in world §7{world}§a!"
+#uses: {warpname}
+warp-deleted: "§aYou've successfully deleted the warp §7{warpname}§a!"
+warp-not-exists: "§cThe warp called §7{warpname}§c does not exists!"
+warp-already-set: "§cThe selected warp §7[§b{warpname}§7]§c already exists on this server! Please delete the warp and then try it again!"
+#uses: {warplist}
+warplist: "§eList of warps: §7{warplist}"
+#uses: none
+no-warps-set: "§cThis server doesn't have any warps yet!"
+
 #errors
 #uses: none
 no-spawn-set: "§4ERROR --> §cNo spawn was set for this world!"
@@ -43,15 +59,18 @@ world-not-found: "§cWorld was not found!"
 world-not-found-hub: "§cHub world not found!"
 no-spawn-set-in-this-world: "§cThere's no spawn set for this world!"
 aliases-deactivated: "§cAliases are deactivated on this server! Aliases can activate in the config.yml of theSpawn!"
+warps-deactivated: "§cWarps are deactivated on this server! Warps can activate in the config.yml of theSpawn!"
 only-In-Game: "Only In-Game!"
 false-config-setting: "§4FATAL ERROR --> §cFalse setting in config, 'use-hub-server' <true|false> but their don't is true or false!"
 no-spawn-found-kick: "§4No spawn found for your world! You was kicked for debug!"
 no-homes-set: "§cYou do not have set any homes!"
+#uses: {world}
+no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 
 #don't change this
-version: "1.1.0"
+version: "1.2.0"
 
 
 ############################

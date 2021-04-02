@@ -1,5 +1,5 @@
 name: theSpawn
-version: 1.1.0
+version: 1.2.0
 api: 3.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
@@ -17,6 +17,8 @@ permissions:
     default: true
   theSpawn.home.cmd:
     default: true
+  theSpawn.warp.cmd:
+    default: true
   theSpawn.bypass:
     default: op
     children:
@@ -31,4 +33,8 @@ permissions:
       theSpawn.setalias.cmd:
         default: op
       theSpawn.removealias.cmd:
+        default: op
+      theSpawn.setwarp.cmd:
+        default: op
+      theSpawn.delwarp.cmd:
         default: op

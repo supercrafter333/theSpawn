@@ -1,4 +1,4 @@
-# theSpawn - V1.1.0    [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# theSpawn - V1.2.0-dev
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -16,14 +16,12 @@ This plugin is not out of date and will get better developed from time to time. 
   - Config
 - waterdog teleport hub server support
 - Homes [default: activ]
+- Warps [default: activ]
     
-### Dowloads
-Poggit: [Here](https://poggit.pmmp.io/p/theSpawn)
-
 ### TODOs
 - [X] Homes
 - [X] Command files
-- [ ] Warps
+- [X] Warps
 
 ### Bugs - none
 You've found a Bug?

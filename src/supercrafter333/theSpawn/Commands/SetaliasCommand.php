@@ -67,6 +67,10 @@ class SetaliasCommand extends Command implements PluginIdentifiableCommand
                 $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
                 return true;
             }
+            if ($pl->getSpawn($pl->levelCheck($args[1])) == false) {
+                $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-for-world"));
+                return true;
+            }
             $pl->addAlias($args[0], $args[1]);
             $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
             $s->getLevel()->addSound(new DoorBumpSound($s));

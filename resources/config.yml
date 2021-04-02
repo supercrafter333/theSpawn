@@ -13,9 +13,12 @@ use-aliases: "true"
 #homes [true | false]
 use-homes: "true"
 
+#homes [true | false]
+use-warps: "true"
+
 
 #don't change this
-version: "1.1.0"
+version: "1.2.0"
 
 ############################
 ##########theSpawn##########
