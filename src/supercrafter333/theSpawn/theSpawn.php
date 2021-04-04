@@ -470,7 +470,7 @@ class theSpawn extends PluginBase implements Listener
         }
         $this->aliasCfg->set($alias, $levelName);
         $this->aliasCfg->save();
-        $this->getServer()->getCommandMap()->register($alias, new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$levelName], MsgMgr::getMsg("alias-command-description")))));
+        $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$levelName], MsgMgr::getMsg("alias-command-description")))));
         return true;
     }
 
