@@ -9,6 +9,7 @@ mcpe-protocols:
   - 419
   - 422
   - 428
+  - 431
 
 permissions:
   theSpawn.sethome.cmd:
