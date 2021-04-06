@@ -480,7 +480,7 @@ class theSpawn extends PluginBase implements Listener
     public function reactivateAliases()
     {
         foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
-            $this->getServer()->getCommandMap()->register($cmd, new Aliases($this, $cmd, str_replace(["{alias}"], [$cmd], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
+            $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $cmd, str_replace(["{alias}"], [$cmd], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
         }
     }
 
