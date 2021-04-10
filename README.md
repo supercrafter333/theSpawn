@@ -1,4 +1,4 @@
-# theSpawn - V1.2.2
+# theSpawn - V1.2.3
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -30,6 +30,24 @@ You've found a Bug?
 - Write your bug with all Informations that you have down
 - Send Issue
 - Wait, I where answer you
+
+### Commands
+|**Command**|**Description**|
+|-----------|---------------|
+|`/setspawn`|Set the spawn of a world|
+|`/delspawn`|Remove spawn of a world|
+|`/spawn`|Teleport you to spawn|
+|`/sethub`|Set the hub of the server|
+|`/delhub`|Remove the hub of the server|
+|`/hub`|Teleport you to hub|
+|`/setalias <alias> <world>`|Set an alias|
+|`/delalias <alias>`|Remove an alias|
+|`/sethome <home>`|Set a home|
+|`/delhome <home>`|Remove a home|
+|`/home <home>`|Teleport you to a home|
+|`/setwarp <warp>`|Set a warp|
+|`/delwarp <warp>`|Remove a warp|
+|`/warp <warp>`|Teleport you to a warp|
 
 ### License:
 This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
