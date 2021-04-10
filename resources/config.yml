@@ -13,7 +13,7 @@ use-aliases: "true"
 #homes [true | false]
 use-homes: "true"
 
-#homes [true | false]
+#warp [true | false]
 use-warps: "true"
 
 
