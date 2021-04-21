@@ -108,6 +108,14 @@ class MsgMgr
     }
 
     /**
+     * @return string
+     */
+    public static function getErrorMsg(): string
+    {
+        return self::getMsg("something-went-wrong");
+    }
+
+    /**
      * @return static
      */
     public static function getMe()
@@ -121,6 +129,14 @@ class MsgMgr
     public function getMsgsX(): Config
     {
         return new Config(theSpawn::getInstance()->getDataFolder() . "messages.yml", Config::YAML);
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorMgsX(): string
+    {
+        return $this->getMsgsX()->get("something-went-wrong");
     }
 
     /**

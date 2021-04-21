@@ -50,11 +50,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $pl->getConfig();
-        @mkdir($pl->getDataFolder());
-        $pl->saveResource("config.yml");
         $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.sethub.cmd")) {
@@ -62,9 +58,13 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
                 $y = $s->getY();
                 $z = $s->getZ();
                 $levelname = $s->getLevel()->getName();
-                $level = $pl->getServer()->getLevelByName($levelname);
+                $level = $s->getLevel();
                 if ($pl->getUseHubServer() == false) {
                     if (!$hub->exists("hub")) {
+                        if ($level === null) {
+                            $s->sendMessage(MsgMgr::getErrorMsg());
+                            return true;
+                        }
                         $pl->setHub($x, $y, $z, $level);
                         $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
                         $s->getLevel()->addSound(new DoorBumpSound($s));

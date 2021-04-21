@@ -66,7 +66,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.2.3";
+    public $version = "1.2.4";
 
     /**
      *
@@ -231,14 +231,13 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @return bool
      */
-    public function setHub($x, $y, $z, Level $level): bool
+    public function setHub($x, $y, $z, Level $level)
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
         $hub->set("hub", $hubcoords);
         $hub->save();
-        return true;
     }
 
     /**
