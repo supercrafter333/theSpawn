@@ -116,6 +116,14 @@ class MsgMgr
     }
 
     /**
+     * @return string
+     */
+    public static function getPrefix(): string
+    {
+        return self::getMsg("prefix");
+    }
+
+    /**
      * @return static
      */
     public static function getMe()

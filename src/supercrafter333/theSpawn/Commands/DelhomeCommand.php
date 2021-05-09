@@ -44,7 +44,7 @@ class DelhomeCommand extends Command implements PluginIdentifiableCommand
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
-        $prefix = theSpawn::PREFIX;
+        $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         if (!$s->hasPermission("theSpawn.delhome.cmd")) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());

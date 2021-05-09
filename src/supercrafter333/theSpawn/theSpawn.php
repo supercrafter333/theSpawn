@@ -44,7 +44,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      *
      */
-    public const PREFIX = "§f[§7the§eSpawn§f] §8»§r ";
+    public static $prefix;
     /**
      * @var
      */
@@ -66,7 +66,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.2.4";
+    public $version = "1.2.5";
 
     /**
      *
@@ -88,6 +88,7 @@ class theSpawn extends PluginBase implements Listener
         }
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
+        self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);

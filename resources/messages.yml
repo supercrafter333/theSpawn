@@ -1,6 +1,9 @@
 #here you can select the messages of theSpawn
 
 
+#prefix
+prefix: "§f[§7the§eSpawn§f] §8»§r "
+
 #setup and tp messages
 #uses: {world}
 spawn-tp: "§aYou're successfully teleported to the spawn of this world! §7[§b{world}§7]"
@@ -70,7 +73,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.2.4"
+version: "1.2.5"
 
 
 ############################

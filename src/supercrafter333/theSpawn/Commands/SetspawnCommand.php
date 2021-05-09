@@ -46,7 +46,7 @@ class SetspawnCommand extends Command implements PluginIdentifiableCommand
      */
     public function execute(CommandSender $s, string $commandLabel, array $args)
     {
-        $prefix = theSpawn::PREFIX;
+        $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);

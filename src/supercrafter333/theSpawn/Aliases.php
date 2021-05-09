@@ -54,7 +54,7 @@ class Aliases extends AliasMap
                         Server::getInstance()->loadLevel($lvl);
                         $level = Server::getInstance()->getLevelByName($lvl);
                         $s->teleport($pl->getSpawn($level));
-                        $s->sendMessage(theSpawn::PREFIX . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getName()], MsgMgr::getMsg("alias-teleport"))));
+                        $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getName()], MsgMgr::getMsg("alias-teleport"))));
                         $s->getLevel()->addSound(new PopSound($s));
                         return true;
                     }
