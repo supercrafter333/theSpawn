@@ -1,4 +1,4 @@
-# theSpawn - V1.2.4
+# theSpawn - V1.2.5
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
