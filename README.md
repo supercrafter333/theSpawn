@@ -25,6 +25,7 @@ This plugin is not out of date and will get better developed from time to time. 
 - [X] Homes
 - [X] Command files
 - [X] Warps
+- [X] Random-Hubs ([#12](https://github.com/supercrafter333/theSpawn/issues/12))
 
 ### Bugs - none
 You've found a Bug?
