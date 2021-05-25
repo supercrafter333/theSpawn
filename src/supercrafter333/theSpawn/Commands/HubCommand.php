@@ -58,20 +58,25 @@ class HubCommand extends Command implements PluginIdentifiableCommand
         #########################
         if ($s instanceof Player) {
             if ($pl->getUseHubServer() == false) {
-                if ($hub->exists("hub")) {
-                    $hublevel = $pl->getHubLevel();
-                    $hublevelxd = $pl->getServer()->getLevelByName($hublevel);
-                    if ($pl->getServer()->isLevelLoaded($hublevel) == true && !$hublevelxd == null) {
-                        $s->teleport($pl->getHub());
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevelxd->getName()], MsgMgr::getMsg("hub-tp")));
+                if ($pl->getUseRandomHubs()) {
+                    $hubPos = $pl->getRandomHub();
+                    if ($hubPos !== null) {
+                        $s->teleport($hubPos);
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getLevel()->getName()], MsgMgr::getMsg("hub-tp")));
                         $s->getLevel()->addSound(new PopSound($s));
-                    } elseif ($hublevelxd == null) {
+                    } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
-                    } elseif (!$pl->getServer()->isLevelLoaded($hublevel)) {
-                        $pl->getServer()->loadLevel($hublevel);
+                    }
+                    return true;
+                }
+                if ($hub->exists("hub")) {
+                    $hublevel = $pl->getHub()->getLevel();
+                    if ($hublevel !== null) {
                         $s->teleport($pl->getHub());
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevelxd->getName()], MsgMgr::getMsg("hub-tp")));
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getName()], MsgMgr::getMsg("hub-tp")));
                         $s->getLevel()->addSound(new PopSound($s));
+                    } else {
+                        $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }
                     return true;
                 } else {

@@ -1,6 +1,8 @@
-# theSpawn - V1.2.5
+# theSpawn - V1.3.0-DEV
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
+
+> **WARNING:** This is a development build! There can be bugs in development builds! Use at your own risk! Please report bugs if you discover any!
 
 This plugin is not out of date and will get better developed from time to time. If you need an MSpawns alternative, theSpawn is the alternativ :)
 
@@ -9,14 +11,15 @@ This plugin is not out of date and will get better developed from time to time. 
   - set/change/remove Spawns
   - set/change/remove Lobbyspawn
   - Teleport to spawn/hub
-  - Aliases [default: activ]
+  - Aliases [default: active]
   - use/dont' use hub server
   - API
   - Custom Messages
   - Config
 - waterdog teleport hub server support
-- Homes [default: activ]
-- Warps [default: activ]
+- Homes [default: active]
+- Warps [default: active]
+- Random-Hubs [default: deactive]
     
 ### TODOs
 - [X] Homes
@@ -37,8 +40,8 @@ You've found a Bug?
 |`/setspawn`|Set the spawn of a world|
 |`/delspawn`|Remove spawn of a world|
 |`/spawn`|Teleport you to spawn|
-|`/sethub`|Set the hub of the server|
-|`/delhub`|Remove the hub of the server|
+|`/sethub [randomHubs: number/int]`|Set the hub of the server|
+|`/delhub [randomHubs: number/int]`|Remove the hub of the server|
 |`/hub`|Teleport you to hub|
 |`/setalias <alias> <world>`|Set an alias|
 |`/delalias <alias>`|Remove an alias|

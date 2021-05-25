@@ -34,7 +34,8 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("sethub", "Set the lobby of this server!", $usageMessage, ["setlobby", "setthehub", "setthelobby"]);
+        $this->setPermission("theSpawn.sethub.cmd");
+        parent::__construct("sethub", "Set the lobby of this server!", "§4Usage: §r/sethub [randomHubs: number|int]", ["setlobby", "setthehub", "setthelobby"]);
     }
 
     /**
@@ -60,20 +61,40 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
                 $levelname = $s->getLevel()->getName();
                 $level = $s->getLevel();
                 if ($pl->getUseHubServer() == false) {
-                    if (!$hub->exists("hub")) {
-                        if ($level === null) {
-                            $s->sendMessage(MsgMgr::getErrorMsg());
+                    if ($level === null) {
+                        $s->sendMessage($prefix . MsgMgr::getErrorMsg());
+                        return true;
+                    }
+                    if (count($args) >= 1 && $pl->getUseRandomHubs()) {
+                        if (!is_numeric($args[0])) {
+                            $s->sendMessage($this->usageMessage);
                             return true;
                         }
-                        $pl->setHub($x, $y, $z, $level);
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
-                        $s->getLevel()->addSound(new DoorBumpSound($s));
-                        return true;
+                        if ($pl->checkSetRandomHub($args[0])) {
+                            $pl->setHub($x, $y, $z, $level, $args[0]);
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
+                            $s->getLevel()->addSound(new DoorBumpSound($s));
+                            return true;
+                        } else {
+                            $s->sendMessage($prefix . MsgMgr::getMsg("set-random-hub-before"));
+                            return true;
+                        }
                     } else {
-                        $pl->setHub($x, $y, $z, $level);
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
-                        $s->getLevel()->addSound(new DoorBumpSound($s));
-                        return true;
+                        if (!$hub->exists("hub")) {
+                            if ($level === null) {
+                                $s->sendMessage($prefix . MsgMgr::getErrorMsg());
+                                return true;
+                            }
+                            $pl->setHub($x, $y, $z, $level);
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
+                            $s->getLevel()->addSound(new DoorBumpSound($s));
+                            return true;
+                        } else {
+                            $pl->setHub($x, $y, $z, $level);
+                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
+                            $s->getLevel()->addSound(new DoorBumpSound($s));
+                            return true;
+                        }
                     }
                 } elseif ($pl->getUseHubServer() == true) {
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));

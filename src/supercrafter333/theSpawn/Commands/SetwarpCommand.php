@@ -33,6 +33,7 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
+        $this->setPermission("theSpawn.setwarp.cmd");
         parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname>", $aliases);
     }
 

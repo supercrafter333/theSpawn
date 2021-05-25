@@ -34,7 +34,8 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        parent::__construct("delhub", "Delete the hub/lobby of this server!", $usageMessage, ["dellobby", "rmhub", "rmlobby", "delthehub"]);
+        $this->setPermission("theSpawn.delhub.cmd");
+        parent::__construct("delhub", "Delete the hub/lobby of this server!", "/delhub [randdomHubs: number|int]", ["dellobby", "rmhub", "rmlobby", "delthehub"]);
     }
 
     /**
@@ -58,6 +59,20 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.delhub.cmd")) {
+                if ($pl->getUseRandomHubs()) {
+                    if (!count($args) >= 1) {
+                        $s->sendMessage($this->usageMessage);
+                        return true;
+                    }
+                    if (!$pl->checkSetRandomHub($args[0])) {
+                        $s->sendMessage($prefix . MsgMgr::getMsg("remove-random-hub-before"));
+                        return true;
+                    }
+                    $pl->removeHub($args[0]);
+                    $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
+                    $s->getLevel()->addSound(new GhastShootSound($s));
+                    return true;
+                }
                 if ($hub->exists("hub")) {
                     $pl->removeHub();
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));

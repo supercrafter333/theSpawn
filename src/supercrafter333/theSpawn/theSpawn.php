@@ -66,7 +66,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.2.5";
+    public $version = "1.3.0-DEV";
 
     /**
      *
@@ -226,28 +226,104 @@ class theSpawn extends PluginBase implements Listener
     }*/
 
     /**
+     * @return Config
+     */
+    public function getRandomHubList(): Config
+    {
+        return new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
+    }
+
+    /**
      * @param $x
      * @param $y
      * @param $z
      * @param Level $level
      * @return bool
      */
-    public function setHub($x, $y, $z, Level $level)
+    public function setHub($x, $y, $z, Level $level, int $count = null)
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
+        $randHub = new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
-        $hub->set("hub", $hubcoords);
-        $hub->save();
+        if ($count !== null && $this->getUseRandomHubs()) {
+            $setRandHub = $x . '|' . $y . '|' . $z . '|' . $level->getName();
+            $randHub->set($count, $setRandHub);
+            $randHub->save();
+        } else {
+            $hub->set("hub", $hubcoords);
+            $hub->save();
+        }
+    }
+
+    /**
+     * @param int|null $count
+     * @return Position|null
+     */
+    public function getRandomHub(int $count = null): ?Position
+    {
+        $randHubs = $this->getRandomHubList();
+        if (!$this->getUseRandomHubs()) return null;
+        if ($count === null) {
+            $matches = [];
+            if (!$randHubs->exists(1)) return null;
+            foreach ($randHubs->getAll() as $all) {
+                $matches[] = $all;
+            }
+            $matchCount = count($matches);
+            return $this->getRandomHub(mt_rand(1, $matchCount));
+        } else {
+            $i = explode('|', $randHubs->get($count));
+            $levelName = $i[3];
+            if ($this->getHubLevel($levelName) instanceof Level) {
+                return new Position($i[0], $i[1], $i[2], $this->levelCheck($levelName));
+            } else {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return bool
+     */
+    public function checkSetRandomHub(int $count): bool
+    {
+        $randHubs = $this->getRandomHubList();
+        if ($randHubs->exists(($count-1)) || $count == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param int $count
+     * @return bool
+     */
+    public function checkRemoveRandomHub(int $count): bool
+    {
+        $randHubs = $this->getRandomHubList();
+        if (!$randHubs->exists(($count+1)) || $count == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * @return false|Position
      */
-    public function getHub()
+    public function getHub(int $count = null)
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
+        if ($count !== null && $this->getUseRandomHubs()) {
+            return $this->getRandomHub($count) === null ? false : $this->getRandomHub($count);
+        }
+        if ($this->getUseRandomHubs()) {
+            return $this->getRandomHub() === null ? false : $this->getRandomHub();
+        }
         if ($hub->exists("hub")) {
             $X = $hub->get("hub")["X"];
             $Y = $hub->get("hub")["Y"];
@@ -301,24 +377,32 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @return false|mixed
      */
-    public function getHubLevel(): string
+    public function getHubLevel(string $levelName): ?Level
     {
-        $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
-        if ($hub->exists("hub")) {
-            $levelname = $hub->get("hub")["level"];
-            return $levelname;
-        } else {
-            return false;
+        if (!$this->getServer()->isLevelGenerated($levelName)) return null;
+        if (!$this->getServer()->isLevelLoaded($levelName)) {
+            $this->getServer()->loadLevel($levelName);
+            return $this->getServer()->getLevelByName($levelName);
         }
+        return $this->getServer()->getLevelByName($levelName);
     }
 
     /**
+     * @param int|null $count
      * @return bool
      */
-    public function removeHub(): bool
+    public function removeHub(int $count = null): bool
     {
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
-        if ($hub->exists("hub")) {
+        $randHubs = $this->getRandomHubList();
+        if ($count !== null && $this->getUseRandomHubs()) {
+            if ($randHubs->exists($count)) {
+                $hub->remove("hub");
+                return $hub->save();
+            } else {
+                return false;
+            }
+        } elseif ($hub->exists("hub")) {
             $hub->remove("hub");
             return $hub->save();
         } else {
@@ -339,6 +423,25 @@ class theSpawn extends PluginBase implements Listener
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function getUseRandomHubs(): bool
+    {
+        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        if ($config->get("use-hub-server") === "true" && $config->get("use-random-hubs") === "true") {
+            $this->getLogger()->alert("INFORMATION: Plase disable 'use-hub-server' in the config.yml to use random hubs!");
+            return false;
+        } elseif ($config->get("use-hub-server") === "true") {
+            return false;
+        } elseif (!$config->get("use-random-hubs") === "true") {
+            return false;
+        } elseif ($config->get("use-random-hubs") === "true") {
+            return true;
+        }
+        return false;
     }
 
     /**
