@@ -1,8 +1,6 @@
-# theSpawn - V1.3.0-DEV
+# theSpawn - V1.3.0
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
-
-> **WARNING:** This is a development build! There can be bugs in development builds! Use at your own risk! Please report bugs if you discover any!
 
 This plugin is not out of date and will get better developed from time to time. If you need an MSpawns alternative, theSpawn is the alternativ :)
 

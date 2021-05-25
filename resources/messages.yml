@@ -75,7 +75,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.3.0-DEV"
+version: "1.3.0"
 
 
 ############################

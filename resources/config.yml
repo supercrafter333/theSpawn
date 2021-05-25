@@ -22,7 +22,7 @@ use-warps: "true"
 
 
 #don't change this
-version: "1.3.0-DEV"
+version: "1.3.0"
 
 ############################
 ##########theSpawn##########
