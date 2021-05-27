@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
@@ -66,7 +67,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.3.0";
+    public $version = "1.3.1-DEV";
 
     /**
      *
@@ -171,8 +172,18 @@ class theSpawn extends PluginBase implements Listener
      */
     public function updateCfg()
     {
-        unlink($this->getDataFolder() . "config.yml");
+        rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "configOld.yml");
         $this->saveResource("config.yml");
+    }
+
+    /**
+     * @param PlayerLoginEvent $event
+     */
+    public function onPlayerLogin(PlayerLoginEvent $event)
+    {
+        if ($this->getCfg()->get("hub-teleport-on-join") == "true") {
+            $event->getPlayer()->teleport($this->getHub());
+        }
     }
 
     /**
@@ -180,7 +191,6 @@ class theSpawn extends PluginBase implements Listener
      */
     public function onPlayerRespawn(PlayerRespawnEvent $event)
     {
-        $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $s = $event->getPlayer();
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $levelname = $s->getLevel()->getName();

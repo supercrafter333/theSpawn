@@ -74,7 +74,7 @@ class MsgMgr
      */
     public static function updateMsgCfg()
     {
-        unlink(theSpawn::getInstance()->getDataFolder() . "messages.yml");
+        rename(theSpawn::getInstance()->getDataFolder() . "messages.yml", theSpawn::getInstance()->getDataFolder() . "messagesOld.yml");
         return theSpawn::getInstance()->saveResource("messages.yml");
     }
 
