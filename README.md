@@ -1,4 +1,4 @@
-# theSpawn - V1.3.0
+# theSpawn - V1.3.1
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -18,6 +18,7 @@ This plugin is not out of date and will get better developed from time to time. 
 - Homes [default: active]
 - Warps [default: active]
 - Random-Hubs [default: deactive]
+- Teleport to hub on Join [default: active]
     
 ### TODOs
 - [X] Homes

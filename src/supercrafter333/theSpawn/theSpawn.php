@@ -67,7 +67,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.3.1-DEV";
+    public $version = "1.3.1";
 
     /**
      *
@@ -182,7 +182,10 @@ class theSpawn extends PluginBase implements Listener
     public function onPlayerLogin(PlayerLoginEvent $event)
     {
         if ($this->getCfg()->get("hub-teleport-on-join") == "true") {
-            $event->getPlayer()->teleport($this->getHub());
+            $hub = $this->getHub();
+            if ($hub !== null) {
+                $event->getPlayer()->teleport($hub);
+            }
         }
     }
 
