@@ -1,3 +1,4 @@
+[![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
 # theSpawn - V1.3.1
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
