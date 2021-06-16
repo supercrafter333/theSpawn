@@ -27,7 +27,7 @@ This plugin is not out of date and will get better developed from time to time. 
 - [X] Warps
 - [X] Random-Hubs ([#12](https://github.com/supercrafter333/theSpawn/issues/12))
 
-### Bugs - none
+### Report Bug
 You've found a Bug?
 - Go to [Issues](https://github.com/supercrafter333/theSpawn/issues)
 - Click on [New Issue](https://github.com/supercrafter333/theSpawn/issues/new/choose)
