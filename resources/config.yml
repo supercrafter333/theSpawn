@@ -21,7 +21,7 @@ use-homes: "true"
 use-warps: "true"
 
 #hub teleport on Join [true | false]
-hub-teleport-on-join: "true"
+hub-teleport-on-join: "false"
 
 
 #don't change this
