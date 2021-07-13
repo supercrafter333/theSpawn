@@ -50,6 +50,10 @@ warplist: "§eList of warps: §7{warplist}"
 #uses: none
 no-warps-set: "§cThis server doesn't have any warps yet!"
 
+#tpa messages
+tpa-secs-left: "§eThe tpa from {source} ends in §b{secs} seconds§e!"
+player-not-found: "§cThe selected player §7{name}§c isn't online!"
+
 #errors
 #uses: none
 no-spawn-set: "§4ERROR --> §cNo spawn was set for this world!"
@@ -75,7 +79,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.3.2"
+version: "1.4.0-DEV"
 
 
 ############################

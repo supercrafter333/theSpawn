@@ -42,9 +42,6 @@ class theSpawn extends PluginBase implements Listener
      */
     public static $instance;
 
-    /**
-     *
-     */
     public static $prefix;
     /**
      * @var
@@ -67,11 +64,8 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.3.2";
+    public $version = "1.4.0-DEV";
 
-    /**
-     *
-     */
     public function onEnable()
     {
         self::$instance = $this;
@@ -167,10 +161,7 @@ class theSpawn extends PluginBase implements Listener
         return false;
     }
 
-    /**
-     *
-     */
-    public function updateCfg()
+    public function updateCfg(): void
     {
         rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "configOld.yml");
         $this->saveResource("config.yml");
@@ -590,9 +581,7 @@ class theSpawn extends PluginBase implements Listener
         return true;
     }
 
-    /**
-     *
-     */
+    
     public function reactivateAliases()
     {
         foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
@@ -897,5 +886,17 @@ class theSpawn extends PluginBase implements Listener
             return $warps;
         }
         return $warps;
+    }
+
+    /**
+     * @return bool
+     */
+    public function useTPAs(): bool
+    {
+        if ($this->getCfg()->get("use-tpas") == "true" || $this->getCfg()->get("use-tpas") == "on") {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
