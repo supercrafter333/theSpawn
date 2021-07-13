@@ -67,10 +67,10 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.3.2";
+    public $version = "1.3.3";
 
     /**
-     *
+     * On plugin enabling.
      */
     public function onEnable()
     {
@@ -79,14 +79,9 @@ class theSpawn extends PluginBase implements Listener
         $cmdMap = $this->getServer()->getCommandMap();
         $this->saveResource("messages.yml");
         $this->saveResource("config.yml");
-        if ($this->checkCfgVersion($this->version) == false) {
-            $this->updateCfg();
-            $this->getLogger()->warning("The config.yml data was updated automatically for version " . $this->version . " of theSpawn!");
-        }
-        if (MsgMgr::checkMsgCfgVersion($this->version) == false) {
-            MsgMgr::updateMsgCfg();
-            $this->getLogger()->warning("The messages.yml data was updated automatically for version " . $this->version . " of theSpawn!");
-        }
+        # Version Check
+        $this->versionCheck($this->version, false); //DON'T UPDATE CONFIG DATAs.
+        ###
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
         self::$prefix = MsgMgr::getPrefix();
@@ -153,11 +148,8 @@ class theSpawn extends PluginBase implements Listener
         return MsgMgr::getMsgs();
     }
 
-    /**
-     * @param string $version
-     * @return bool
-     */
-    public function checkCfgVersion(string $version): bool
+    #OLD FUNCTION (new: versionCheck($version, bool $update = true))
+    /*public function checkCfgVersion(string $version): bool
     {
         if ($this->getCfg()->exists("version")) {
             if ($this->getCfg()->get("version") == $version) {
@@ -165,6 +157,36 @@ class theSpawn extends PluginBase implements Listener
             }
         }
         return false;
+    }*/
+
+    /**
+     * Check the version of theSpawn.
+     *
+     * @param $version
+     * @param bool $update
+     */
+    private function versionCheck($version, bool $update = true)
+    {
+        if (!$this->getConfig()->exists("version") || $this->getConfig()->get("version") !== $version) {
+            if ($update == true) {
+                $this->getLogger()->debug("OUTDATED CONFIG.YML!! You config.yml is outdated! Your config.yml will automatically updated!");
+                rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "oldConfig.yml");
+                $this->saveResource("config.yml");
+                $this->getLogger()->debug("config.yml Updated for version: §b$version");
+            } else {
+                $this->getLogger()->warning("Your config.yml is outdated but that's not so bad.");
+            }
+        }
+        if (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version) {
+            if ($update == true) {
+                $this->getLogger()->debug("OUTDATED MESSAGES.YML!! Your messages.yml is outdated! Your messages.yml will automatically updated!");
+                rename($this->getDataFolder() . "messages.yml", $this->getDataFolder() . "oldMessages.yml");
+                $this->saveResource("messages.yml");
+                $this->getLogger()->debug("messages.yml Updated for version: §b$version");
+            } else {
+                $this->getLogger()->warning("Your messages.yml is outdated but that's not so bad.");
+            }
+        }
     }
 
     /**
