@@ -43,7 +43,7 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
