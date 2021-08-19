@@ -207,7 +207,9 @@ class theSpawn extends PluginBase implements Listener
             $hub = $this->getHub();
             if ($hub !== null) {
                 $event->getPlayer()->teleport($hub);
-            }
+            } elseif ($this->getServer()->getDefaultLevel()->getSafeSpawn() !== null) {
+                $event->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
+            } else return;
         }
     }
 
@@ -220,10 +222,17 @@ class theSpawn extends PluginBase implements Listener
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $levelname = $s->getLevel()->getName();
         $level = $this->getServer()->getLevelByName($levelname);
-        if ($spawn->exists($levelname)) {
+        if ($level === null) {
+            if ($this->getHub() instanceof Position) {
+                $event->setRespawnPosition($this->getHub());
+            } else {
+                $event->setRespawnPosition($this->getServer()->getDefaultLevel()->getSafeSpawn());
+            }
+        }
+        if ($this->getSpawn($level) instanceof Position) {
             $event->setRespawnPosition($this->getSpawn($level));
             $s->getLevel()->addSound(new PopSound($s));
-        } elseif ($this->getHub() !== false) {
+        } elseif ($this->getHub() instanceof Position) {
             $event->setRespawnPosition($this->getHub());
             $s->getLevel()->addSound(new PopSound($s));
         } else {
@@ -232,7 +241,6 @@ class theSpawn extends PluginBase implements Listener
             } else {
                 $event->setRespawnPosition($level->getSafeSpawn());
             }
-            $s->getLevel()->addSound(new PopSound($s));
         }
         /*if ($this->getSpawn($levelname)) {
             if ($this->getServer()->isLevelLoaded($levelname) == true && !$level == null) {
