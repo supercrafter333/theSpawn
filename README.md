@@ -53,6 +53,10 @@ You've found a Bug?
 |`/setwarp <warp>`|Set a warp|
 |`/delwarp <warp>`|Remove a warp|
 |`/warp <warp>`|Teleport you to a warp|
+|`/tpa <player>`|Send a teleportation awnser to a player|
+|`/tpahere <player>`|Send a teleportation awnser to a player|
+|`/tpaccept <player>`|Accept a tpa|
+|`/tpdecline <player>`|Decline a tpa|
 
 ### License:
 This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!

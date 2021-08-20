@@ -51,6 +51,10 @@ class TpaCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         $name = $target->getName();
+        if (strtolower($name) === strtolower($s->getName())) {
+            $s->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("no-self-tpa"));
+            return;
+        }
         if (!theSpawn::getInstance()->addTpa($s->getName(), $name)) {
             $s->sendMessage(theSpawn::$prefix . theSpawn::$prefix . MsgMgr::getMsg("pending-tpa-error"));
             return;
