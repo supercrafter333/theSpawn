@@ -43,7 +43,7 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -59,7 +59,10 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
         if ($s instanceof Player) {
             $levelname = $s->getLevel()->getName();
             $level = $s->getLevel();
-            if ($spawn->exists($levelname)) {
+            if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
+                $pl->startSpawnDelay($s);
+                return true;
+            } elseif ($spawn->exists($levelname)) {
                 $s->teleport($pl->getSpawn($level));
                 $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
                 $s->getLevel()->addSound(new PopSound($s));

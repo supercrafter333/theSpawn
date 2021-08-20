@@ -5,7 +5,7 @@ namespace supercrafter333\theSpawn\Tasks;
 use pocketmine\Player;
 use pocketmine\scheduler\Task;
 use supercrafter333\theSpawn\MsgMgr;
-use supercrafter333\theSpawn\Others\Tpa;
+use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
 class TpaTask extends Task
@@ -15,7 +15,7 @@ class TpaTask extends Task
 
     private $tpa;
 
-    public function __construct(int $seconds, Tpa $tpa)
+    public function __construct(int $seconds, TpaInfo $tpa)
     {
         $this->secs = $seconds;
         $this->tpa = $tpa;
@@ -26,15 +26,18 @@ class TpaTask extends Task
         if ($this->tpa->getSourceAsPlayer() == null && $this->tpa->getTargetAsPlayer() instanceof Player) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{source}", $this->tpa->getSource(), MsgMgr::getMsg("tpa-cancelled-by-source")));
             theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+            theSpawn::getInstance()->removeTpa($this->tpa->getSource());
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() instanceof Player) {
-            $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{target}", $this->tpa->getTarget(), MsgMgr::getMsg("tpa-cancelled-by-target")));
+            $this->tpa->getSourceAsPlayer()->sendMessage(str_replace("{target}", $this->tpa->getTarget(), MsgMgr::getMsg("tpa-cancelled-by-target")));
             theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+            theSpawn::getInstance()->removeTpa($this->tpa->getSource());
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() == null) {
             theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+            theSpawn::getInstance()->removeTpa($this->tpa->getSource());
             return;
         }
         if ($this->secs > 10) {
@@ -43,6 +46,7 @@ class TpaTask extends Task
         }
         if ($this->secs <= 10 && $this->secs > 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", $this->secs, MsgMgr::getMsg("tpa-secs")));
+            $this->secs--;
             return;
         } elseif ($this->secs <= 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));

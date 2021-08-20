@@ -18,7 +18,8 @@ This plugin is not out of date and will get better developed from time to time. 
 - waterdog teleport hub server support
 - Homes [default: active]
 - Warps [default: active]
-- Random-Hubs [default: deactive]
+- TPAs [default: active]
+- Random-Hubs [default: inactive]
 - Teleport to hub on Join [default: active]
     
 ### TODOs

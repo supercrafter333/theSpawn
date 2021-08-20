@@ -24,11 +24,15 @@ use-warps: "true"
 use-tpas: "true"
 tpa-time: 30 #seconds
 
+#Spawn Teleport delay [true | false]
+use-spawnDelay: "false"
+spawn-delay-seconds: 3
+
 #hub teleport on Join [true | false]
 hub-teleport-on-join: "true"
 
 
-#don't change this
+#DON'T CHANGE THIS!!
 version: "1.4.0-DEV"
 
 ############################

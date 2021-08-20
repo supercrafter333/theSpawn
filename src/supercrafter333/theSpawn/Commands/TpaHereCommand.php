@@ -11,7 +11,7 @@ use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
-class TpaCommand extends Command implements PluginIdentifiableCommand
+class TpaHereCommand extends Command implements PluginIdentifiableCommand
 {
 
     private $pl;
@@ -19,8 +19,8 @@ class TpaCommand extends Command implements PluginIdentifiableCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->pl = theSpawn::getInstance();
-        $this->setPermission("theSpawn.tpa.cmd");
-        parent::__construct($name, "Start a TPA.", "§4Usage: §r/tpa <player>", $aliases);
+        $this->setPermission("theSpawn.tpahere.cmd");
+        parent::__construct($name, "Start a TPA to you.", "§4Usage: §r/tpahere <player>", $aliases);
     }
 
 
@@ -51,14 +51,14 @@ class TpaCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         $name = $target->getName();
-        if (!theSpawn::getInstance()->addTpa($s->getName(), $name)) {
+        if (!theSpawn::getInstance()->addTpa($s->getName(), $name, true)) {
             $s->sendMessage(theSpawn::$prefix . theSpawn::$prefix . MsgMgr::getMsg("pending-tpa-error"));
             return;
         }
         $tpa = new TpaInfo($s->getName());
         $tpa->runTask($pl->getCfg()->get("tpa-time"));
         $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-send")));
-        $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa")));
+        $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa-here")));
         return;
     }
 
