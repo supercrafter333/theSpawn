@@ -1,5 +1,5 @@
 name: theSpawn
-version: 1.3.3
+version: 1.4.0
 api: 3.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
@@ -14,14 +14,6 @@ mcpe-protocols:
   - 448
 
 permissions:
-  theSpawn.sethome.cmd:
-    default: true
-  theSpawn.delhome.cmd:
-    default: true
-  theSpawn.home.cmd:
-    default: true
-  theSpawn.warp.cmd:
-    default: true
   theSpawn.bypass:
     default: op
     children:
@@ -41,3 +33,22 @@ permissions:
         default: op
       theSpawn.delwarp.cmd:
         default: op
+      theSpawn.sethome.cmd:
+        default: true
+      theSpawn.delhome.cmd:
+        default: true
+      theSpawn.home.cmd:
+        default: true
+      theSpawn.warp.cmd:
+        default: true
+      theSpawn.tpas.cmd:
+        default: true
+        children:
+          theSpawn.tpa.cmd:
+            default: true
+          theSpawn.tpahere.cmd:
+            default: true
+          theSpawn.tpaccept.cmd:
+            default: true
+          theSpawn.tpdecline.cmd:
+            default: true

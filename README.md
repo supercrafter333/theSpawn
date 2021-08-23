@@ -1,5 +1,5 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# theSpawn - V1.3.3   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# theSpawn - V1.4.0   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -18,14 +18,16 @@ This plugin is not out of date and will get better developed from time to time. 
 - waterdog teleport hub server support
 - Homes [default: active]
 - Warps [default: active]
-- Random-Hubs [default: deactive]
-- Teleport to hub on Join [default: deactive]
+- TPAs [default: active]
+- Random-Hubs [default: inactive]
+- Teleport to hub on Join [default: active]
     
 ### TODOs
 - [X] Homes
 - [X] Command files
 - [X] Warps
 - [X] Random-Hubs ([#12](https://github.com/supercrafter333/theSpawn/issues/12))
+- [X] TPAs ([#14](https://github.com/supercrafter333/theSpawn/issues/14))
 
 ### Report Bug
 You've found a Bug?
@@ -52,6 +54,10 @@ You've found a Bug?
 |`/setwarp <warp>`|Set a warp|
 |`/delwarp <warp>`|Remove a warp|
 |`/warp <warp>`|Teleport you to a warp|
+|`/tpa <player>`|Send a teleportation awnser to a player|
+|`/tpahere <player>`|Send a teleportation awnser to a player|
+|`/tpaccept <player>`|Accept a tpa|
+|`/tpdecline <player>`|Decline a tpa|
 
 ### License:
 This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!

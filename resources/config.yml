@@ -20,12 +20,20 @@ use-homes: "true"
 #warps [true | false]
 use-warps: "true"
 
+#TPAs [true | false]
+use-tpas: "true"
+tpa-time: 30 #seconds
+
+#Spawn Teleport delay [true | false]
+use-spawnDelay: "false"
+spawn-delay-seconds: 3
+
 #hub teleport on Join [true | false]
-hub-teleport-on-join: "false"
+hub-teleport-on-join: "true"
 
 
-#don't change this
-version: "1.3.3"
+#DON'T CHANGE THIS!!
+version: "1.4.0"
 
 ############################
 ##########theSpawn##########

@@ -4,6 +4,8 @@ namespace supercrafter333\theSpawn;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
@@ -26,9 +28,15 @@ use supercrafter333\theSpawn\Commands\SethubCommand;
 use supercrafter333\theSpawn\Commands\SetspawnCommand;
 use supercrafter333\theSpawn\Commands\SetwarpCommand;
 use supercrafter333\theSpawn\Commands\SpawnCommand;
+use supercrafter333\theSpawn\Commands\TpacceptCommand;
+use supercrafter333\theSpawn\Commands\TpaCommand;
+use supercrafter333\theSpawn\Commands\TpaHereCommand;
+use supercrafter333\theSpawn\Commands\TpdeclineCommand;
 use supercrafter333\theSpawn\Commands\WarpCommand;
 use supercrafter333\theSpawn\Others\HomeInfo;
+use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\Others\WarpInfo;
+use supercrafter333\theSpawn\Tasks\SpawnDelayTask;
 
 /**
  * Class theSpawn
@@ -43,7 +51,7 @@ class theSpawn extends PluginBase implements Listener
     public static $instance;
 
     /**
-     *
+     * @var
      */
     public static $prefix;
     /**
@@ -60,6 +68,16 @@ class theSpawn extends PluginBase implements Listener
     public $aliasCfg;
 
     /**
+     * @var array
+     */
+    public $TPAs = [];
+
+    /**
+     * @var array
+     */
+    public $spawnDelays = [];
+
+    /**
      * @var
      */
     public $warpCfg;
@@ -67,20 +85,28 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.3.3";
+    public $version = "1.4.0";
+
+
+    /**
+     * On plugin loading. (That's before enabling)
+     */
+    public function onLoad()
+    {
+        self::$instance = $this;
+    }
 
     /**
      * On plugin enabling.
      */
     public function onEnable()
     {
-        self::$instance = $this;
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
         $this->saveResource("messages.yml");
         $this->saveResource("config.yml");
         # Version Check
-        $this->versionCheck($this->version, false); //DON'T UPDATE CONFIG DATAs.
+        $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         ###
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
@@ -120,6 +146,15 @@ class theSpawn extends PluginBase implements Listener
                     new SetwarpCommand("setwarp"),
                     new DelwarpCommand("delwarp"),
                     new WarpCommand("warp")
+                ]);
+        }
+        if ($this->useTPAs() == true) {
+            $cmdMap->registerAll("theSpawn",
+                [
+                    new TpaCommand("tpa"),
+                    new TpaHereCommand("tpahere"),
+                    new TpacceptCommand("tpaccept"),
+                    new TpdeclineCommand("tpdecline")
                 ]);
         }
     }
@@ -170,9 +205,13 @@ class theSpawn extends PluginBase implements Listener
         if (!$this->getConfig()->exists("version") || $this->getConfig()->get("version") !== $version) {
             if ($update == true) {
                 $this->getLogger()->debug("OUTDATED CONFIG.YML!! You config.yml is outdated! Your config.yml will automatically updated!");
+                if (file_exists($this->getDataFolder() . "oldConfig.yml")) {
+                    unlink($this->getDataFolder() . "oldConfig.yml");
+                }
                 rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "oldConfig.yml");
                 $this->saveResource("config.yml");
                 $this->getLogger()->debug("config.yml Updated for version: §b$version");
+                $this->getLogger()->notice("INFORMATION: Your old config.yml can be found under `oldConfig.yml`");
             } else {
                 $this->getLogger()->warning("Your config.yml is outdated but that's not so bad.");
             }
@@ -180,9 +219,13 @@ class theSpawn extends PluginBase implements Listener
         if (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version) {
             if ($update == true) {
                 $this->getLogger()->debug("OUTDATED MESSAGES.YML!! Your messages.yml is outdated! Your messages.yml will automatically updated!");
+                if (file_exists($this->getDataFolder() . "oldMessages.yml")) {
+                    unlink($this->getDataFolder() . "oldMessages.yml");
+                }
                 rename($this->getDataFolder() . "messages.yml", $this->getDataFolder() . "oldMessages.yml");
                 $this->saveResource("messages.yml");
                 $this->getLogger()->debug("messages.yml Updated for version: §b$version");
+                $this->getLogger()->notice("INFORMATION: Your old message.yml can be found under `oldMessages.yml`");
             } else {
                 $this->getLogger()->warning("Your messages.yml is outdated but that's not so bad.");
             }
@@ -199,6 +242,97 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
+     * @return array
+     */
+    public function getTPAs(): array
+    {
+        return $this->TPAs;
+    }
+
+    /**
+     * @param string $source
+     * @return array|null
+     */
+    public function getTpaOf(string $source): ?array
+    {
+        if (!isset($this->TPAs[$source])) return null;
+        return $this->TPAs[$source];
+    }
+
+    /**
+     * @param string $source
+     * @param string $target
+     * @param bool $isTpaHere
+     * @return bool
+     */
+    public function addTpa(string $source, string $target, bool $isTpaHere = false): bool
+    {
+        if (isset($this->TPAs[$source])) return false;
+        $arr = ["target" => $target, "isTpaHere" => $isTpaHere];
+        $this->TPAs[] = $source;
+        $this->TPAs[$source] = $arr;
+        return true;
+    }
+
+    /**
+     * @param string $source
+     * @param int $taskId
+     * @return bool
+     */
+    public function setTpaTaskId(string $source, int $taskId): bool
+    {
+        if ($this->getTpaOf($source) === null) return false;
+        $tpaInfo = new TpaInfo($source);
+        $target = $tpaInfo->getTarget();
+        $isTpaHere = $tpaInfo->isTpaHere();
+        $arr = ["target" => $target, "isTpaHere" => $isTpaHere, "taskId" => $taskId];
+        unset($this->TPAs[$source]);
+        $this->TPAs[] = $source;
+        $this->TPAs[$source] = $arr;
+        return true;
+    }
+
+    /**
+     * @param string $source
+     * @return bool
+     */
+    public function removeTpa(string $source): bool
+    {
+        if (!isset($this->TPAs[$source])) return false;
+        unset($this->TPAs[$source]);
+        return true;
+    }
+
+    /**
+     * @param string $target
+     * @param string $source
+     * @return bool
+     */
+    public function hasTpaOf(string $target, string $source): bool
+    {
+        $tpaInfo = new TpaInfo($source);
+        if ($tpaInfo->getTarget() === $target) return true;
+        return false;
+    }
+
+    /**
+     * @param string $target
+     * @return array|null
+     */
+    public function getTPAsOf(string $target): ?array
+    {
+        $TPAs = $this->getTPAs();
+        $newTPAs = [];
+        foreach ($TPAs as $TPA) {
+            if ($this->hasTpaOf($target, $TPA)) {
+                $newTPAs[] = $TPA;
+            }
+        }
+        if (count($newTPAs, COUNT_RECURSIVE) <= 0) return null;
+        return $newTPAs;
+    }
+
+    /**
      * @param PlayerLoginEvent $event
      */
     public function onPlayerLogin(PlayerLoginEvent $event)
@@ -210,6 +344,29 @@ class theSpawn extends PluginBase implements Listener
             } elseif ($this->getServer()->getDefaultLevel()->getSafeSpawn() !== null) {
                 $event->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
             } else return;
+        }
+    }
+
+    /**
+     * @param PlayerMoveEvent $event
+     */
+    public function onMove(PlayerMoveEvent $event)
+    {
+        $player = $event->getPlayer();
+        if ($this->hasSpawnDelay($player)) {
+            $this->stopSpawnDelay($player);
+            $player->sendMessage(self::$prefix . MsgMgr::getMsg("delay-stopped-by-move"));
+        }
+    }
+
+    /**
+     * @param PlayerQuitEvent $event
+     */
+    public function onQuit(PlayerQuitEvent $event)
+    {
+        $player = $event->getPlayer();
+        if ($this->hasSpawnDelay($player)) {
+            $this->stopSpawnDelay($player);
         }
     }
 
@@ -281,7 +438,6 @@ class theSpawn extends PluginBase implements Listener
      * @param $y
      * @param $z
      * @param Level $level
-     * @return bool
      */
     public function setHub($x, $y, $z, Level $level, int $count = null)
     {
@@ -333,7 +489,7 @@ class theSpawn extends PluginBase implements Listener
     public function checkSetRandomHub(int $count): bool
     {
         $randHubs = $this->getRandomHubList();
-        if ($randHubs->exists(($count-1)) || $count == 1) {
+        if ($randHubs->exists(($count - 1)) || $count == 1) {
             return true;
         } else {
             return false;
@@ -347,17 +503,19 @@ class theSpawn extends PluginBase implements Listener
     public function checkRemoveRandomHub(int $count): bool
     {
         $randHubs = $this->getRandomHubList();
-        if (!$randHubs->exists(($count+1)) || $count == 1) {
+        if (!$randHubs->exists(($count + 1)) || $count == 1) {
             return true;
         } else {
             return false;
         }
     }
 
+
     /**
-     * @return false|Position
+     * @param int|null $count
+     * @return Position|false
      */
-    public function getHub(int $count = null)
+    public function getHub(int $count = null): ?Position
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
@@ -377,7 +535,7 @@ class theSpawn extends PluginBase implements Listener
             return $coords;
         } else {
             $this->getLogger()->error("!!Please set a Hub!!");
-            return false;
+            return $this->getServer()->getDefaultLevel()->getSafeSpawn();
         }
     }
 
@@ -619,6 +777,7 @@ class theSpawn extends PluginBase implements Listener
         $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$levelName], MsgMgr::getMsg("alias-command-description")))));
         return true;
     }
+
 
     /**
      *
@@ -927,5 +1086,60 @@ class theSpawn extends PluginBase implements Listener
             return $warps;
         }
         return $warps;
+    }
+
+    /**
+     * @return bool
+     */
+    public function useTPAs(): bool
+    {
+        if ($this->getCfg()->get("use-tpas") == "true" || $this->getCfg()->get("use-tpas") == "on") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function useSpawnDelays(): bool
+    {
+        if ($this->getCfg()->get("use-spawnDelay") == "true" || $this->getCfg()->get("use-spawnDelay") == "on") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param Player $player
+     */
+    public function startSpawnDelay(Player $player)
+    {
+        $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getCfg()->get("spawn-delay-seconds")), 20);
+        $this->spawnDelays[] = $player->getName();
+        $this->spawnDelays[$player->getName()] = ["taskId" => $task->getTaskId()];
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function hasSpawnDelay(Player $player)
+    {
+        return isset($this->spawnDelays[$player->getName()]);
+    }
+
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function stopSpawnDelay(Player $player): bool
+    {
+        if (!isset($this->spawnDelays[$player->getName()])) return false;
+        $this->getScheduler()->cancelTask($this->spawnDelays[$player->getName()]["taskId"]);
+        unset($this->spawnDelays[$player->getName()]);
+        return true;
     }
 }

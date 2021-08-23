@@ -50,6 +50,28 @@ warplist: "§eList of warps: §7{warplist}"
 #uses: none
 no-warps-set: "§cThis server doesn't have any warps yet!"
 
+#tpa messages
+tpa-send: "§aYou've successfully send a tpa to §7{target}§a!"
+new-tpa: "§7{source}§e has send you an tpa, to teleport him to you! Run §8/tpaccept {source}§e to accept the tpa and §8/tpdecline {source}§e!"
+new-tpa-here: "§7{source}§e has send you an tpa, to teleport you to him! Run §8/tpaccept {source}§e to accept the tpa and §8/tpdecline {source}§e!"
+tpa-secs: "§eYour TPA ends in §7{secs}§e seconds"
+pending-tpa-error: "§cYou have a pending TPA. Please wait until the tpa has been answered or finished and then try again."
+no-pending-tpa: "§cYou don't have a pending tpa!"
+no-self-tpa: "§cYou can't send a tpa to yourself!"
+tpa-secs-left: "§eThe tpa from {source} ends in §b{secs} seconds§e!"
+player-not-found: "§cThe selected player §7{name}§c isn't online!"
+tpa-cancelled-by-source: "§cThe Tpa from {source} was cancelled because the player is offline."
+tpa-cancelled-by-target: "§cThe Tpa to {target} was cancelled because the player is offline."
+tpa-accepted-source: "§7{target}§a has accepted your tpa!"
+tpa-accepted-target: "§aYou've successfully accepted the tpa of §{source}§a!"
+tpa-declined-source: "§7{target}§c has declined your tpa!"
+tpa-declined-target: "§aYou've successfully declined the tpa of §{source}§a!"
+tpa-ended: "The TpaInfo from {source} to {target} is ended now."
+
+#spawn delays
+delay-tip: "§8[§eYou where teleported in §7{secs}§e!§8]"
+delay-stopped-by-move: "§cTeleport cancelled because you've moved you."
+
 #errors
 #uses: none
 no-spawn-set: "§4ERROR --> §cNo spawn was set for this world!"
@@ -75,7 +97,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.3.3"
+version: "1.4.0"
 
 
 ############################
