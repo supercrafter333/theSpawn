@@ -1,5 +1,5 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# theSpawn - V1.4.0-DEV   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# theSpawn - V1.4.0   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -27,6 +27,7 @@ This plugin is not out of date and will get better developed from time to time. 
 - [X] Command files
 - [X] Warps
 - [X] Random-Hubs ([#12](https://github.com/supercrafter333/theSpawn/issues/12))
+- [X] TPAs ([#14](https://github.com/supercrafter333/theSpawn/issues/14))
 
 ### Report Bug
 You've found a Bug?

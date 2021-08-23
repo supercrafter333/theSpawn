@@ -85,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.0-DEV";
+    public $version = "1.4.0";
 
 
     /**
@@ -438,7 +438,6 @@ class theSpawn extends PluginBase implements Listener
      * @param $y
      * @param $z
      * @param Level $level
-     * @return bool
      */
     public function setHub($x, $y, $z, Level $level, int $count = null)
     {
