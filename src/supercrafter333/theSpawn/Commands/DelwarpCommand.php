@@ -30,7 +30,7 @@ class DelwarpCommand extends Command implements PluginIdentifiableCommand
      * @param string|null $usageMessage
      * @param array $aliases
      */
-    function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
+    public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.delwarp.cmd");
