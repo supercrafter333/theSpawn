@@ -8,3 +8,4 @@ projects:
   theSpawn:
     icon: "icon.png"
     path: ""
+    php: 8.0

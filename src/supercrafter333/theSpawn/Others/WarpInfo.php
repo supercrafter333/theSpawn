@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Others;
 
-use JetBrains\PhpStorm\Pure;
 use pocketmine\level\Level;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
@@ -32,7 +31,7 @@ class WarpInfo
      * @param string $warpName
      * @return WarpInfo
      */
-    #[Pure] public static function getWarpInfo(string $warpName): WarpInfo
+    public static function getWarpInfo(string $warpName): WarpInfo
     {
         return new WarpInfo($warpName);
     }

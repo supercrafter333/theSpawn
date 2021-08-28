@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn;
 
-use JetBrains\PhpStorm\Pure;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -937,7 +936,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $homeName
      * @return HomeInfo
      */
-    #[Pure] public function getHomeInfo(Player $player, string $homeName)
+    public function getHomeInfo(Player $player, string $homeName)
     {
         return new HomeInfo($player, $homeName);
     }
@@ -1059,7 +1058,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $warpName
      * @return WarpInfo
      */
-    #[Pure] public function getWarpInfo(string $warpName)
+    public function getWarpInfo(string $warpName)
     {
         return WarpInfo::getWarpInfo($warpName);
     }
@@ -1121,7 +1120,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Player $player
      * @return bool
      */
-    #[Pure] public function hasSpawnDelay(Player $player)
+    public function hasSpawnDelay(Player $player)
     {
         return isset($this->spawnDelays[$player->getName()]);
     }
