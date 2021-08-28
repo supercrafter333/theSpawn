@@ -22,7 +22,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * SethubCommand constructor.
@@ -44,7 +44,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -74,10 +74,8 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
                             $pl->setHub($x, $y, $z, $level, $args[0]);
                             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
                             $s->getLevel()->addSound(new DoorBumpSound($s));
-                            return true;
                         } else {
                             $s->sendMessage($prefix . MsgMgr::getMsg("set-random-hub-before"));
-                            return true;
                         }
                     } else {
                         if (!$hub->exists("hub")) {
@@ -87,15 +85,13 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
                             }
                             $pl->setHub($x, $y, $z, $level);
                             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
-                            $s->getLevel()->addSound(new DoorBumpSound($s));
-                            return true;
                         } else {
                             $pl->setHub($x, $y, $z, $level);
                             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
-                            $s->getLevel()->addSound(new DoorBumpSound($s));
-                            return true;
                         }
+                        $s->getLevel()->addSound(new DoorBumpSound($s));
                     }
+                    return true;
                 } elseif ($pl->getUseHubServer() == true) {
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
                     return true;
@@ -110,6 +106,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;
         }
+        return true;
     }
 
     /**

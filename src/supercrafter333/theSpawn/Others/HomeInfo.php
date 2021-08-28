@@ -4,6 +4,7 @@
 namespace supercrafter333\theSpawn\Others;
 
 
+use pocketmine\level\Level;
 use pocketmine\Player;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
@@ -21,11 +22,11 @@ class HomeInfo
     /**
      * @var Player
      */
-    public $player;
+    public Player $player;
     /**
      * @var string
      */
-    public $homeName;
+    public string $homeName;
 
     /**
      * HomeInfo constructor.
@@ -66,9 +67,9 @@ class HomeInfo
     }
 
     /**
-     * @return false|mixed
+     * @return mixed
      */
-    public function getX()
+    public function getX(): mixed
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["X"];
@@ -77,9 +78,9 @@ class HomeInfo
     }
 
     /**
-     * @return false|mixed
+     * @return mixed
      */
-    public function getY()
+    public function getY(): mixed
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["Y"];
@@ -88,9 +89,9 @@ class HomeInfo
     }
 
     /**
-     * @return false|mixed
+     * @return mixed
      */
-    public function getZ()
+    public function getZ(): mixed
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["Z"];
@@ -99,9 +100,9 @@ class HomeInfo
     }
 
     /**
-     * @return false|mixed
+     * @return mixed
      */
-    public function getLevelName()
+    public function getLevelName(): mixed
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["level"];
@@ -110,9 +111,9 @@ class HomeInfo
     }
 
     /**
-     * @return false|\pocketmine\level\Level|null
+     * @return false|Level|null
      */
-    public function getLevel()
+    public function getLevel(): bool|Level|null
     {
         if ($this->existsHome() == true) {
             $lvlName = $this->getHomeCfg()->get($this->homeName)["level"];

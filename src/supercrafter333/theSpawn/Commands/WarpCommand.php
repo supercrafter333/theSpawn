@@ -21,7 +21,7 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * WarpCommand constructor.
@@ -53,12 +53,11 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
         if (count($args) < 1) {
             if ($pl->listWarps() !== null) {
                 $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
-                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, (int)mt_rand());
-                return;
+                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, mt_rand());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
-                return;
             }
+            return;
         }
         if (!$s->hasPermission("theSpawn.warp.cmd")) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
@@ -69,19 +68,19 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         if (!$pl->existsWarp($args[0])) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
         $warpPos = $pl->getWarpPosition($args[0]);
         if ($warpPos == false) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
         $warpInfo = $pl->getWarpInfo($args[0]);
         $posMsg = $warpInfo->getX() . $warpInfo->getY() . $warpInfo->getZ();
         $worldName = $warpInfo->getLevelName();
         $s->teleport($warpPos);
-        $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
+        $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
     }
 
     /**

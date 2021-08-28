@@ -15,12 +15,12 @@ use supercrafter333\theSpawn\theSpawn;
 class TpaInfo
 {
 
-    private $source;
+    private string $source;
 
     /**
      * @var array
      */
-    private $tpa;
+    private array $tpa;
 
     public function __construct(string $source)
     {
@@ -39,9 +39,9 @@ class TpaInfo
 
     /**
      * @param string $value
-     * @return mixed|null
+     * @return mixed
      */
-    public function getVal(string $value)
+    public function getVal(string $value): mixed
     {
         if (!$this->isValSet($value)) return null;
         return $this->tpa[$value];

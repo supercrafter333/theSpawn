@@ -21,7 +21,7 @@ class DelwarpCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * DelwarpCommand constructor.
@@ -63,11 +63,11 @@ class DelwarpCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         if (!$pl->existsWarp($args[0])) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
         $pl->removeWarp($args[0]);
-        $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-deleted")));
+        $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-deleted")));
         $s->getLevel()->addSound(new GhastShootSound($s));
     }
 

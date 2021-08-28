@@ -14,12 +14,12 @@ class SpawnDelayTask extends Task
     /**
      * @var Player
      */
-    private $player;
+    private Player $player;
 
     /**
      * @var int
      */
-    private $secs;
+    private int $secs;
 
     public function __construct(Player $player, int $seconds)
     {
@@ -34,7 +34,7 @@ class SpawnDelayTask extends Task
             $this->secs--;
         }
         if ($this->secs <= 3 && $this->secs > 0) {
-            $player->sendTip(str_replace("{secs}", $this->secs, MsgMgr::getMsg("delay-tip")));
+            $player->sendTip(str_replace("{secs}", (string)$this->secs, MsgMgr::getMsg("delay-tip")));
             $this->secs--;
         }
         if ($this->secs <= 0) {

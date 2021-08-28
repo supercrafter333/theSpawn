@@ -22,7 +22,7 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * SpawnCommand constructor.
@@ -61,16 +61,14 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
             $level = $s->getLevel();
             if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
                 $pl->startSpawnDelay($s);
-                return true;
             } elseif ($spawn->exists($levelname)) {
                 $s->teleport($pl->getSpawn($level));
                 $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
                 $s->getLevel()->addSound(new PopSound($s));
-                return true;
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
-                return true;
             }
+            return true;
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;

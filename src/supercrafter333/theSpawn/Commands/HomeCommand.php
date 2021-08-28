@@ -22,7 +22,7 @@ class HomeCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * HomeCommand constructor.
@@ -59,12 +59,11 @@ class HomeCommand extends Command implements PluginIdentifiableCommand
         if (!isset($args[0])) {
             if ($pl->listHomes($s) !== null) {
                 $s->sendMessage($prefix . str_replace(["{homelist}"], [$pl->listHomes($s)], MsgMgr::getMsg("homelist")));
-                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, (int)mt_rand());
-                return true;
+                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, mt_rand());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
-                return true;
             }
+            return true;
         }
         $lvlName = $pl->getHomeInfo($s, $args[0])->getLevelName();
         if ($pl->getServer()->isLevelGenerated($lvlName) == false) {
@@ -72,11 +71,11 @@ class HomeCommand extends Command implements PluginIdentifiableCommand
             return true;
         }
         if ($pl->getHomeInfo($s, $args[0])->existsHome() == false) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
+            $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-not-exists")));
             return true;
         }
         $pl->teleportToHome($s, $args[0]);
-        $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-teleport")));
+        $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-teleport")));
         $s->getLevel()->addSound(new PopSound($s));
         return true;
     }

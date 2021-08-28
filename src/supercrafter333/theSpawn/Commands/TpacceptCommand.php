@@ -20,7 +20,7 @@ class TpacceptCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $pl;
+    private theSpawn $pl;
 
     /**
      * @param string $name
@@ -39,7 +39,7 @@ class TpacceptCommand extends Command implements PluginIdentifiableCommand
      * @param CommandSender $s
      * @param string $commandLabel
      * @param array $args
-     * @return mixed|void
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args)
     {
@@ -57,12 +57,12 @@ class TpacceptCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         if (!$pl->hasTpaOf($args[0], $s->getName())) {
-            $s->sendMessage(str_replace("{target}", $args[0], MsgMgr::getMsg("no-pending-tpa")));
+            $s->sendMessage(str_replace("{target}", (string)$args[0], MsgMgr::getMsg("no-pending-tpa")));
             return;
         }
         $tpaInfo = new TpaInfo($s->getName());
         if (!$tpaInfo->getTargetAsPlayer() instanceof Player) {
-            $s->sendMessage(str_replace("{target}", $args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-online")));
+            $s->sendMessage(str_replace("{target}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-online")));
             return;
         }
         $target = $tpaInfo->getTargetAsPlayer();
@@ -70,7 +70,6 @@ class TpacceptCommand extends Command implements PluginIdentifiableCommand
         $tpaInfo->complete();
         $target->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
         $s->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
-        return;
     }
 
     /**

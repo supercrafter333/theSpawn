@@ -8,19 +8,35 @@ use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
+/**
+ *
+ */
 class TpaTask extends Task
 {
 
-    private $secs;
+    /**
+     * @var int
+     */
+    private int $secs;
 
-    private $tpa;
+    /**
+     * @var TpaInfo
+     */
+    private TpaInfo $tpa;
 
+    /**
+     * @param int $seconds
+     * @param TpaInfo $tpa
+     */
     public function __construct(int $seconds, TpaInfo $tpa)
     {
         $this->secs = $seconds;
         $this->tpa = $tpa;
     }
 
+    /**
+     * @param int $currentTick
+     */
     public function onRun(int $currentTick)
     {
         if ($this->tpa->getSourceAsPlayer() == null && $this->tpa->getTargetAsPlayer() instanceof Player) {
@@ -45,13 +61,11 @@ class TpaTask extends Task
             return;
         }
         if ($this->secs <= 10 && $this->secs > 0) {
-            $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", $this->secs, MsgMgr::getMsg("tpa-secs")));
+            $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", (string)$this->secs, MsgMgr::getMsg("tpa-secs")));
             $this->secs--;
-            return;
         } elseif ($this->secs <= 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
             theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
-            return;
         }
     }
 }

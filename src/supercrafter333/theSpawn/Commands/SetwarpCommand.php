@@ -21,7 +21,7 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * SetwarpCommand constructor.
@@ -64,15 +64,12 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
         }
         if ($pl->existsWarp($args[0]) == false) {
             $pl->addWarp($s->getX(), $s->getY(), $s->getZ(), $s->getLevel(), $args[0]);
-            $posMsg = $s->getX() . $s->getY() . $s->getZ();
+            $posMsg = (string)$s->getX() . $s->getY() . $s->getZ();
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getLevel()->getName()], MsgMgr::getMsg("warp-set")))));
-            $s->getLevel()->addSound(new DoorBumpSound($s));
-            return;
         } else {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-already-set")));
-            $s->getLevel()->addSound(new DoorBumpSound($s));
-            return;
         }
+        $s->getLevel()->addSound(new DoorBumpSound($s));
     }
 
     /**

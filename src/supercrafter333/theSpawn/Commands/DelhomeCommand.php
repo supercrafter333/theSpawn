@@ -21,7 +21,7 @@ class DelhomeCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * SethomeCommand constructor.
@@ -61,12 +61,11 @@ class DelhomeCommand extends Command implements PluginIdentifiableCommand
         }
         if ($pl->rmHome($s, $args[0]) == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
-            return true;
         } else {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
             $s->getLevel()->addSound(new GhastShootSound($s));
-            return true;
         }
+        return true;
     }
 
     /**

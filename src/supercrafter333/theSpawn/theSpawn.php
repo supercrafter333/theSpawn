@@ -2,6 +2,7 @@
 
 namespace supercrafter333\theSpawn;
 
+use JetBrains\PhpStorm\Pure;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -48,7 +49,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var
      */
-    public static $instance;
+    public static theSpawn $instance;
 
     /**
      * @var
@@ -61,7 +62,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var
      */
-    public $msgCfg;
+    public mixed $msgCfg;
     /**
      * @var
      */
@@ -168,7 +169,7 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @return mixed
+     * @return Config
      */
     public function getCfg()
     {
@@ -176,7 +177,7 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @return mixed
+     * @return Config
      */
     public function getMsgCfg()
     {
@@ -343,7 +344,7 @@ class theSpawn extends PluginBase implements Listener
                 $event->getPlayer()->teleport($hub);
             } elseif ($this->getServer()->getDefaultLevel()->getSafeSpawn() !== null) {
                 $event->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
-            } else return;
+            }
         }
     }
 
@@ -438,6 +439,7 @@ class theSpawn extends PluginBase implements Listener
      * @param $y
      * @param $z
      * @param Level $level
+     * @param int|null $count
      */
     public function setHub($x, $y, $z, Level $level, int $count = null)
     {
@@ -544,7 +546,7 @@ class theSpawn extends PluginBase implements Listener
      * @return false|Position
      * @return false|Position
      */
-    public function getSpawn(Level $level)
+    public function getSpawn(Level $level): bool|Position
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $spawn->get($level->getName());
@@ -637,7 +639,7 @@ class theSpawn extends PluginBase implements Listener
             return false;
         } elseif ($config->get("use-hub-server") === "true") {
             return false;
-        } elseif (!$config->get("use-random-hubs") === "true") {
+        } elseif (!$config->get("use-random-hubs") == "true") {
             return false;
         } elseif ($config->get("use-random-hubs") === "true") {
             return true;
@@ -795,14 +797,10 @@ class theSpawn extends PluginBase implements Listener
      */
     public function levelCheck(string $levelName): Level
     {
-        if ($this->getServer()->isLevelLoaded($levelName)) {
-            $level = $this->getServer()->getLevelByName($levelName);
-            return $level;
-        } else {
+        if (!$this->getServer()->isLevelLoaded($levelName)) {
             $this->getServer()->loadLevel($levelName);
-            $level = $this->getServer()->getLevelByName($levelName);
-            return $level;
         }
+        return $this->getServer()->getLevelByName($levelName);
     }
 
     /**
@@ -871,7 +869,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $homeName
      * @return false|Position
      */
-    public function getHomePos(Player $player, string $homeName)
+    public function getHomePos(Player $player, string $homeName): bool|Position|string
     {
         if ($this->existsHome($homeName, $player) == true) {
             $home = $this->getHomeCfg($player->getName());
@@ -880,14 +878,11 @@ class theSpawn extends PluginBase implements Listener
             $z = $home->get($homeName)["Z"];
             $levelName = $home->get($homeName)["level"];
             if ($this->getServer()->isLevelGenerated($levelName)) {
-                if ($this->getServer()->isLevelLoaded($levelName)) {
-                    $level = $this->getServer()->getLevelByName($levelName);
-                    return new Position($x, $y, $z, $level);
-                } else {
+                if (!$this->getServer()->isLevelLoaded($levelName)) {
                     $this->getServer()->loadLevel($levelName);
-                    $level = $this->getServer()->getLevelByName($levelName);
-                    return new Position($x, $y, $z, $level);
                 }
+                $level = $this->getServer()->getLevelByName($levelName);
+                return new Position($x, $y, $z, $level);
             } else {
                 return "LevelError";
             }
@@ -942,7 +937,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $homeName
      * @return HomeInfo
      */
-    public function getHomeInfo(Player $player, string $homeName)
+    #[Pure] public function getHomeInfo(Player $player, string $homeName)
     {
         return new HomeInfo($player, $homeName);
     }
@@ -1064,7 +1059,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $warpName
      * @return WarpInfo
      */
-    public function getWarpInfo(string $warpName)
+    #[Pure] public function getWarpInfo(string $warpName)
     {
         return WarpInfo::getWarpInfo($warpName);
     }
@@ -1126,7 +1121,7 @@ class theSpawn extends PluginBase implements Listener
      * @param Player $player
      * @return bool
      */
-    public function hasSpawnDelay(Player $player)
+    #[Pure] public function hasSpawnDelay(Player $player)
     {
         return isset($this->spawnDelays[$player->getName()]);
     }

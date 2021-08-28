@@ -22,7 +22,7 @@ class DelspawnCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * DelspawnCommand constructor.
@@ -44,7 +44,7 @@ class DelspawnCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -65,19 +65,16 @@ class DelspawnCommand extends Command implements PluginIdentifiableCommand
                     $pl->removeSpawn($level);
                     $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
                     $s->getLevel()->addSound(new GhastShootSound($s));
-                    return true;
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
-                    return true;
                 }
             } else {
                 $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-                return true;
             }
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
         }
+        return true;
     }
 
     /**
