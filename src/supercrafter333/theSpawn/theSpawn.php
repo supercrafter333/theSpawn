@@ -545,7 +545,7 @@ class theSpawn extends PluginBase implements Listener
      * @return false|Position
      * @return false|Position
      */
-    public function getSpawn(Level $level): bool|Position
+    public function getSpawn(Level $level)
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $spawn->get($level->getName());
@@ -868,7 +868,7 @@ class theSpawn extends PluginBase implements Listener
      * @param string $homeName
      * @return false|Position
      */
-    public function getHomePos(Player $player, string $homeName): bool|Position|string
+    public function getHomePos(Player $player, string $homeName)
     {
         if ($this->existsHome($homeName, $player) == true) {
             $home = $this->getHomeCfg($player->getName());
