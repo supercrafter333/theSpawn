@@ -113,7 +113,7 @@ class HomeInfo
     /**
      * @return false|Level|null
      */
-    public function getLevel(): bool|Level|null
+    public function getLevel()
     {
         if ($this->existsHome() == true) {
             $lvlName = $this->getHomeCfg()->get($this->homeName)["level"];

@@ -111,7 +111,7 @@ class WarpInfo
     /**
      * @return false|Level|null
      */
-    public function getLevel(): bool|Level|null
+    public function getLevel()
     {
         if ($this->exists() == true) {
             $lvlName = $this->getWarpCfg()->get($this->warpName)["level"];
