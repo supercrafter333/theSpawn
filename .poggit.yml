@@ -3,7 +3,9 @@ build-by-default: true
 branches:
 - master
 - Dev
+- php8.0
 projects:
   theSpawn:
     icon: "icon.png"
     path: ""
+    php: 8.0

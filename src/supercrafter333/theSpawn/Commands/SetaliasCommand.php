@@ -21,7 +21,7 @@ class SetaliasCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * SetaliasCommand constructor.

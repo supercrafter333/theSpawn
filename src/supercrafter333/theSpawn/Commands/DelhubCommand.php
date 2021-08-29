@@ -22,7 +22,7 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * DelhubCommand constructor.
@@ -44,7 +44,7 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -88,6 +88,7 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return true;
         }
+        return true;
     }
 
     /**

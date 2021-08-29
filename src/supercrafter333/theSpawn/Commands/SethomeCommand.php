@@ -21,7 +21,7 @@ class SethomeCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * DelhomeCommand constructor.
@@ -65,12 +65,11 @@ class SethomeCommand extends Command implements PluginIdentifiableCommand
         $level = $s->getLevel();
         if ($pl->setHome($s, $args[0], $x, $y, $z, $level) == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
-            return true;
         } else {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));
             $s->getLevel()->addSound(new DoorBumpSound($s));
-            return true;
         }
+        return true;
     }
 
     /**

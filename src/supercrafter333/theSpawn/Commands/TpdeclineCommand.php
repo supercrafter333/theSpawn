@@ -14,7 +14,7 @@ use supercrafter333\theSpawn\theSpawn;
 class TpdeclineCommand extends Command implements PluginIdentifiableCommand
 {
 
-    private $pl;
+    private theSpawn $pl;
 
     public function __construct(string $name, string $description = "Decline a tpa.", string $usageMessage = "§4Usage: §r/tpdecline <player>", array $aliases = [])
     {
@@ -39,12 +39,12 @@ class TpdeclineCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         if (!$pl->hasTpaOf($args[0], $s->getName())) {
-            $s->sendMessage(str_replace("{target}", $args[0], theSpawn::$prefix . MsgMgr::getMsg("no-pending-tpa")));
+            $s->sendMessage(str_replace("{target}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("no-pending-tpa")));
             return;
         }
         $tpaInfo = new TpaInfo($s->getName());
         if (!$tpaInfo->getTargetAsPlayer() instanceof Player) {
-            $s->sendMessage(str_replace("{target}", $args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-online")));
+            $s->sendMessage(str_replace("{target}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-online")));
             return;
         }
         $target = $tpaInfo->getTargetAsPlayer();
@@ -52,7 +52,6 @@ class TpdeclineCommand extends Command implements PluginIdentifiableCommand
         $tpaInfo->cancel();
         $target->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-source")));
         $s->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-target")));
-        return;
     }
 
     public function getPlugin(): Plugin

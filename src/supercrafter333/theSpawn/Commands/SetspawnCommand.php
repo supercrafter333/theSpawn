@@ -6,7 +6,6 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\level\sound\DoorBumpSound;
-use pocketmine\level\sound\PopSound;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
@@ -23,7 +22,7 @@ class SetspawnCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * SetspawnCommand constructor.
@@ -45,7 +44,7 @@ class SetspawnCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -62,25 +61,20 @@ class SetspawnCommand extends Command implements PluginIdentifiableCommand
             if ($s->hasPermission("theSpawn.setspawn.cmd")) {
                 $levelname = $s->getLevel()->getName();
                 $level = $s->getLevel();
+                $pl->setSpawn($s, $level);
                 if (!$spawn->exists($levelname)) {
-                    $pl->setSpawn($s, $level);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-set")));
-                    $s->getLevel()->addSound(new DoorBumpSound($s));
-                    return true;
                 } else {
-                    $pl->setSpawn($s, $level);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-changed")));
-                    $s->getLevel()->addSound(new DoorBumpSound($s));
-                    return true;
                 }
+                $s->getLevel()->addSound(new DoorBumpSound($s));
             } else {
                 $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-                return true;
             }
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
         }
+        return true;
     }
 
     /**

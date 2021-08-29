@@ -14,7 +14,7 @@ use supercrafter333\theSpawn\theSpawn;
 class TpaHereCommand extends Command implements PluginIdentifiableCommand
 {
 
-    private $pl;
+    private theSpawn $pl;
 
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
@@ -47,7 +47,7 @@ class TpaHereCommand extends Command implements PluginIdentifiableCommand
         }
         $target = $pl->getServer()->getPlayer($args[0]);
         if (!$target instanceof Player) {
-            $s->sendMessage(str_replace("{name}", $args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
+            $s->sendMessage(str_replace("{name}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;
         }
         $name = $target->getName();
@@ -63,7 +63,6 @@ class TpaHereCommand extends Command implements PluginIdentifiableCommand
         $tpa->runTask($pl->getCfg()->get("tpa-time"));
         $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-send")));
         $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa-here")));
-        return;
     }
 
     /**

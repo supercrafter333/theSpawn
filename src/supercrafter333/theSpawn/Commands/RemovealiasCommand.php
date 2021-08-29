@@ -21,7 +21,7 @@ class RemovealiasCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * RemovealiasCommand constructor.

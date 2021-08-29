@@ -2,6 +2,7 @@
 
 namespace supercrafter333\theSpawn\Others;
 
+use pocketmine\level\Level;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -15,7 +16,7 @@ class WarpInfo
     /**
      * @var string
      */
-    private $warpName;
+    private string $warpName;
 
     /**
      * WarpInfo constructor.
@@ -30,7 +31,7 @@ class WarpInfo
      * @param string $warpName
      * @return WarpInfo
      */
-    public static function getWarpInfo(string $warpName)
+    public static function getWarpInfo(string $warpName): WarpInfo
     {
         return new WarpInfo($warpName);
     }
@@ -65,8 +66,7 @@ class WarpInfo
     public function getX(): float
     {
         if ($this->exists() == true) {
-            $X = $this->getWarpCfg()->get($this->warpName)["X"];
-            return $X;
+            return $this->getWarpCfg()->get($this->warpName)["X"];
         } else {
             return false;
         }
@@ -78,8 +78,7 @@ class WarpInfo
     public function getY(): float
     {
         if ($this->exists() == true) {
-            $Y = $this->getWarpCfg()->get($this->warpName)["Y"];
-            return $Y;
+            return $this->getWarpCfg()->get($this->warpName)["Y"];
         } else {
             return false;
         }
@@ -91,8 +90,7 @@ class WarpInfo
     public function getZ(): float
     {
         if ($this->exists() == true) {
-            $Z = $this->getWarpCfg()->get($this->warpName)["Z"];
-            return $Z;
+            return $this->getWarpCfg()->get($this->warpName)["Z"];
         } else {
             return false;
         }
@@ -104,15 +102,14 @@ class WarpInfo
     public function getLevelName(): string
     {
         if ($this->exists() == true) {
-            $lvlName = $this->getWarpCfg()->get($this->warpName)["level"];
-            return $lvlName;
+            return $this->getWarpCfg()->get($this->warpName)["level"];
         } else {
             return false;
         }
     }
 
     /**
-     * @return false|\pocketmine\level\Level|null
+     * @return false|Level|null
      */
     public function getLevel()
     {

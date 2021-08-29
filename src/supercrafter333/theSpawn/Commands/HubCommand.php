@@ -22,7 +22,7 @@ class HubCommand extends Command implements PluginIdentifiableCommand
     /**
      * @var theSpawn
      */
-    private $plugin;
+    private theSpawn $plugin;
 
     /**
      * HubCommand constructor.
@@ -43,7 +43,7 @@ class HubCommand extends Command implements PluginIdentifiableCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender $s, string $commandLabel, array $args): bool
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -78,25 +78,20 @@ class HubCommand extends Command implements PluginIdentifiableCommand
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }
-                    return true;
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
-                    return true;
                 }
             } elseif ($pl->getUseHubServer() == true && $pl->getUseWaterdogTransfer() == false) {
                 $pl->teleportToHubServer($s);
-                return true;
             } elseif ($pl->getUseHubServer() == true && $pl->getUseWaterdogTransfer() == true) {
                 $pl->transferToProxyServer($s, $config->get("waterdog-servername"));
-                return true;
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));
-                return true;
             }
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
         }
+        return true;
     }
 
     /**
