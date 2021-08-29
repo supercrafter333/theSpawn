@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\PopSound;
-use pocketmine\Player;
+use pocketmine\world\sound\PopSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SpawnCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SpawnCommand extends Command implements PluginIdentifiableCommand
+class SpawnCommand extends Command
 {
 
     /**
@@ -57,14 +56,14 @@ class SpawnCommand extends Command implements PluginIdentifiableCommand
         $config->save();
         #########################
         if ($s instanceof Player) {
-            $levelname = $s->getLevel()->getName();
-            $level = $s->getLevel();
+            $levelname = $s->getWorld()->getDisplayName();
+            $level = $s->getWorld();
             if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
                 $pl->startSpawnDelay($s);
             } elseif ($spawn->exists($levelname)) {
                 $s->teleport($pl->getSpawn($level));
                 $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
-                $s->getLevel()->addSound(new PopSound($s));
+                $s->getWorld()->addSound($s->getPosition(), new PopSound());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
             }

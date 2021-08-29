@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\GhastShootSound;
-use pocketmine\Player;
+use pocketmine\world\sound\GhastShootSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class DelhubCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class DelhubCommand extends Command implements PluginIdentifiableCommand
+class DelhubCommand extends Command
 {
 
     /**
@@ -70,13 +69,13 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
                     }
                     $pl->removeHub($args[0]);
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-                    $s->getLevel()->addSound(new GhastShootSound($s));
+                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
                     return true;
                 }
                 if ($hub->exists("hub")) {
                     $pl->removeHub();
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-                    $s->getLevel()->addSound(new GhastShootSound($s));
+                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
                     return true;
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));

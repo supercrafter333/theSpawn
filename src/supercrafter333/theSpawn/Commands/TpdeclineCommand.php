@@ -4,14 +4,13 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
-class TpdeclineCommand extends Command implements PluginIdentifiableCommand
+class TpdeclineCommand extends Command
 {
 
     private theSpawn $pl;

@@ -3,6 +3,7 @@ build-by-default: true
 branches:
 - master
 - Dev
+- PM4
 - php8.0
 projects:
   theSpawn:

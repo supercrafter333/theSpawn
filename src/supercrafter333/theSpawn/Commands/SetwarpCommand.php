@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\DoorBumpSound;
-use pocketmine\Player;
+use pocketmine\world\sound\DoorBumpSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -15,7 +14,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SetwarpCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SetwarpCommand extends Command implements PluginIdentifiableCommand
+class SetwarpCommand extends Command
 {
 
     /**
@@ -63,13 +62,13 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         if ($pl->existsWarp($args[0]) == false) {
-            $pl->addWarp($s->getX(), $s->getY(), $s->getZ(), $s->getLevel(), $args[0]);
-            $posMsg = (string)$s->getX() . $s->getY() . $s->getZ();
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getLevel()->getName()], MsgMgr::getMsg("warp-set")))));
+            $pl->addWarp($s->getPosition()->getX(), $s->getPosition()->getY(), $s->getPosition()->getZ(), $s->getPosition()->getWorld(), $args[0]);
+            $posMsg = (string)$s->getPosition()->getX() . $s->getPosition()->getY() . $s->getPosition()->getZ();
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getWorld()->getDisplayName()], MsgMgr::getMsg("warp-set")))));
         } else {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-already-set")));
         }
-        $s->getLevel()->addSound(new DoorBumpSound($s));
+        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
     }
 
     /**

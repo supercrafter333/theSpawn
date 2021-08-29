@@ -4,11 +4,11 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\PopSound;
+use pocketmine\world\sound\PopSound;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
+use pocketmine\world\sound\XpCollectSound;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -16,7 +16,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class HomeCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class HomeCommand extends Command implements PluginIdentifiableCommand
+class HomeCommand extends Command
 {
 
     /**
@@ -59,14 +59,14 @@ class HomeCommand extends Command implements PluginIdentifiableCommand
         if (!isset($args[0])) {
             if ($pl->listHomes($s) !== null) {
                 $s->sendMessage($prefix . str_replace(["{homelist}"], [$pl->listHomes($s)], MsgMgr::getMsg("homelist")));
-                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, mt_rand());
+                $s->getWorld()->addSound($s->getPosition(), new XpCollectSound());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
             }
             return true;
         }
         $lvlName = $pl->getHomeInfo($s, $args[0])->getLevelName();
-        if ($pl->getServer()->isLevelGenerated($lvlName) == false) {
+        if ($pl->getServer()->getWorldManager()->isWorldGenerated($lvlName) == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
             return true;
         }
@@ -76,7 +76,7 @@ class HomeCommand extends Command implements PluginIdentifiableCommand
         }
         $pl->teleportToHome($s, $args[0]);
         $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-teleport")));
-        $s->getLevel()->addSound(new PopSound($s));
+        $s->getWorld()->addSound($s->getPosition(), new PopSound());
         return true;
     }
 

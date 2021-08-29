@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\DoorBumpSound;
-use pocketmine\Player;
+use pocketmine\world\sound\DoorBumpSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -15,7 +14,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SethomeCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SethomeCommand extends Command implements PluginIdentifiableCommand
+class SethomeCommand extends Command
 {
 
     /**
@@ -59,15 +58,15 @@ class SethomeCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage($this->usageMessage);
             return true;
         }
-        $x = $s->getX();
-        $y = $s->getY();
-        $z = $s->getZ();
-        $level = $s->getLevel();
+        $x = $s->getPosition()->getX();
+        $y = $s->getPosition()->getY();
+        $z = $s->getPosition()->getZ();
+        $level = $s->getWorld();
         if ($pl->setHome($s, $args[0], $x, $y, $z, $level) == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
         } else {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));
-            $s->getLevel()->addSound(new DoorBumpSound($s));
+            $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
         }
         return true;
     }

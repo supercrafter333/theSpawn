@@ -7,11 +7,12 @@ use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
-use pocketmine\level\Level;
-use pocketmine\level\Position;
-use pocketmine\level\sound\PopSound;
+use pocketmine\scheduler\Task;
+use pocketmine\world\World;
+use pocketmine\world\Position;
+use pocketmine\world\sound\PopSound;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
@@ -85,22 +86,30 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.0";
+    public $version = "1.4.0-PM4";
 
 
     /**
      * On plugin loading. (That's before enabling)
      */
-    public function onLoad()
+    public function onLoad(): void
     {
         self::$instance = $this;
+        ### PM4 Warning ###
+        ###################
+        $this->getLogger()->warning("WARNING! You are running a development version of theSpawn! Please report bugs on: §bhttps://github.com/supercrafter333/theSpawn/issues");
+        ###################
     }
 
     /**
      * On plugin enabling.
      */
-    public function onEnable()
+    public function onEnable(): void
     {
+        ### PM4 Warning ###
+        ###################
+        $this->getLogger()->warning("WARNING! You are running a development version of theSpawn! Please report bugs on: §bhttps://github.com/supercrafter333/theSpawn/issues");
+        ###################
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
         $this->saveResource("messages.yml");
@@ -279,13 +288,13 @@ class theSpawn extends PluginBase implements Listener
      * @param int $taskId
      * @return bool
      */
-    public function setTpaTaskId(string $source, int $taskId): bool
+    public function setTpaTask(string $source, Task $task): bool
     {
         if ($this->getTpaOf($source) === null) return false;
         $tpaInfo = new TpaInfo($source);
         $target = $tpaInfo->getTarget();
         $isTpaHere = $tpaInfo->isTpaHere();
-        $arr = ["target" => $target, "isTpaHere" => $isTpaHere, "taskId" => $taskId];
+        $arr = ["target" => $target, "isTpaHere" => $isTpaHere, "task" => $task];
         unset($this->TPAs[$source]);
         $this->TPAs[] = $source;
         $this->TPAs[$source] = $arr;
@@ -341,8 +350,8 @@ class theSpawn extends PluginBase implements Listener
             $hub = $this->getHub();
             if ($hub !== null) {
                 $event->getPlayer()->teleport($hub);
-            } elseif ($this->getServer()->getDefaultLevel()->getSafeSpawn() !== null) {
-                $event->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
+            } elseif ($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() !== null) {
+                $event->getPlayer()->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
             }
         }
     }
@@ -377,40 +386,40 @@ class theSpawn extends PluginBase implements Listener
     {
         $s = $event->getPlayer();
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $levelname = $s->getLevel()->getName();
-        $level = $this->getServer()->getLevelByName($levelname);
-        if ($level === null) {
+        $worldname = $s->getWorld()->getDisplayName();
+        $world = $this->getServer()->getWorldManager()->getWorldByName($worldname);
+        if ($world === null) {
             if ($this->getHub() instanceof Position) {
                 $event->setRespawnPosition($this->getHub());
             } else {
-                $event->setRespawnPosition($this->getServer()->getDefaultLevel()->getSafeSpawn());
+                $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
             }
         }
-        if ($this->getSpawn($level) instanceof Position) {
-            $event->setRespawnPosition($this->getSpawn($level));
-            $s->getLevel()->addSound(new PopSound($s));
+        if ($this->getSpawn($world) instanceof Position) {
+            $event->setRespawnPosition($this->getSpawn($world));
+            $s->getWorld()->addSound($s->getPosition(), new PopSound());
         } elseif ($this->getHub() instanceof Position) {
             $event->setRespawnPosition($this->getHub());
-            $s->getLevel()->addSound(new PopSound($s));
+            $s->getWorld()->addSound($s->getPosition(), new PopSound());
         } else {
-            if ($level->getSafeSpawn() === null) {
-                $event->setRespawnPosition($this->getServer()->getDefaultLevel()->getSafeSpawn());
+            if ($world->getSafeSpawn() === null) {
+                $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
             } else {
-                $event->setRespawnPosition($level->getSafeSpawn());
+                $event->setRespawnPosition($world->getSafeSpawn());
             }
         }
-        /*if ($this->getSpawn($levelname)) {
-            if ($this->getServer()->isLevelLoaded($levelname) == true && !$level == null) {
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
-                $s->getLevel()->addSound(new PopSound($s));
-            } elseif ($level == null) {
+        /*if ($this->getSpawn($worldname)) {
+            if ($this->getServer()->isLevelLoaded($worldname) == true && !$world == null) {
+                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
+                $s->getWorld()->addSound($s, new PopSound());
+            } elseif ($world == null) {
                 $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
                 $s->teleport($this->getHub());
                 $s->kick(MsgMgr::getMsg("no-spawn-found-kick"));
-            } elseif (!$this->getServer()->isLevelLoaded($levelname)) {
-                $this->getServer()->loadLevel($levelname);
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $level));
-                $s->getLevel()->addSound(new PopSound($s));
+            } elseif (!$this->getServer()->isLevelLoaded($worldname)) {
+                $this->getServer()->loadLevel($worldname);
+                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
+                $s->getWorld()->addSound($s, new PopSound());
             }
         }*/
     }
@@ -437,17 +446,17 @@ class theSpawn extends PluginBase implements Listener
      * @param $x
      * @param $y
      * @param $z
-     * @param Level $level
+     * @param World $world
      * @param int|null $count
      */
-    public function setHub($x, $y, $z, Level $level, int $count = null)
+    public function setHub($x, $y, $z, World $world, int $count = null)
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         $randHub = new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
-        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
+        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName()];
         if ($count !== null && $this->getUseRandomHubs()) {
-            $setRandHub = $x . '|' . $y . '|' . $z . '|' . $level->getName();
+            $setRandHub = $x . '|' . $y . '|' . $z . '|' . $world->getDisplayName();
             $randHub->set($count, $setRandHub);
             $randHub->save();
         } else {
@@ -474,9 +483,9 @@ class theSpawn extends PluginBase implements Listener
             return $this->getRandomHub(mt_rand(1, $matchCount));
         } else {
             $i = explode('|', $randHubs->get($count));
-            $levelName = $i[3];
-            if ($this->getHubLevel($levelName) instanceof Level) {
-                return new Position($i[0], $i[1], $i[2], $this->levelCheck($levelName));
+            $worldName = $i[3];
+            if ($this->getHubLevel($worldName) instanceof World) {
+                return new Position($i[0], $i[1], $i[2], $this->levelCheck($worldName));
             } else {
                 return null;
             }
@@ -530,30 +539,30 @@ class theSpawn extends PluginBase implements Listener
             $X = $hub->get("hub")["X"];
             $Y = $hub->get("hub")["Y"];
             $Z = $hub->get("hub")["Z"];
-            $levelname = $hub->get("hub")["level"];
-            $level = $this->getServer()->getLevelByName($levelname);
-            $coords = new Position($X, $Y, $Z, $level);
+            $worldname = $hub->get("hub")["level"];
+            $world = $this->getServer()->getWorldManager()->getWorldByName($worldname);
+            $coords = new Position($X, $Y, $Z, $world);
             return $coords;
         } else {
             $this->getLogger()->error("!!Please set a Hub!!");
-            return $this->getServer()->getDefaultLevel()->getSafeSpawn();
+            return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
         }
     }
 
     /**
-     * @param Level $level
+     * @param World $world
      * @return false|Position
      * @return false|Position
      */
-    public function getSpawn(Level $level)
+    public function getSpawn(World $world)
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $spawn->get($level->getName());
-        if ($spawn->exists($level->getName())) {
-            $X = $spawn->get($level->getName())["X"];
-            $Y = $spawn->get($level->getName())["Y"];
-            $Z = $spawn->get($level->getName())["Z"];
-            return new Position($X, $Y, $Z, $level);
+        $spawn->get($world->getDisplayName());
+        if ($spawn->exists($world->getDisplayName())) {
+            $X = $spawn->get($world->getDisplayName())["X"];
+            $Y = $spawn->get($world->getDisplayName())["Y"];
+            $Z = $spawn->get($world->getDisplayName())["Z"];
+            return new Position($X, $Y, $Z, $world);
         } else {
             return false;
         }
@@ -561,17 +570,17 @@ class theSpawn extends PluginBase implements Listener
 
     /**
      * @param Player $s
-     * @param Level $level
+     * @param World $world
      * @return bool
      */
-    public function setSpawn(Player $s, Level $level): bool
+    public function setSpawn(Player $s, World $world): bool
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $x = $s->getX();
-        $y = $s->getY();
-        $z = $s->getZ();
-        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName()];
-        $spawn->set($level->getName(), $coords);
+        $x = $s->getPosition()->getX();
+        $y = $s->getPosition()->getY();
+        $z = $s->getPosition()->getZ();
+        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName()];
+        $spawn->set($world->getDisplayName(), $coords);
         $spawn->save();
         return true;
     }
@@ -579,14 +588,14 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @return false|mixed
      */
-    public function getHubLevel(string $levelName): ?Level
+    public function getHubLevel(string $worldName): ?World
     {
-        if (!$this->getServer()->isLevelGenerated($levelName)) return null;
-        if (!$this->getServer()->isLevelLoaded($levelName)) {
-            $this->getServer()->loadLevel($levelName);
-            return $this->getServer()->getLevelByName($levelName);
+        if (!$this->getServer()->getWorldManager()->isWorldGenerated($worldName)) return null;
+        if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
+            $this->getServer()->getWorldManager()->loadWorld($worldName);
+            return $this->getServer()->getWorldManager()->getWorldByName($worldName);
         }
-        return $this->getServer()->getLevelByName($levelName);
+        return $this->getServer()->getWorldManager()->getWorldByName($worldName);
     }
 
     /**
@@ -600,28 +609,31 @@ class theSpawn extends PluginBase implements Listener
         if ($count !== null && $this->getUseRandomHubs()) {
             if ($randHubs->exists($count)) {
                 $hub->remove("hub");
-                return $hub->save();
+                $hub->save();
+                return true;
             } else {
                 return false;
             }
         } elseif ($hub->exists("hub")) {
             $hub->remove("hub");
-            return $hub->save();
+            $hub->save();
+            return true;
         } else {
             return false;
         }
     }
 
     /**
-     * @param Level $level
+     * @param World $world
      * @return bool
      */
-    public function removeSpawn(Level $level): bool
+    public function removeSpawn(World $world): bool
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        if ($spawn->exists($level->getName())) {
-            $spawn->remove($level->getName());
-            return $spawn->save();
+        if ($spawn->exists($world->getDisplayName())) {
+            $spawn->remove($world->getDisplayName());
+            $spawn->save();
+            return true;
         } else {
             return false;
         }
@@ -720,12 +732,12 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @param string $levelName
+     * @param string $worldName
      * @return bool
      */
-    public function existsLevel(string $levelName): bool
+    public function existsLevel(string $worldName): bool
     {
-        if ($this->getServer()->isLevelGenerated($levelName)) {
+        if ($this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
             return true;
         } else {
             return false;
@@ -764,18 +776,18 @@ class theSpawn extends PluginBase implements Listener
 
     /**
      * @param string $alias
-     * @param string $levelName
+     * @param string $worldName
      * @return bool
      */
-    public function addAlias(string $alias, string $levelName): bool
+    public function addAlias(string $alias, string $worldName): bool
     {
-        $level = $this->getServer()->getLevelByName($levelName);
-        if ($this->getSpawn($level) == false) {
+        $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
+        if ($this->getSpawn($world) == false) {
             return false;
         }
-        $this->aliasCfg->set($alias, $levelName);
+        $this->aliasCfg->set($alias, $worldName);
         $this->aliasCfg->save();
-        $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$levelName], MsgMgr::getMsg("alias-command-description")))));
+        $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
         return true;
     }
 
@@ -791,15 +803,15 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @param string $levelName
-     * @return Level
+     * @param string $worldName
+     * @return World
      */
-    public function levelCheck(string $levelName): Level
+    public function levelCheck(string $worldName): World
     {
-        if (!$this->getServer()->isLevelLoaded($levelName)) {
-            $this->getServer()->loadLevel($levelName);
+        if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
+            $this->getServer()->getWorldManager()->loadWorld($worldName);
         }
-        return $this->getServer()->getLevelByName($levelName);
+        return $this->getServer()->getWorldManager()->getWorldByName($worldName);
     }
 
     /**
@@ -832,14 +844,14 @@ class theSpawn extends PluginBase implements Listener
      * @param $x
      * @param $y
      * @param $z
-     * @param Level $level
+     * @param World $world
      * @return bool
      */
-    public function setHome(Player $player, string $homeName, $x, $y, $z, Level $level): bool
+    public function setHome(Player $player, string $homeName, $x, $y, $z, World $world): bool
     {
         if ($this->existsHome($homeName, $player) == false) {
             $home = $this->getHomeCfg($player->getName());
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "homeName" => $homeName];
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName(), "homeName" => $homeName];
             $home->set($homeName, $setThis);
             $home->save();
             return true;
@@ -875,13 +887,13 @@ class theSpawn extends PluginBase implements Listener
             $x = $home->get($homeName)["X"];
             $y = $home->get($homeName)["Y"];
             $z = $home->get($homeName)["Z"];
-            $levelName = $home->get($homeName)["level"];
-            if ($this->getServer()->isLevelGenerated($levelName)) {
-                if (!$this->getServer()->isLevelLoaded($levelName)) {
-                    $this->getServer()->loadLevel($levelName);
+            $worldName = $home->get($homeName)["level"];
+            if ($this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
+                if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
+                    $this->getServer()->getWorldManager()->loadWorld($worldName);
                 }
-                $level = $this->getServer()->getLevelByName($levelName);
-                return new Position($x, $y, $z, $level);
+                $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
+                return new Position($x, $y, $z, $world);
             } else {
                 return "LevelError";
             }
@@ -962,7 +974,7 @@ class theSpawn extends PluginBase implements Listener
         $pk = new ScriptCustomEventPacket();
         $pk->eventName = "bungeecord:main";
         $pk->eventData = Binary::writeShort(strlen("Connect")) . "Connect" . Binary::writeShort(strlen($server)) . $server;
-        $player->sendDataPacket($pk);
+        $player->getNetworkSession()->sendDataPacket($pk);
     }
 
     /**
@@ -987,14 +999,14 @@ class theSpawn extends PluginBase implements Listener
      * @param $x
      * @param $y
      * @param $z
-     * @param Level $level
+     * @param World $world
      * @param string $warpName
      */
-    public function addWarp($x, $y, $z, Level $level, string $warpName): bool
+    public function addWarp($x, $y, $z, World $world, string $warpName): bool
     {
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
-        $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName];
+        $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName(), "warpName" => $warpName];
         $warp->set($warpName, $setThis);
         $warp->save();
         return true;
@@ -1028,17 +1040,17 @@ class theSpawn extends PluginBase implements Listener
         $x = $warp["X"];
         $y = $warp["Y"];
         $z = $warp["Z"];
-        $levelName = $warp["level"];
-        if (!$this->getServer()->isLevelGenerated($levelName)) {
+        $worldName = $warp["level"];
+        if (!$this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
             return false;
         }
-        if ($this->getServer()->isLevelLoaded($levelName)) {
-            $level = $this->getServer()->getLevelByName($levelName);
-            return new Position($x, $y, $z, $level);
+        if ($this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
+            $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
+            return new Position($x, $y, $z, $world);
         } else {
-            $this->getServer()->loadLevel($levelName);
-            $level = $this->getServer()->getLevelByName($levelName);
-            return new Position($x, $y, $z, $level);
+            $this->getServer()->getWorldManager()->loadWorld($worldName);
+            $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
+            return new Position($x, $y, $z, $world);
         }
     }
 
@@ -1113,7 +1125,7 @@ class theSpawn extends PluginBase implements Listener
     {
         $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getCfg()->get("spawn-delay-seconds")), 20);
         $this->spawnDelays[] = $player->getName();
-        $this->spawnDelays[$player->getName()] = ["taskId" => $task->getTaskId()];
+        $this->spawnDelays[$player->getName()] = ["task" => $task];
     }
 
     /**
@@ -1132,7 +1144,10 @@ class theSpawn extends PluginBase implements Listener
     public function stopSpawnDelay(Player $player): bool
     {
         if (!isset($this->spawnDelays[$player->getName()])) return false;
-        $this->getScheduler()->cancelTask($this->spawnDelays[$player->getName()]["taskId"]);
+        $task = $this->spawnDelays["task"];
+        if ($task instanceof Task) {
+            $task->onCancel();
+        }
         unset($this->spawnDelays[$player->getName()]);
         return true;
     }

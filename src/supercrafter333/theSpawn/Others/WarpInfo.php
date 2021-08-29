@@ -2,7 +2,7 @@
 
 namespace supercrafter333\theSpawn\Others;
 
-use pocketmine\level\Level;
+use pocketmine\world\World;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -109,17 +109,17 @@ class WarpInfo
     }
 
     /**
-     * @return false|Level|null
+     * @return false|World|null
      */
     public function getLevel()
     {
         if ($this->exists() == true) {
             $lvlName = $this->getWarpCfg()->get($this->warpName)["level"];
-            if (theSpawn::getInstance()->getServer()->isLevelGenerated($lvlName) && theSpawn::getInstance()->getServer()->isLevelLoaded($lvlName)) {
-                return theSpawn::getInstance()->getServer()->getLevelByName($lvlName);
-            } elseif (theSpawn::getInstance()->getServer()->isLevelGenerated($lvlName)) {
-                theSpawn::getInstance()->getServer()->loadLevel($lvlName);
-                return theSpawn::getInstance()->getServer()->getLevelByName($lvlName);
+            if (theSpawn::getInstance()->getServer()->getWorldManager()->isWorldGenerated($lvlName) && theSpawn::getInstance()->getServer()->getWorldManager()->isWorldLoaded($lvlName)) {
+                return theSpawn::getInstance()->getServer()->getWorldManager()->getWorldByName($lvlName);
+            } elseif (theSpawn::getInstance()->getServer()->getWorldManager()->isWorldGenerated($lvlName)) {
+                theSpawn::getInstance()->getServer()->getWorldManager()->loadWorld($lvlName);
+                return theSpawn::getInstance()->getServer()->getWorldManager()->getWorldByName($lvlName);
             }
             return false;
         }

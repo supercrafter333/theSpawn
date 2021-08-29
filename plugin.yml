@@ -1,6 +1,6 @@
 name: theSpawn
-version: 1.4.0
-api: 3.0.0
+version: 1.4.0-PM
+api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
 mcpe-protocols:
@@ -14,41 +14,42 @@ mcpe-protocols:
   - 448
 
 permissions:
-  theSpawn.bypass:
+  theSpawn.setspawn.cmd:
     default: op
-    children:
-      theSpawn.setspawn.cmd:
-        default: op
-      theSpawn.delspawn.cmd:
-        default: op
-      theSpawn.sethub.cmd:
-        default: op
-      theSpawn.delhub.cmd:
-        default: op
-      theSpawn.setalias.cmd:
-        default: op
-      theSpawn.removealias.cmd:
-        default: op
-      theSpawn.setwarp.cmd:
-        default: op
-      theSpawn.delwarp.cmd:
-        default: op
-      theSpawn.sethome.cmd:
-        default: true
-      theSpawn.delhome.cmd:
-        default: true
-      theSpawn.home.cmd:
-        default: true
-      theSpawn.warp.cmd:
-        default: true
-      theSpawn.tpas.cmd:
-        default: true
-        children:
-          theSpawn.tpa.cmd:
-            default: true
-          theSpawn.tpahere.cmd:
-            default: true
-          theSpawn.tpaccept.cmd:
-            default: true
-          theSpawn.tpdecline.cmd:
-            default: true
+  theSpawn.delspawn.cmd:
+    default: op
+  theSpawn.sethub.cmd:
+    default: op
+  theSpawn.delhub.cmd:
+    default: op
+  theSpawn.setalias.cmd:
+    default: op
+  theSpawn.removealias.cmd:
+    default: op
+  theSpawn.setwarp.cmd:
+    default: op
+  theSpawn.delwarp.cmd:
+    default: op
+  theSpawn.sethome.cmd:
+    default: true
+  theSpawn.delhome.cmd:
+    default: true
+  theSpawn.home.cmd:
+    default: true
+  theSpawn.warp.cmd:
+    default: true
+  theSpawn.tpa.cmd:
+    default: true
+  theSpawn.tpahere.cmd:
+    default: true
+  theSpawn.tpaccept.cmd:
+    default: true
+  theSpawn.tpdecline.cmd:
+    default: true
+
+#  theSpawn.bypass:
+#    default: op
+#    children:
+#      theSpawn.tpas.cmd:
+#        default: true
+#        children:

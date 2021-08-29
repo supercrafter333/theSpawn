@@ -2,7 +2,7 @@
 
 namespace supercrafter333\theSpawn\Tasks;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
@@ -35,25 +35,25 @@ class TpaTask extends Task
     }
 
     /**
-     * @param int $currentTick
+     * Run function xD
      */
-    public function onRun(int $currentTick)
+    public function onRun(): void
     {
         if ($this->tpa->getSourceAsPlayer() == null && $this->tpa->getTargetAsPlayer() instanceof Player) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{source}", $this->tpa->getSource(), MsgMgr::getMsg("tpa-cancelled-by-source")));
-            theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
             theSpawn::getInstance()->removeTpa($this->tpa->getSource());
+            $this->onCancel();
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() instanceof Player) {
             $this->tpa->getSourceAsPlayer()->sendMessage(str_replace("{target}", $this->tpa->getTarget(), MsgMgr::getMsg("tpa-cancelled-by-target")));
-            theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
             theSpawn::getInstance()->removeTpa($this->tpa->getSource());
+            $this->onCancel();
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() == null) {
-            theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
             theSpawn::getInstance()->removeTpa($this->tpa->getSource());
+            $this->onCancel();
             return;
         }
         if ($this->secs > 10) {
@@ -65,7 +65,7 @@ class TpaTask extends Task
             $this->secs--;
         } elseif ($this->secs <= 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
-            theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
+            $this->onCancel();
         }
     }
 }

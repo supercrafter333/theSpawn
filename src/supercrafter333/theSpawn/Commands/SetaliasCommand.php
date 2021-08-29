@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\DoorBumpSound;
-use pocketmine\Player;
+use pocketmine\world\sound\DoorBumpSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -15,7 +14,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SetaliasCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SetaliasCommand extends Command implements PluginIdentifiableCommand
+class SetaliasCommand extends Command
 {
 
     /**
@@ -74,7 +73,7 @@ class SetaliasCommand extends Command implements PluginIdentifiableCommand
             }
             $pl->addAlias($args[0], $args[1]);
             $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
-            $s->getLevel()->addSound(new DoorBumpSound($s));
+            $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
             return true;
         }
         return true;

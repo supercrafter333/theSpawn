@@ -2,8 +2,8 @@
 
 namespace supercrafter333\theSpawn\Tasks;
 
-use pocketmine\level\sound\PopSound;
-use pocketmine\Player;
+use pocketmine\world\sound\PopSound;
+use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -27,7 +27,7 @@ class SpawnDelayTask extends Task
         $this->secs = $seconds;
     }
 
-    public function onRun(int $currentTick)
+    public function onRun(): void
     {
         $player = $this->player;
         if ($this->secs > 3) {
@@ -38,9 +38,9 @@ class SpawnDelayTask extends Task
             $this->secs--;
         }
         if ($this->secs <= 0) {
-            $player->teleport(theSpawn::getInstance()->getSpawn($player->getLevel()));
-            $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getLevel()->getName()], MsgMgr::getMsg("spawn-tp")));
-            $player->getLevel()->addSound(new PopSound($player));
+            $player->teleport(theSpawn::getInstance()->getSpawn($player->getWorld()));
+            $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getWorld()->getDisplayName()], MsgMgr::getMsg("spawn-tp")));
+            $player->getWorld()->addSound($player->getPosition(), new PopSound());
             theSpawn::getInstance()->stopSpawnDelay($player);
         }
     }
