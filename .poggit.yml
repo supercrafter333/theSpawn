@@ -10,3 +10,5 @@ projects:
     icon: "icon.png"
     path: ""
     php: 8.0
+    lint:
+      phpstan: false
