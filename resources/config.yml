@@ -31,9 +31,10 @@ spawn-delay-seconds: 3
 #hub teleport on Join [true | false]
 hub-teleport-on-join: "true"
 
+language: "en_EN"
 
 #DON'T CHANGE THIS!!
-version: "1.4.0"
+version: "1.5.0"
 
 ############################
 ##########theSpawn##########
