@@ -1,6 +1,6 @@
 name: theSpawn
-version: 1.4.0
-api: 3.0.0
+version: 1.5.0-PM4
+api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
 mcpe-protocols:
@@ -47,9 +47,11 @@ permissions:
   theSpawn.tpdecline.cmd:
     default: true
 
+# TODO: add permissions with childrens
 #  theSpawn.bypass:
 #    default: op
 #    children:
+#
 #      theSpawn.tpas.cmd:
 #        default: true
 #        children:

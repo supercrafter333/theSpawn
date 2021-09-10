@@ -4,10 +4,11 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
+use pocketmine\world\sound\XpCollectSound;
 use pocketmine\world\sound\XpLevelUpSound;
+use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -60,7 +61,7 @@ class WarpCommand extends Command
                 } else {
                     $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
                 }
-                $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, mt_rand());
+                $s->getWorld()->addSound($s->getPosition(), new XpCollectSound());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
             }

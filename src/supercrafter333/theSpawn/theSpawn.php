@@ -86,7 +86,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.0";
+    public $version = "1.5.0";
 
 
     /**
@@ -1011,14 +1011,14 @@ class theSpawn extends PluginBase implements Listener
      * @param World $world
      * @param string $warpName
      */
-    public function addWarp($x, $y, $z, Level $level, string $warpName, string $permission = null): bool
+    public function addWarp($x, $y, $z, World $level, string $warpName, string $permission = null): bool
     {
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
         if ($permission === null) {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName];
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getDisplayName(), "warpName" => $warpName];
         } else {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName, "perm" => $permission];
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getDisplayName(), "warpName" => $warpName, "perm" => $permission];
         }
         $warp->set($warpName, $setThis);
         $warp->save();
