@@ -29,7 +29,7 @@ class MsgMgr
      */
     public static function getMsgs(): Config
     {
-        return new Config(theSpawn::getInstance()->getDataFolder() . "messages.yml", Config::YAML);
+        return new Config(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml", Config::YAML);
     }
 
     /**
@@ -46,13 +46,18 @@ class MsgMgr
         return false;
     }
 
+    public static function getMessagesLanguage(): string
+    {
+        return theSpawn::getInstance()->getConfig()->get("language");
+    }
+
     /**
      *
      */
     public function updateMsgCfgX()
     {
-        unlink(theSpawn::getInstance()->getDataFolder() . "messages.yml");
-        theSpawn::getInstance()->saveResource("messages.yml");
+        unlink(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml");
+        theSpawn::getInstance()->saveResource("Languages/" . self::getMessagesLanguage() . ".yml");
     }
 
     /**
@@ -74,8 +79,8 @@ class MsgMgr
      */
     public static function updateMsgCfg()
     {
-        rename(theSpawn::getInstance()->getDataFolder() . "messages.yml", theSpawn::getInstance()->getDataFolder() . "messagesOld.yml");
-        return theSpawn::getInstance()->saveResource("messages.yml");
+        rename(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml", theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . "Old.yml");
+        return theSpawn::getInstance()->saveResource("Languages/" . self::getMessagesLanguage() . ".yml");
     }
 
     /**
@@ -136,7 +141,7 @@ class MsgMgr
      */
     public function getMsgsX(): Config
     {
-        return new Config(theSpawn::getInstance()->getDataFolder() . "messages.yml", Config::YAML);
+        return new Config(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml", Config::YAML);
     }
 
     /**

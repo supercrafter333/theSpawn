@@ -1,0 +1,106 @@
+#here you can select the messages of theSpawn
+
+
+#prefix
+prefix: "§f[§7the§eSpawn§f] §8»§r "
+
+#setup and tp messages
+#uses: {world}
+spawn-tp: "§aVous avez bien été téléporté au spawn de ce monde ! §7[§b{world}§7]"
+hub-tp: "§aVous avez bien été téléporté au hub ! §7[§b{world}§7]"
+spawn-set: "§aVous avez bien §7définis §ale spawn de ce monde ! §7[§b{world}§7]"
+spawn-changed: "§aVous avez bien §7mis à jour §ale spawn de ce monde ! §7[§b{world}§7]"
+hub-set: "§aVous avez bien §7définis§a le hub dans le monde §b{world}§a!"
+hub-changed: "§aVous avez bien §7mis à jour§a le hub dans le monde §b{world}§a!"
+
+#remove messages
+#uses: none
+spawn-removed: "§aVous avez bien supprimer le spawn de ce monde !"
+hub-removed: "§aVous avez bien supprimer le hub du serveur."
+
+#alias messages
+#uses: {alias} {world}
+alias-teleport: "§aVous avez été téléporté à l'alias §7{alias}§a! §7§b{world}§7]"
+alias-set: "§aVous avez bien définis l'alias §b{alias}§a pour le monde §b{world}§a!"
+alias-command-description: "§r§aAlias pour le monde §b{world}§a!"
+#uses: {alias}
+alias-removed: "§aVous avez bien supprimé l'alias §b{alias}§a!"
+
+#home messages
+#uses: {home}
+home-teleport: "§aVous avez bien été téléporté à votre home §b{home}§a!"
+home-not-exists: "§cVotre home §b{home}§c n'existe pas !"
+home-set: "§aVous avez bien définis votre home §b{home}§a!"
+home-deleted: "§aVous avez bien supprimer votre home §b{home}§a!"
+home-already-exists: "§cVotre home §b{home}§c existe déjà !"
+#uses: {homelist}
+homelist: "§eVos homes: §7{homelist}"
+
+#warp messages
+#uses: {warpname} {position} {world}
+warp-set: "§aVous avez bien défnis le warp §b{warpname}§a à la position §7{position}§a dans le monde §7{world}§a!"
+#uses: {warpname} {position} {world}
+warp-teleport: "§aYVous avez été teleporté au warp §b{warpname}§a dans le monde §7{world}§a!"
+#uses: {warpname}
+warp-deleted: "§aVous avez bien supprimé le warp §7{warpname}§a!"
+warp-not-exists: "§cLe warp §7{warpname}§c n'existe pas !"
+warp-already-set: "§cLe warp §7[§b{warpname}§7]§c existe déjà sur le serveur ! Veuillez supprimer votre warp et ressayer !"
+#uses: {warplist}
+warplist: "§eListe des warps : §7{warplist}"
+#uses: none
+no-warps-set: "§cCe serveur n'a actuellement aucun warp !"
+
+#tpa messages
+tpa-send: "§aVous avez bien envoyer une demande de téléportation à §7{target}§a!"
+new-tpa: "§7{source}§e vous a envoyé une demande de téléportation pour vous téléporter sur lui ! Utilisez §8/tpaccept {source}§e pour accepter et §8/tpdecline {source}§e pour refuser !"
+new-tpa-here: "§7{source}§e vous a envoyé une demande de téléportation pour se téléporter sur vous ! Utilisez §8/tpaccept {source}§e pour accepter et §8/tpdecline {source}§e pour refuser !"
+tpa-secs: "§eTéléportation dans §7{secs}§e secondes"
+pending-tpa-error: "§cVous avez déjà une demandde de téléportation en cours, veuillez attendre son expiration ou sa réponde et réessayer après."
+no-pending-tpa: "§cVous n'avez aucune demande de téléportation !"
+no-self-tpa: "§cVous ne pouvez pas vous téléporter sur vous même !"
+tpa-secs-left: "§eLa demande de téléportation de {source} se finit dans §b{secs} secondes§e!"
+player-not-found: "§cLe joueur §7{name}§c n'est pas connectés !"
+tpa-cancelled-by-source: "§cLa demande de téléportation de {source} a été annulée, car le joueur n'est plus connecté."
+tpa-cancelled-by-target: "§cLa demande de téléportation vers {target} a été annulée, car le joueur n'est plus connecté."
+tpa-accepted-source: "§7{target}§a a accepter votre demande de téléportation !"
+tpa-accepted-target: "§aVous avez bien accepté la demande de téléportation de §{source}§a!"
+tpa-declined-source: "§7{target}§c a refusé votre demande de téléportation !"
+tpa-declined-target: "§aVous avez bien refusé la demande de téléportation de §{source}§a!"
+tpa-ended: "Le TpaInfo de {source} vers {target} est désormais finit."
+
+#spawn delays
+delay-tip: "§8[§eVous serez téléporté dans §7{secs}§e!§8]"
+delay-stopped-by-move: "§cTéléportation annulée car vous avez bougé."
+
+#errors
+#uses: none
+no-spawn-set: "§4ERROR --> §cAucun spawn trouvé dans ce monde !"
+no-hub-set: "§4ERROR --> §cAucun hub définis sur ce serveur !"
+alias-not-found: "§cCet alias n'existe pas !"
+hub-server-is-enabled: "§7'use-hub-server' §cest définis sur §7true §cdans la configuration, vous ne pouvez pas définir un hub si elle est sur true !"
+something-went-wrong: "§4Quelque chose s'est mal passé !"
+no-perms: "§cVous n'avez pas la permission pour faire cela !"
+world-not-found: "§cMonde non trouvé !"
+world-not-found-hub: "§cMonde du hub non trouvé !"
+no-spawn-set-in-this-world: "§cAucun spawn définis dans ce monde !"
+aliases-deactivated: "§cLes alias sont désactivés sur ce serveur ! Vous pouvez les activer dans la configuration de theSpawn !"
+warps-deactivated: "§cLes warps sont désactivés sur ce serveur ! Vous pouvez les activer dans la configuration de theSpawn !"
+only-In-Game: "Seulement en jeu !"
+false-config-setting: "§4FATAL ERROR --> §cFaux paramètres dans la configuration, 'use-hub-server' <true|false> n'est définis ni sur true, ni sur false !"
+no-spawn-found-kick: "§4Aucun spawn trouvé pour votre monde ! Vous avez été expulsé par sécurité !"
+no-homes-set: "§cVous n'avez aucun home !"
+set-random-hub-before: "§cVeuillez définir un hub avant d'en définir un sous ce numéro !"
+remove-random-hub-before: "§cVeuillez supprimer le hub avant de supprimer celui-ci !"
+#uses: {world}
+no-spawn-set-for-world: "§cAucun spawn définis pour le monde {world}!"
+
+
+
+#don't change this
+version: "1.5.0"
+
+
+############################
+##########theSpawn##########
+############################
+#Licensed under Apache License 2.0! Plugin by supercrafter333 inspirated by MSpawns from EvolSoft!
