@@ -31,6 +31,22 @@ spawn-delay-seconds: 3
 #hub teleport on Join [true | false]
 hub-teleport-on-join: "true"
 
+#use Forms [true | false]
+use-forms: "true"
+
+################
+### Language ###
+################
+#
+# Languages:
+# -> 'en_BE' - British English
+# -> 'ger_DE' - German
+# -> 'fr_FR' - French
+# -> 'CUSTOM' - Edit the messages yourself
+#
+# Chose you language here:
+language: "en_BE"
+
 
 #DON'T CHANGE THIS!!
 version: "1.4.0-PM4"

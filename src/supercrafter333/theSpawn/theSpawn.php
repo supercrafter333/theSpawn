@@ -86,7 +86,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.0-PM4";
+    public $version = "1.4.0";
 
 
     /**
@@ -110,17 +110,21 @@ class theSpawn extends PluginBase implements Listener
         ###################
         $this->getLogger()->warning("WARNING! You are running a development version of theSpawn! Please report bugs on: §bhttps://github.com/supercrafter333/theSpawn/issues");
         ###################
+
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
-        $this->saveResource("messages.yml");
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom") {
+            $this->saveResource("Languages/messages.yml");
+        }
         $this->saveResource("config.yml");
         # Version Check
         $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         ###
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
+        $this->msgCfg = MsgMgr::getMsgs();
         self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
+        @mkdir($this->getDataFolder() . "Languages");
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
         $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
@@ -176,6 +180,11 @@ class theSpawn extends PluginBase implements Listener
         return self::$instance;
     }
 
+    public function getFile2(): string
+    {
+        return $this->getFile();
+    }
+
     /**
      * @return Config
      */
@@ -225,18 +234,18 @@ class theSpawn extends PluginBase implements Listener
                 $this->getLogger()->warning("Your config.yml is outdated but that's not so bad.");
             }
         }
-        if (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version) {
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom" && (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version)) {
             if ($update == true) {
-                $this->getLogger()->debug("OUTDATED MESSAGES.YML!! Your messages.yml is outdated! Your messages.yml will automatically updated!");
-                if (file_exists($this->getDataFolder() . "oldMessages.yml")) {
-                    unlink($this->getDataFolder() . "oldMessages.yml");
+                $this->getLogger()->debug("OUTDATED " . MsgMgr::getMessagesLanguage() . ".yml!! Your " . MsgMgr::getMessagesLanguage() . ".yml is outdated! Your " . MsgMgr::getMessagesLanguage() . ".yml will automatically updated!");
+                if (file_exists($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml")) {
+                    unlink($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml");
                 }
-                rename($this->getDataFolder() . "messages.yml", $this->getDataFolder() . "oldMessages.yml");
-                $this->saveResource("messages.yml");
-                $this->getLogger()->debug("messages.yml Updated for version: §b$version");
-                $this->getLogger()->notice("INFORMATION: Your old message.yml can be found under `oldMessages.yml`");
+                rename($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . ".yml", $this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml");
+                $this->saveResource("Languages/" . MsgMgr::getMessagesLanguage() . ".yml");
+                $this->getLogger()->debug(MsgMgr::getMessagesLanguage() . ".yml Updated for version: §b$version");
+                $this->getLogger()->notice("INFORMATION: Your old " . MsgMgr::getMessagesLanguage() . ".yml can be found under `" . MsgMgr::getMessagesLanguage() . "Old.yml`");
             } else {
-                $this->getLogger()->warning("Your messages.yml is outdated but that's not so bad.");
+                $this->getLogger()->warning("Your " . MsgMgr::getMessagesLanguage() . ".yml is outdated but that's not so bad.");
             }
         }
     }
@@ -1002,11 +1011,15 @@ class theSpawn extends PluginBase implements Listener
      * @param World $world
      * @param string $warpName
      */
-    public function addWarp($x, $y, $z, World $world, string $warpName): bool
+    public function addWarp($x, $y, $z, Level $level, string $warpName, string $permission = null): bool
     {
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
-        $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName(), "warpName" => $warpName];
+        if ($permission === null) {
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName];
+        } else {
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName, "perm" => $permission];
+        }
         $warp->set($warpName, $setThis);
         $warp->save();
         return true;
@@ -1150,5 +1163,17 @@ class theSpawn extends PluginBase implements Listener
         }
         unset($this->spawnDelays[$player->getName()]);
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function useForms(): bool
+    {
+        if ($this->getCfg()->get("use-forms") == "true" || $this->getCfg()->get("use-forms") == "on") {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

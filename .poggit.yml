@@ -3,7 +3,6 @@ build-by-default: true
 branches:
 - master
 - Dev
-- PM4
 - php8.0
 projects:
   theSpawn:
@@ -12,3 +11,6 @@ projects:
     php: 8.0
     lint:
       phpstan: false
+    libs:
+      - src: jojoe77777/FormAPI/libFormAPI
+        version: ^1.3

@@ -25,7 +25,10 @@ This plugin is not out of date and will get better developed from time to time. 
 - TPAs [default: active]
 - Random-Hubs [default: inactive]
 - Teleport to hub on Join [default: active]
-    
+- Multiple languages [default: English (BE)]  
+- Warp permissions
+- Forms
+
 ### TODOs
 - [X] Homes
 - [X] Command files
@@ -71,7 +74,7 @@ This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
 
 Owner: supercrafter333
 
-Helper: ---
+Helper: AyzrixYTB
 
 Icon: HannesTheDev [Thank you]
 
