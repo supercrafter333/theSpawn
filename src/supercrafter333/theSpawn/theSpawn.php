@@ -112,6 +112,7 @@ class theSpawn extends PluginBase implements Listener
         $this->msgCfg = new Config($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . ".yml", Config::YAML);
         self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
+        @mkdir($this->getDataFolder() . "Languages");
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
         $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
