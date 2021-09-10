@@ -85,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.5.0";
+    public $version = "1.5.0-DEV";
 
 
     /**
@@ -103,13 +103,15 @@ class theSpawn extends PluginBase implements Listener
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
-        $this->saveResource("Languages/" . MsgMgr::getMessagesLanguage() . ".yml");
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom") {
+            $this->saveResource("Languages/messages.yml");
+        }
         $this->saveResource("config.yml");
         # Version Check
         $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         ###
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        $this->msgCfg = new Config($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . ".yml", Config::YAML);
+        $this->msgCfg = MsgMgr::getMsgs();
         self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
         @mkdir($this->getDataFolder() . "Languages");
@@ -168,6 +170,11 @@ class theSpawn extends PluginBase implements Listener
         return self::$instance;
     }
 
+    public function getFile2(): string
+    {
+        return $this->getFile();
+    }
+
     /**
      * @return Config
      */
@@ -217,7 +224,7 @@ class theSpawn extends PluginBase implements Listener
                 $this->getLogger()->warning("Your config.yml is outdated but that's not so bad.");
             }
         }
-        if (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version) {
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom" && (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version)) {
             if ($update == true) {
                 $this->getLogger()->debug("OUTDATED " . MsgMgr::getMessagesLanguage() . ".yml!! Your " . MsgMgr::getMessagesLanguage() . ".yml is outdated! Your " . MsgMgr::getMessagesLanguage() . ".yml will automatically updated!");
                 if (file_exists($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml")) {
@@ -991,11 +998,15 @@ class theSpawn extends PluginBase implements Listener
      * @param Level $level
      * @param string $warpName
      */
-    public function addWarp($x, $y, $z, Level $level, string $warpName): bool
+    public function addWarp($x, $y, $z, Level $level, string $warpName, string $permission = null): bool
     {
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
-        $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName];
+        if ($permission === null) {
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName];
+        } else {
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getName(), "warpName" => $warpName, "perm" => $permission];
+        }
         $warp->set($warpName, $setThis);
         $warp->save();
         return true;
@@ -1136,5 +1147,17 @@ class theSpawn extends PluginBase implements Listener
         $this->getScheduler()->cancelTask($this->spawnDelays[$player->getName()]["taskId"]);
         unset($this->spawnDelays[$player->getName()]);
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function useForms(): bool
+    {
+        if ($this->getCfg()->get("use-forms") == "true" || $this->getCfg()->get("use-forms") == "on") {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

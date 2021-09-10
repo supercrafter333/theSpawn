@@ -11,6 +11,20 @@ use pocketmine\utils\Config;
 class MsgMgr
 {
 
+    public const LANG_en_BE = "en_BE"; # British English
+    //TODO: public const LANG_en_AE = "en_AE"; # American English
+    public const LANG_ger_DE = "ger_DE";
+    public const LANG_fr_FR = "fr_FR";
+    public const LANG_CUSTOM = "messages";
+
+    public static array $languages = [
+        self::LANG_en_BE => self::LANG_en_BE,
+        //TODO: self::LANG_en_AE => self::LANG_en_AE,
+        self::LANG_ger_DE => self::LANG_ger_DE,
+        self::LANG_fr_FR => self::LANG_fr_FR,
+        self::LANG_CUSTOM => self::LANG_CUSTOM,
+    ];
+
     /**
      * @var MsgMgr
      */
@@ -29,7 +43,17 @@ class MsgMgr
      */
     public static function getMsgs(): Config
     {
-        return new Config(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml", Config::YAML);
+        if (strtolower(self::getMessagesLanguage()) == "custom") {
+            theSpawn::getInstance()->saveResource("Languages/messages.yml");
+            return new Config(theSpawn::getInstance()->getDataFolder() . "Languages/messages.yml", Config::YAML);
+        }
+        if (isset(self::$languages[self::getMessagesLanguage()]) && file_exists(theSpawn::getInstance()->getFile2() . "resources/Languages/" . self::getMessagesLanguage() . ".yml")) return new Config(theSpawn::getInstance()->getFile2() . "resources/Languages/" . self::getMessagesLanguage() . ".yml", Config::YAML);
+        return self::getDefaultMsgs();
+    }
+
+    public static function getDefaultMsgs(): Config
+    {
+        return new Config(theSpawn::getInstance()->getFile2() . "resources/Languages/" . self::LANG_en_BE . ".yml", Config::YAML);
     }
 
     /**
@@ -48,16 +72,8 @@ class MsgMgr
 
     public static function getMessagesLanguage(): string
     {
-        return theSpawn::getInstance()->getConfig()->get("language");
-    }
-
-    /**
-     *
-     */
-    public function updateMsgCfgX()
-    {
-        unlink(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml");
-        theSpawn::getInstance()->saveResource("Languages/" . self::getMessagesLanguage() . ".yml");
+        if (isset(self::$languages[theSpawn::getInstance()->getConfig()->get("language")])) return theSpawn::getInstance()->getConfig()->get("language");
+        return self::LANG_en_BE;
     }
 
     /**
@@ -91,9 +107,10 @@ class MsgMgr
     {
         if (self::getMsgs()->exists($message)) {
             return self::getMsgs()->get($message);
-        } else {
-            return "ERROR";
+        } elseif (self::getDefaultMsgs()->exists($message)) {
+            return self::getDefaultMsgs()->get($message);
         }
+        return "ERROR";
     }
 
     /**
@@ -101,7 +118,7 @@ class MsgMgr
      */
     public static function getNoPermMsg(): string
     {
-        return self::getMsgs()->get("no-perms");
+        return self::getMsg("no-perms");
     }
 
     /**
@@ -109,7 +126,7 @@ class MsgMgr
      */
     public static function getOnlyIGMsg(): string
     {
-        return self::getMsgs()->get("only-In-Game");
+        return self::getMsg("only-In-Game");
     }
 
     /**
@@ -141,7 +158,7 @@ class MsgMgr
      */
     public function getMsgsX(): Config
     {
-        return new Config(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml", Config::YAML);
+        return self::getMsgs();
     }
 
     /**
@@ -149,7 +166,7 @@ class MsgMgr
      */
     public function getErrorMgsX(): string
     {
-        return $this->getMsgsX()->get("something-went-wrong");
+        return self::getMsg("something-went-wrong");
     }
 
     /**
@@ -158,6 +175,6 @@ class MsgMgr
      */
     public function getMsgX(string $message)
     {
-        return self::getMsgs()->get($message);
+        return self::getMsg($message);
     }
 }

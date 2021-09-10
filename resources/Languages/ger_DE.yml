@@ -1,0 +1,117 @@
+# Here you can select the messages of theSpawn
+
+# ger_DE by @supercrafter333
+
+
+#prefix
+prefix: "§f[§7the§eSpawn§f] §8»§r "
+
+#setup and tp messages
+#uses: {world}
+spawn-tp: "§aDu wurdest erfolgreich zum Spawn dieser Welt teleportiert! §7[§b{world}§7]"
+hub-tp: "§aDu wurdest erfolgreich zum Spawn der Lobby teleportiert! §7[§b{world}§7]"
+spawn-set: "§aDu hast erfolgreich den Spawn für diese Welt §7gesetzt §a! §7[§b{world}§7]"
+spawn-changed: "§aDu hast erfolgreich einen §7neuen §aSpawn für diese Welt festgelegt! §7[§b{world}§7]"
+hub-set: "§aDu hast erfolgreich den Spawn der Lobby für die Welt §b{world} §7gesetzt§a!"
+hub-changed: "§aDu hast erfolgreich einen §7neuen §aSpawn der Lobby für die Welt §b{world}§a festgelegt!"
+
+#remove messages
+#uses: none
+spawn-removed: "§aDu hast erfolgreich den Spawn dieser Welt entfernt!"
+hub-removed: "§aDu hast erfolgreich den Lobby Spawn-Punkt entfernt!"
+
+#alias messages
+#uses: {alias} {world}
+alias-teleport: "§aDu wurdest zum Alias namens §7{alias}§a teleportiert! §7§b{world}§7]"
+alias-set: "§aDu hast erfolgreich den Alias §b{alias}§a für die Welt §b{world}§a festgelegt!"
+alias-command-description: "§r§aAlias für die Welt §b{world}§a!"
+#uses: {alias}
+alias-removed: "§aDu hast erfolgreich den Alias §b{alias}§a entfernt!"
+
+#home messages
+#uses: {home}
+home-teleport: "§aDu wurdest erfolgreich zu deinem Home namens §b{home}§a teleportiert!"
+home-not-exists: "§cDas Home namens §b{home}§c existiert nicht!"
+home-set: "§aDu hast erfolgreich das Home namens §b{home}§a erstellt!"
+home-deleted: "§aDu hast erfolgreich dein Home namens §b{home}§a gelöscht!"
+home-already-exists: "§cDu hast bereits ein Home namens §b{home}§c erstellt!"
+#uses: {homelist}
+homelist: "§eDeine Homes: §7{homelist}"
+
+#warp messages
+#uses: {warpname} {position} {world}
+warp-set: "§aDu hast erfolgreich den Warp namens §b{warpname}§a für die Position §7{position}§a in der Welt §7{world}§a erstellt!"
+#uses: {warpname} {position} {world}
+warp-teleport: "§aDu wurdest zum Warps namens §b{warpname}§a in die Welt §7{world}§a!"
+#uses: {warpname}
+warp-deleted: "§aDu hast erfolgreich den Warp namens §7{warpname}§a entfernt!"
+warp-not-exists: "§cEin Warp namens §7{warpname}§c existiert auf diesem Server noch nicht!"
+warp-already-set: "§cDer von dir ausgewählte Warp, namens §7[§b{warpname}§7]§c existiert bereits auf diesem Server! Bitte lösche den Warp und versuche es dann noch einmal."
+#uses: {warplist}
+warplist: "§eListe der Warps: §7{warplist}"
+#uses: none
+no-warps-set: "§cAuf diesem Server wurden noch keine Warps erstellt!"
+
+#tpa messages
+tpa-send: "§aDu hast erfolgreich eine TPA an §7{target}§a gesendet!"
+new-tpa: "§7{source}§e hat dir eine TPA gesendet, um sich zu dir zu Teleportieren! Führe §8/tpaccept {source}§e aus, um die TPA anzunehmen und §8/tpdecline {source}§e um die TPA abzulehnen!"
+new-tpa-here: "§7{source}§e hat dir eine TPA gesendet, um dich zu sich zu Teleportieren! Führe §8/tpaccept {source}§e aus, um die TPA anzunehmen und §8/tpdecline {source}§e um die TPA abzulehnen!"
+tpa-secs: "§eDeine TPA andet in §7{secs}§e Sekunden..."
+pending-tpa-error: "§cDu hast eine ausstehende TPA. Bitte warte, bis die TPA beantwortet wurde oder beendet wurde und versuche es dann erneut."
+no-pending-tpa: "§cDu hast keine ausstehende TPA!"
+no-self-tpa: "§cDu kannste keine TPA an dich selbst senden!"
+tpa-secs-left: "§eDie TPA von {source} endet in §b{secs} Sekunden§e!"
+player-not-found: "§cDer vom dir ausgewählte Spieler namens §7{name}§c ist nicht Online!"
+tpa-cancelled-by-source: "§cDie TPA von {source} wurde abgebrochen, weil er Offline ist."
+tpa-cancelled-by-target: "§cDie TPA zu {target} wurde abgebrochen, weil er Offline ist."
+tpa-accepted-source: "§7{target}§a hat deine TPA akzeptiert!"
+tpa-accepted-target: "§aDu hast erfolgreich die TPA von §{source}§a angenommen!"
+tpa-declined-source: "§7{target}§c hat deine TPA abgelehnt!"
+tpa-declined-target: "§aDu hast erfolgreich dei TPA von §{source}§a abgelehnt!"
+tpa-ended: "Die TPA von {source} zu {target} ist nun beendet."
+
+#spawn delays
+delay-tip: "§8[§eDu wirst in §7{secs}§e Sekunden Teleportiert!§8]"
+delay-stopped-by-move: "§cTeleportation fehlgeschlagen! Du hast dich Bewegt."
+
+#forms
+#   warps
+form-warp-menu-title: "Warps"
+form-warp-menu-content: "Bitte wähle einen Warp aus."
+form-warp-menu-warpButton: "§b{warp}§r{line}§7Klicke für Teleportation"
+#   homes
+form-home-menu-title: "Homes"
+form-home-menu-content: "Bitte wähle ein Home aus."
+form-home-menu-warpButton: "§b{home}§r{line}§7Klicke für Teleportation"
+
+#errors
+#uses: none
+no-spawn-set: "§4ERROR --> §cFür diese Welt wurde noch kein Spawn erstellt!"
+no-hub-set: "§4ERROR --> §cEs wurde noch kein Lobby Spawn-Punkt für diesen Server erstellt!"
+alias-not-found: "§cDieser Alias existiert nicht!"
+hub-server-is-enabled: "§7'use-hub-server' §cist §7true §cin der config, du kannst keinen Lobby Spawn-Punkt setzen, wenn diese Option auf 'true' steht!"
+something-went-wrong: "§4Ups... Irgendwas ist schiefgelaufen!"
+no-perms: "§cDu bist nicht berechtigt dies zu nutzen!"
+world-not-found: "§cWelt konnte nicht gefunden werden!"
+world-not-found-hub: "§cDie Lobby-Welt konnte nicht gefunden werden!"
+no-spawn-set-in-this-world: "§cFür diese Welt wurde noch kein Spawn festgelegt!"
+aliases-deactivated: "§cAliase sind auf diesem Server deaktiviert! Aliase können in der config von theSpawn aktiviert werden!"
+warps-deactivated: "§cWarps sind auf diesem Server deaktiviert! Warps können in der config von theSpawn aktiviert werden!"
+only-In-Game: "Nur In-Game!"
+false-config-setting: "§4FATAL ERROR --> §cFalsche einstellung in der config, 'use-hub-server' <true|false> aber dort ist nichts auf true oder false!"
+no-spawn-found-kick: "§4Es konnte kein Spawn für diese Welt gefunden werden! Du wurdest gekickt, um Fehler zu vermeiden!"
+no-homes-set: "§cDu hast noch keinerlei Homes erstellt!"
+set-random-hub-before: "§cBitte erstelle einen Lobby Spawn-Punkt, bevor du einen mit dieser Zahl erstellt!"
+remove-random-hub-before: "§cBitte entferne den Lobby Spawn-Punkt vor diesem Lobby Spawn-Punkt, bevor du diesen entfernst!"
+#uses: {world}
+no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festgelegt!"
+
+
+
+#compatible with v1.5.0
+
+
+############################
+##########theSpawn##########
+############################
+#Licensed under Apache License 2.0! Plugin by supercrafter333 inspirated by MSpawns from EvolSoft!

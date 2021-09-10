@@ -9,3 +9,6 @@ projects:
     icon: "icon.png"
     path: ""
     php: 8.0
+    libs:
+      - src: jojoe77777/FormAPI/libFormAPI
+        version: ^1.3

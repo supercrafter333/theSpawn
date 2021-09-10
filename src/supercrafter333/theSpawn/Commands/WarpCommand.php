@@ -8,6 +8,7 @@ use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -52,7 +53,12 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
         }
         if (count($args) < 1) {
             if ($pl->listWarps() !== null) {
-                $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
+                if ($pl->useForms()) {
+                    $warpForms = new WarpForms();
+                    $warpForms->open($s);
+                } else {
+                    $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
+                }
                 $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, mt_rand());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
@@ -62,6 +68,12 @@ class WarpCommand extends Command implements PluginIdentifiableCommand
         if (!$s->hasPermission("theSpawn.warp.cmd")) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
             return;
+        }
+        if (theSpawn::getInstance()->getWarpInfo($args[0])->getPermission() !== null) {
+            if (!$s->hasPermission("theSpawn.warp." . theSpawn::getInstance()->getWarpInfo($args[0])->getPermission())) {
+                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
+                return;
+            }
         }
         if ($pl->useWarps() == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("warps-deactivated"));

@@ -34,7 +34,7 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
     {
         $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.setwarp.cmd");
-        parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname>", $aliases);
+        parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname> [permission]", $aliases);
     }
 
     /**
@@ -63,7 +63,7 @@ class SetwarpCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         if ($pl->existsWarp($args[0]) == false) {
-            $pl->addWarp($s->getX(), $s->getY(), $s->getZ(), $s->getLevel(), $args[0]);
+            $pl->addWarp($s->getX(), $s->getY(), $s->getZ(), $s->getLevel(), $args[0], isset($args[1]) ? $args[1] : null);
             $posMsg = (string)$s->getX() . $s->getY() . $s->getZ();
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getLevel()->getName()], MsgMgr::getMsg("warp-set")))));
         } else {

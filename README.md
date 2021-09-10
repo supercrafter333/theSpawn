@@ -1,5 +1,5 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# theSpawn - V1.4.0   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# theSpawn - V1.5.0-DEV   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 
 **This plugin will replace MSpawns! Help me to make this plugin better!**
 
@@ -21,7 +21,9 @@ This plugin is not out of date and will get better developed from time to time. 
 - TPAs [default: active]
 - Random-Hubs [default: inactive]
 - Teleport to hub on Join [default: active]
-- Multiple languages [default: English]    
+- Multiple languages [default: English (BE)]  
+- Warp permissions
+- Forms
 
 ### TODOs
 - [X] Homes

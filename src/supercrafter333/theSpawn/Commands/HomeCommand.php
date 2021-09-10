@@ -9,6 +9,7 @@ use pocketmine\level\sound\PopSound;
 use pocketmine\network\mcpe\protocol\LevelEventPacket;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\Forms\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -58,7 +59,12 @@ class HomeCommand extends Command implements PluginIdentifiableCommand
         }
         if (!isset($args[0])) {
             if ($pl->listHomes($s) !== null) {
-                $s->sendMessage($prefix . str_replace(["{homelist}"], [$pl->listHomes($s)], MsgMgr::getMsg("homelist")));
+                if ($pl->useForms()) {
+                    $homeForms = new HomeForms($s->getName());
+                    $homeForms->open($s);
+                } else {
+                    $s->sendMessage($prefix . str_replace(["{homelist}"], [$pl->listHomes($s)], MsgMgr::getMsg("homelist")));
+                }
                 $s->getLevel()->broadcastLevelEvent($s, LevelEventPacket::EVENT_SOUND_ORB, mt_rand());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));

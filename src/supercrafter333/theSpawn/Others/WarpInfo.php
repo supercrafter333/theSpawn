@@ -125,4 +125,11 @@ class WarpInfo
         }
         return false;
     }
+
+    public function getPermission(): ?string
+    {
+        $perm = $this->getWarpCfg()->get($this->warpName, ["perm"]);
+        if ($perm !== null && $perm !== false) return $perm;
+        return null;
+    }
 }
