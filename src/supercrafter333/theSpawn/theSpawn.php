@@ -1063,7 +1063,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function useWarps(): bool
     {
-        if ($this->getCfg()->get("use-warps") == "true" || $this->getCfg()->get("use-warps") == "on") {
+        if ($this->getConfig()->get("use-warps") == "true" || $this->getConfig()->get("use-warps") == "on") {
             return true;
         } else {
             return false;
