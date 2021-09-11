@@ -59,7 +59,7 @@ class TpaHereCommand extends Command
             return;
         }
         $tpa = new TpaInfo($s->getName());
-        $tpa->runTask($pl->getCfg()->get("tpa-time"));
+        $tpa->runTask($pl->getConfig()->get("tpa-time"));
         $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-send")));
         $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa-here")));
     }

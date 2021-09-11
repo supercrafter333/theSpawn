@@ -55,10 +55,7 @@ class theSpawn extends PluginBase implements Listener
      * @var
      */
     public static $prefix;
-    /**
-     * @var
-     */
-    public $config;
+
     /**
      * @var
      */
@@ -111,16 +108,15 @@ class theSpawn extends PluginBase implements Listener
         $this->getLogger()->warning("WARNING! You are running a development version of theSpawn! Please report bugs on: §bhttps://github.com/supercrafter333/theSpawn/issues");
         ###################
 
+        $this->saveResource("config.yml");
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
         if (strtolower(MsgMgr::getMessagesLanguage()) == "custom") {
             $this->saveResource("Languages/messages.yml");
         }
-        $this->saveResource("config.yml");
         # Version Check
         $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         ###
-        $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->msgCfg = MsgMgr::getMsgs();
         self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
@@ -180,17 +176,12 @@ class theSpawn extends PluginBase implements Listener
         return self::$instance;
     }
 
+    /**
+     * @return string
+     */
     public function getFile2(): string
     {
         return $this->getFile();
-    }
-
-    /**
-     * @return Config
-     */
-    public function getCfg()
-    {
-        return new Config($this->getDataFolder() . "config.yml", Config::YAML);
     }
 
     /**
@@ -204,8 +195,8 @@ class theSpawn extends PluginBase implements Listener
     #OLD FUNCTION (new: versionCheck($version, bool $update = true))
     /*public function checkCfgVersion(string $version): bool
     {
-        if ($this->getCfg()->exists("version")) {
-            if ($this->getCfg()->get("version") == $version) {
+        if ($this->getConfig()->exists("version")) {
+            if ($this->getConfig()->get("version") == $version) {
                 return true;
             }
         }
@@ -355,7 +346,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function onPlayerLogin(PlayerLoginEvent $event)
     {
-        if ($this->getCfg()->get("hub-teleport-on-join") == "true") {
+        if ($this->getConfig()->get("hub-teleport-on-join") == "true") {
             $hub = $this->getHub();
             if ($hub !== null) {
                 $event->getPlayer()->teleport($hub);
@@ -435,7 +426,7 @@ class theSpawn extends PluginBase implements Listener
 
     /*public function isTpToHubOnRepawnEnabled(): bool
     {
-        $use = $this->getCfg()->get("teleport-to-hub-on-respawn");
+        $use = $this->getConfig()->get("teleport-to-hub-on-respawn");
         if ($use == "true") {
             return true;
         } else {
@@ -725,7 +716,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function useAliases(): bool
     {
-        if ($this->config->get("use-aliases") == "true") {
+        if ($this->getConfig()->get("use-aliases") == "true") {
             return true;
         }
         return false;
@@ -967,7 +958,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function useHomes(): bool
     {
-        if ($this->getCfg()->get("use-homes") == "true" || $this->getCfg()->get("use-homes") == "on") {
+        if ($this->getConfig()->get("use-homes") == "true" || $this->getConfig()->get("use-homes") == "on") {
             return true;
         } else {
             return false;
@@ -1112,7 +1103,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function useTPAs(): bool
     {
-        if ($this->getCfg()->get("use-tpas") == "true" || $this->getCfg()->get("use-tpas") == "on") {
+        if ($this->getConfig()->get("use-tpas") == "true" || $this->getConfig()->get("use-tpas") == "on") {
             return true;
         } else {
             return false;
@@ -1124,7 +1115,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function useSpawnDelays(): bool
     {
-        if ($this->getCfg()->get("use-spawnDelay") == "true" || $this->getCfg()->get("use-spawnDelay") == "on") {
+        if ($this->getConfig()->get("use-spawnDelay") == "true" || $this->getConfig()->get("use-spawnDelay") == "on") {
             return true;
         } else {
             return false;
@@ -1136,7 +1127,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function startSpawnDelay(Player $player)
     {
-        $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getCfg()->get("spawn-delay-seconds")), 20);
+        $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getConfig()->get("spawn-delay-seconds")), 20);
         $this->spawnDelays[] = $player->getName();
         $this->spawnDelays[$player->getName()] = ["task" => $task];
     }
@@ -1170,7 +1161,7 @@ class theSpawn extends PluginBase implements Listener
      */
     public function useForms(): bool
     {
-        if ($this->getCfg()->get("use-forms") == "true" || $this->getCfg()->get("use-forms") == "on") {
+        if ($this->getConfig()->get("use-forms") == "true" || $this->getConfig()->get("use-forms") == "on") {
             return true;
         } else {
             return false;

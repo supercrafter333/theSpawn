@@ -50,11 +50,7 @@ class DelhubCommand extends Command
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $pl->getConfig();
-        @mkdir($pl->getDataFolder());
-        $pl->saveResource("config.yml");
-        $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
+        $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.delhub.cmd")) {
