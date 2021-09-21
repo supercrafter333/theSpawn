@@ -12,6 +12,7 @@ mcpe-protocols:
   - 431
   - 440
   - 448
+  - 465
 
 permissions:
   theSpawn.setspawn.cmd:
