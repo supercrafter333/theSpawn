@@ -85,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.0";
+    public $version = "1.4.1";
 
 
     /**
@@ -106,7 +106,7 @@ class theSpawn extends PluginBase implements Listener
         $this->saveResource("messages.yml");
         $this->saveResource("config.yml");
         # Version Check
-        $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
+        $this->versionCheck($this->version, false); //DON'T UPDATE CONFIG DATAs.
         ###
         $this->config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $this->msgCfg = new Config($this->getDataFolder() . "messages.yml", Config::YAML);
