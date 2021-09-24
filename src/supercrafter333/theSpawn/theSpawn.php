@@ -57,11 +57,11 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var
      */
-    public $config;
+    public Config $config;
     /**
      * @var
      */
-    public mixed $msgCfg;
+    public Config $msgCfg;
     /**
      * @var
      */
