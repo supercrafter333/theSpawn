@@ -65,7 +65,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var
      */
-    public $aliasCfg;
+    public Config $aliasCfg;
 
     /**
      * @var array
@@ -85,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.1";
+    public $version = "1.4.2";
 
 
     /**

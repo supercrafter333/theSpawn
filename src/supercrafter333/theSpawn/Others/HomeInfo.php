@@ -67,9 +67,9 @@ class HomeInfo
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
-    public function getX(): mixed
+    public function getX(): ?float
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["X"];
@@ -78,9 +78,9 @@ class HomeInfo
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
-    public function getY(): mixed
+    public function getY(): ?float
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["Y"];
@@ -89,9 +89,9 @@ class HomeInfo
     }
 
     /**
-     * @return mixed
+     * @return float|null
      */
-    public function getZ(): mixed
+    public function getZ(): ?float
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["Z"];
@@ -100,9 +100,9 @@ class HomeInfo
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getLevelName(): mixed
+    public function getLevelName(): ?string
     {
         if ($this->existsHome() == true) {
             return $this->getHomeCfg()->get($this->homeName)["level"];
