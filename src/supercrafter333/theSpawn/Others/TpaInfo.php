@@ -40,9 +40,9 @@ class TpaInfo
 
     /**
      * @param string $value
-     * @return mixed
+     * @return string|null
      */
-    public function getVal(string $value): mixed
+    public function getVal(string $value): ?string
     {
         if (!$this->isValSet($value)) return null;
         return $this->tpa[$value];

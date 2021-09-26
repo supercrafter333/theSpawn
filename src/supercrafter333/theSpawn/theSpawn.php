@@ -63,7 +63,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var
      */
-    public $aliasCfg;
+    public Config $aliasCfg;
 
     /**
      * @var array
