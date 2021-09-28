@@ -339,7 +339,7 @@ class theSpawn extends PluginBase implements Listener
     {
         if ($this->getCfg()->get("hub-teleport-on-join") == "true") {
             $hub = $this->getHub();
-            if ($hub !== null) {
+            if ($hub !== null || $hub !== false) {
                 $event->getPlayer()->teleport($hub);
             } elseif ($this->getServer()->getDefaultLevel()->getSafeSpawn() !== null) {
                 $event->getPlayer()->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
