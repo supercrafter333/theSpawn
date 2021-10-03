@@ -357,6 +357,19 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
+     * @param string $worldName
+     * @return World|null
+     */
+    public function checkWorld(string $worldName): ?World
+    {
+        if (!$this->getServer()->getWorldManager()->isWorldGenerated($worldName)) return null;
+        if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
+            $this->getServer()->getWorldManager()->loadWorld($worldName);
+        }
+        return $this->getServer()->getWorldManager()->getWorldByName($worldName);
+    }
+
+    /**
      * @param PlayerMoveEvent $event
      */
     public function onMove(PlayerMoveEvent $event)
@@ -487,7 +500,7 @@ class theSpawn extends PluginBase implements Listener
             if ($this->getHubLevel($worldName) instanceof World) {
                 return new Position($i[0], $i[1], $i[2], $this->levelCheck($worldName));
             } else {
-                return null;
+                return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
             }
         }
     }
@@ -540,7 +553,7 @@ class theSpawn extends PluginBase implements Listener
             $Y = $hub->get("hub")["Y"];
             $Z = $hub->get("hub")["Z"];
             $worldname = $hub->get("hub")["level"];
-            $world = $this->getServer()->getWorldManager()->getWorldByName($worldname);
+            $world = !$this->checkWorld($worldname) instanceof World ? $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() : $this->checkWorld($worldname);
             $coords = new Position($X, $Y, $Z, $world);
             return $coords;
         } else {
@@ -596,6 +609,7 @@ class theSpawn extends PluginBase implements Listener
             return $this->getServer()->getWorldManager()->getWorldByName($worldName);
         }
         return $this->getServer()->getWorldManager()->getWorldByName($worldName);
+        //TODO: return $this->checkWorld($worldName); ???
     }
 
     /**
