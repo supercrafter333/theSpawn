@@ -348,6 +348,19 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
+     * @param string $worldName
+     * @return Level|null
+     */
+    public function checkWorld(string $worldName): ?Level
+    {
+        if (!$this->getServer()->isLevelGenerated($worldName)) return null;
+        if (!$this->getServer()->isLevelLoaded($worldName)) {
+            $this->getServer()->loadLevel($worldName);
+        }
+        return $this->getServer()->getLevelByName($worldName);
+    }
+
+    /**
      * @param PlayerMoveEvent $event
      */
     public function onMove(PlayerMoveEvent $event)
@@ -478,7 +491,7 @@ class theSpawn extends PluginBase implements Listener
             if ($this->getHubLevel($levelName) instanceof Level) {
                 return new Position($i[0], $i[1], $i[2], $this->levelCheck($levelName));
             } else {
-                return null;
+                return $this->getServer()->getDefaultLevel()->getSafeSpawn();
             }
         }
     }
@@ -531,7 +544,7 @@ class theSpawn extends PluginBase implements Listener
             $Y = $hub->get("hub")["Y"];
             $Z = $hub->get("hub")["Z"];
             $levelname = $hub->get("hub")["level"];
-            $level = $this->getServer()->getLevelByName($levelname);
+            $level = !$this->checkWorld($levelname) instanceof Level ? $this->getServer()->getDefaultLevel()->getSafeSpawn() : $this->checkWorld($levelname);
             $coords = new Position($X, $Y, $Z, $level);
             return $coords;
         } else {
@@ -587,6 +600,7 @@ class theSpawn extends PluginBase implements Listener
             return $this->getServer()->getLevelByName($levelName);
         }
         return $this->getServer()->getLevelByName($levelName);
+        //TODO: return $this->checkWorld($levelName); ???
     }
 
     /**
