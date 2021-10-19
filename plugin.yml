@@ -3,16 +3,18 @@ version: 1.5.0-PM4
 api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
-mcpe-protocols:
-  - 407
-  - 408
-  - 419
-  - 422
-  - 428
-  - 431
-  - 440
-  - 448
-  - 465
+# -> NOT NEEDED YET:
+#mcpe-protocols:
+#  - 407
+#  - 408
+#  - 419
+#  - 422
+#  - 428
+#  - 431
+#  - 440
+#  - 448
+#  - 465
+#  - 471
 
 permissions:
   theSpawn.setspawn.cmd:

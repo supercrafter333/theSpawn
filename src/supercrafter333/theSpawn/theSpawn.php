@@ -599,7 +599,7 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @return false|mixed
+     * @return false|mixed|World
      */
     public function getHubLevel(string $worldName): ?World
     {
