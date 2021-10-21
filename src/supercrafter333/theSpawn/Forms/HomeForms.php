@@ -7,16 +7,21 @@ use pocketmine\player\Player;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
+/**
+ *
+ */
 class HomeForms
 {
 
-    private $playerName;
+    /**
+     * @param string $playerName
+     */
+    public function __construct(private string $playerName) {}
 
-    public function __construct(string $playerName)
-    {
-        $this->playerName = $playerName;
-    }
-
+    /**
+     * @param Player $player
+     * @return SimpleForm
+     */
     public function open(Player $player)
     {
         $form = new SimpleForm(function (Player $player, $data = null) {

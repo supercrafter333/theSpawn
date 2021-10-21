@@ -7,9 +7,16 @@ use pocketmine\player\Player;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
+/**
+ *
+ */
 class WarpForms
 {
 
+    /**
+     * @param Player $player
+     * @return SimpleForm
+     */
     public function open(Player $player)
     {
         $form = new SimpleForm(function (Player $player, $data = null) {

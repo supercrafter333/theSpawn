@@ -14,18 +14,10 @@ class WarpInfo
 {
 
     /**
-     * @var string
-     */
-    private string $warpName;
-
-    /**
      * WarpInfo constructor.
      * @param string $warpName
      */
-    public function __construct(string $warpName)
-    {
-        $this->warpName = $warpName;
-    }
+    public function __construct(private string $warpName) {}
 
     /**
      * @param string $warpName
@@ -111,7 +103,7 @@ class WarpInfo
     /**
      * @return false|World|null
      */
-    public function getLevel()
+    public function getWorld(): false|null|World
     {
         if ($this->exists() == true) {
             $lvlName = $this->getWarpCfg()->get($this->warpName)["level"];

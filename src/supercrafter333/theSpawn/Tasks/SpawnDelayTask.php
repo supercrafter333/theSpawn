@@ -11,33 +11,19 @@ use supercrafter333\theSpawn\theSpawn;
 class SpawnDelayTask extends Task
 {
 
-    /**
-     * @var Player
-     */
-    private Player $player;
-
-    /**
-     * @var int
-     */
-    private int $secs;
-
-    public function __construct(Player $player, int $seconds)
-    {
-        $this->player = $player;
-        $this->secs = $seconds;
-    }
+    public function __construct(private Player $player, private int $seconds) {}
 
     public function onRun(): void
     {
         $player = $this->player;
-        if ($this->secs > 3) {
-            $this->secs--;
+        if ($this->seconds > 3) {
+            $this->seconds--;
         }
-        if ($this->secs <= 3 && $this->secs > 0) {
-            $player->sendTip(str_replace("{secs}", (string)$this->secs, MsgMgr::getMsg("delay-tip")));
-            $this->secs--;
+        if ($this->seconds <= 3 && $this->seconds > 0) {
+            $player->sendTip(str_replace("{secs}", (string)$this->seconds, MsgMgr::getMsg("delay-tip")));
+            $this->seconds--;
         }
-        if ($this->secs <= 0) {
+        if ($this->seconds <= 0) {
             $player->teleport(theSpawn::getInstance()->getSpawn($player->getWorld()));
             $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getWorld()->getDisplayName()], MsgMgr::getMsg("spawn-tp")));
             $player->getWorld()->addSound($player->getPosition(), new PopSound());

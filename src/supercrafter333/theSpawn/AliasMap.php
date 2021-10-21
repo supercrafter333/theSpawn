@@ -3,20 +3,14 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\command\Command;
-use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\plugin\Plugin;
 
 /**
  * Class AliasMap
  * @package supercrafter333\theSpawn
  */
-abstract class AliasMap extends Command implements PluginIdentifiableCommand
+abstract class AliasMap extends Command
 {
-
-    /**
-     * @var theSpawn
-     */
-    private $plugin;
 
     /**
      * AliasMap constructor.
@@ -24,10 +18,9 @@ abstract class AliasMap extends Command implements PluginIdentifiableCommand
      * @param $cmdName
      * @param $cmdDescription
      */
-    public function __construct(theSpawn $plugin, $cmdName, $cmdDescription)
+    public function __construct(private theSpawn $plugin, $cmdName, $cmdDescription)
     {
         parent::__construct($cmdName, $cmdDescription);
-        $this->plugin = $plugin;
     }
 
     /**

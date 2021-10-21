@@ -16,16 +16,13 @@ use supercrafter333\theSpawn\theSpawn;
 class TpaInfo
 {
 
-    private string $source;
-
     /**
      * @var array
      */
     private array $tpa;
 
-    public function __construct(string $source)
+    public function __construct(private string $source)
     {
-        $this->source = $source;
         $this->tpa = theSpawn::getInstance()->getTpaOf($source);
     }
 
@@ -40,9 +37,9 @@ class TpaInfo
 
     /**
      * @param string $value
-     * @return string|null
+     * @return null|Task|string
      */
-    public function getVal(string $value): ?string
+    public function getVal(string $value): null|Task|string
     {
         if (!$this->isValSet($value)) return null;
         return $this->tpa[$value];
@@ -111,7 +108,6 @@ class TpaInfo
     public function cancel(): void
     {
         theSpawn::getInstance()->removeTpa($this->getSource());
-
     }
 
     public function complete(): void

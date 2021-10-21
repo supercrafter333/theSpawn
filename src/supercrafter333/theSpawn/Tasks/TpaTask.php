@@ -15,24 +15,10 @@ class TpaTask extends Task
 {
 
     /**
-     * @var int
-     */
-    private int $secs;
-
-    /**
-     * @var TpaInfo
-     */
-    private TpaInfo $tpa;
-
-    /**
      * @param int $seconds
      * @param TpaInfo $tpa
      */
-    public function __construct(int $seconds, TpaInfo $tpa)
-    {
-        $this->secs = $seconds;
-        $this->tpa = $tpa;
-    }
+    public function __construct(private int $seconds, private TpaInfo $tpa) {}
 
     /**
      * Run function xD
@@ -56,14 +42,14 @@ class TpaTask extends Task
             $this->onCancel();
             return;
         }
-        if ($this->secs > 10) {
-            $this->secs--;
+        if ($this->seconds > 10) {
+            $this->seconds--;
             return;
         }
-        if ($this->secs <= 10 && $this->secs > 0) {
-            $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", (string)$this->secs, MsgMgr::getMsg("tpa-secs")));
-            $this->secs--;
-        } elseif ($this->secs <= 0) {
+        if ($this->seconds < 10 && $this->seconds > 0) {
+            $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", (string)$this->seconds, MsgMgr::getMsg("tpa-secs")));
+            $this->seconds--;
+        } elseif ($this->seconds <= 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
             $this->onCancel();
         }
