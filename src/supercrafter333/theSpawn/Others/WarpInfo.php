@@ -14,18 +14,10 @@ class WarpInfo
 {
 
     /**
-     * @var string
-     */
-    private string $warpName;
-
-    /**
      * WarpInfo constructor.
      * @param string $warpName
      */
-    public function __construct(string $warpName)
-    {
-        $this->warpName = $warpName;
-    }
+    public function __construct(private string $warpName) {}
 
     /**
      * @param string $warpName

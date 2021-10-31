@@ -12,18 +12,12 @@ class SpawnDelayTask extends Task
 {
 
     /**
-     * @var Player
-     */
-    private Player $player;
-
-    /**
      * @var int
      */
     private int $secs;
 
-    public function __construct(Player $player, int $seconds)
+    public function __construct(private Player $player, int $seconds)
     {
-        $this->player = $player;
         $this->secs = $seconds;
     }
 

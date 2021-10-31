@@ -15,16 +15,13 @@ use supercrafter333\theSpawn\theSpawn;
 class TpaInfo
 {
 
-    private string $source;
-
     /**
-     * @var array
+     * @var array|null
      */
-    private array $tpa;
+    private array|null $tpa;
 
-    public function __construct(string $source)
+    public function __construct(private string $source)
     {
-        $this->source = $source;
         $this->tpa = theSpawn::getInstance()->getTpaOf($source);
     }
 

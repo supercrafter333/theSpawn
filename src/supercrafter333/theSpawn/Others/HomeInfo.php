@@ -20,24 +20,11 @@ class HomeInfo
     #####################################################
 
     /**
-     * @var Player
-     */
-    public Player $player;
-    /**
-     * @var string
-     */
-    public string $homeName;
-
-    /**
      * HomeInfo constructor.
      * @param Player $player
      * @param string $homeName
      */
-    public function __construct(Player $player, string $homeName)
-    {
-        $this->player = $player;
-        $this->homeName = $homeName;
-    }
+    public function __construct(public Player $player, public string $homeName) {}
 
     /**
      * @return Config

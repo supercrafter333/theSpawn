@@ -85,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public $version = "1.4.2";
+    public $version = "1.4.3";
 
 
     /**

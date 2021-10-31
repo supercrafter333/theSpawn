@@ -20,18 +20,12 @@ class TpaTask extends Task
     private int $secs;
 
     /**
-     * @var TpaInfo
-     */
-    private TpaInfo $tpa;
-
-    /**
      * @param int $seconds
      * @param TpaInfo $tpa
      */
-    public function __construct(int $seconds, TpaInfo $tpa)
+    public function __construct(int $seconds, private TpaInfo $tpa)
     {
         $this->secs = $seconds;
-        $this->tpa = $tpa;
     }
 
     /**
