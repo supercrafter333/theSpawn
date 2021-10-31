@@ -17,9 +17,9 @@ class TpaInfo
 {
 
     /**
-     * @var array
+     * @var array|null
      */
-    private array $tpa;
+    private array|null $tpa;
 
     public function __construct(private string $source)
     {
