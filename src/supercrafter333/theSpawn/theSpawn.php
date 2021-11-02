@@ -47,21 +47,22 @@ class theSpawn extends PluginBase implements Listener
 {
 
     /**
-     * @var
+     * @var theSpawn
      */
     public static theSpawn $instance;
 
     /**
-     * @var
+     * @var string
      */
-    public static $prefix;
+    public static string $prefix;
 
     /**
-     * @var
+     * @var Config
      */
     public Config $msgCfg;
+
     /**
-     * @var
+     * @var Config
      */
     public Config $aliasCfg;
 
@@ -76,14 +77,14 @@ class theSpawn extends PluginBase implements Listener
     public $spawnDelays = [];
 
     /**
-     * @var
+     * @var Config
      */
     public $warpCfg;
 
     /**
      * @var string
      */
-    public $version = "1.5.0";
+    public string $version = "1.5.0";
 
 
     /**
