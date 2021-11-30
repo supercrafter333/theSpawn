@@ -93,10 +93,6 @@ class theSpawn extends PluginBase implements Listener
     public function onLoad(): void
     {
         self::$instance = $this;
-        ### PM4 Warning ###
-        ###################
-        $this->getLogger()->warning("WARNING! You are running a development version of theSpawn! Please report bugs on: §bhttps://github.com/supercrafter333/theSpawn/issues");
-        ###################
     }
 
     /**
@@ -104,11 +100,6 @@ class theSpawn extends PluginBase implements Listener
      */
     public function onEnable(): void
     {
-        ### PM4 Warning ###
-        ###################
-        $this->getLogger()->warning("WARNING! You are running a development version of theSpawn! Please report bugs on: §bhttps://github.com/supercrafter333/theSpawn/issues");
-        ###################
-
         $this->saveResource("config.yml");
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();

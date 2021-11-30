@@ -1,16 +1,11 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/supercrafter333/theSpawn
 build-by-default: true
 branches:
-- master
-- Dev
 - PM4
 projects:
   theSpawn:
     icon: "icon.png"
     path: ""
     php: 8.0
-    lint:
-      phpstan: false
     libs:
-      - src: jojoe77777/FormAPI/libFormAPI
-        version: ^1.3
+      - src: https://poggit.pmmp.io/ci/CLADevs/FormAPI-4.0/libFormAPI
