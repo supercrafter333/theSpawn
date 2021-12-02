@@ -84,10 +84,11 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public string $version = "1.5.0";
+    public string $version = "1.5.1";
 
 
     /**
+     * On plugin loading. (That's before enabling)
      * On plugin loading. (That's before enabling)
      */
     public function onLoad(): void
@@ -391,8 +392,7 @@ class theSpawn extends PluginBase implements Listener
     {
         $s = $event->getPlayer();
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $worldname = $s->getWorld()->getDisplayName();
-        $world = $this->getServer()->getWorldManager()->getWorldByName($worldname);
+        $world = $s->getWorld();
         if ($world === null) {
             if ($this->getHub() instanceof Position) {
                 $event->setRespawnPosition($this->getHub());
@@ -555,12 +555,20 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @param World $world
+     * @param World|null $world
      * @return false|Position
      * @return false|Position
      */
-    public function getSpawn(World $world)
+    public function getSpawn(?World $world): Position|false
     {
+        if (!$world instanceof World) {
+            $hub = $this->getHub();
+            if (!$hub instanceof Position) {
+                return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
+            }
+            return $hub;
+        }
+
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $spawn->get($world->getDisplayName());
         if ($spawn->exists($world->getDisplayName())) {
