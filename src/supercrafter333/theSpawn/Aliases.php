@@ -3,9 +3,9 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\command\CommandSender;
-use pocketmine\level\sound\PopSound;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\Server;
+use pocketmine\world\sound\PopSound;
 
 /**
  * Class Aliases
@@ -42,20 +42,20 @@ class Aliases extends AliasMap
             if (theSpawn::getInstance()->useAliases() == true) {
                 $lvl = $pl->getWorldOfAlias($this->cmdName);
                 if ($pl->existsAlias($this->cmdName) == true) {
-                    if (theSpawn::getInstance()->getServer()->isLevelGenerated($lvl) == false) {
+                    if (theSpawn::getInstance()->getServer()->getWorldManager()->isWorldGenerated($lvl) == false) {
                         $s->sendMessage($prefix . "§cDie angegeben Welt existiert nicht!");
                         return true;
                     }
-                    if (Server::getInstance()->isLevelLoaded($lvl) == true) {
-                        $level = Server::getInstance()->getLevelByName($lvl);
+                    if (Server::getInstance()->getWorldManager()->isWorldLoaded($lvl) == true) {
+                        $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
                         $s->teleport($pl->getSpawn($level));
                         return true;
                     } else {
-                        Server::getInstance()->loadLevel($lvl);
-                        $level = Server::getInstance()->getLevelByName($lvl);
+                        Server::getInstance()->getWorldManager()->loadWorld($lvl);
+                        $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
                         $s->teleport($pl->getSpawn($level));
-                        $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getName()], MsgMgr::getMsg("alias-teleport"))));
-                        $s->getLevel()->addSound(new PopSound($s));
+                        $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getDisplayName()], MsgMgr::getMsg("alias-teleport"))));
+                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
                         return true;
                     }
                 } else {

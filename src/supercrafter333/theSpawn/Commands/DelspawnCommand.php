@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\GhastShootSound;
-use pocketmine\Player;
+use pocketmine\world\sound\GhastShootSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class DelspawnCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class DelspawnCommand extends Command implements PluginIdentifiableCommand
+class DelspawnCommand extends Command
 {
 
     /**
@@ -51,20 +50,16 @@ class DelspawnCommand extends Command implements PluginIdentifiableCommand
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $pl->getConfig();
-        @mkdir($pl->getDataFolder());
-        $pl->saveResource("config.yml");
-        $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
+        $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.delspawn.cmd")) {
-                $levelname = $s->getLevel()->getName();
-                $level = $pl->getServer()->getLevelByName($levelname);
+                $levelname = $s->getWorld()->getDisplayName();
+                $level = $pl->getServer()->getWorldManager()->getWorldByName($levelname);
                 if ($spawn->exists($levelname)) {
                     $pl->removeSpawn($level);
                     $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
-                    $s->getLevel()->addSound(new GhastShootSound($s));
+                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
                 }

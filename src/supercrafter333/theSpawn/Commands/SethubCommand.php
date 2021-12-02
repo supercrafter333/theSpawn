@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\DoorBumpSound;
-use pocketmine\Player;
+use pocketmine\world\sound\DoorBumpSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SethubCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SethubCommand extends Command implements PluginIdentifiableCommand
+class SethubCommand extends Command
 {
 
     /**
@@ -51,15 +50,15 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
+        $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.sethub.cmd")) {
-                $x = $s->getX();
-                $y = $s->getY();
-                $z = $s->getZ();
-                $levelname = $s->getLevel()->getName();
-                $level = $s->getLevel();
+                $x = $s->getPosition()->getX();
+                $y = $s->getPosition()->getY();
+                $z = $s->getPosition()->getZ();
+                $levelname = $s->getWorld()->getDisplayName();
+                $level = $s->getWorld();
                 if ($pl->getUseHubServer() == false) {
                     if ($level === null) {
                         $s->sendMessage($prefix . MsgMgr::getErrorMsg());
@@ -73,7 +72,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
                         if ($pl->checkSetRandomHub($args[0])) {
                             $pl->setHub($x, $y, $z, $level, $args[0]);
                             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
-                            $s->getLevel()->addSound(new DoorBumpSound($s));
+                            $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
                         } else {
                             $s->sendMessage($prefix . MsgMgr::getMsg("set-random-hub-before"));
                         }
@@ -89,7 +88,7 @@ class SethubCommand extends Command implements PluginIdentifiableCommand
                             $pl->setHub($x, $y, $z, $level);
                             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
                         }
-                        $s->getLevel()->addSound(new DoorBumpSound($s));
+                        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
                     }
                     return true;
                 } elseif ($pl->getUseHubServer() == true) {

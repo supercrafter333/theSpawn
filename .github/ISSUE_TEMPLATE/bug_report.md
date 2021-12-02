@@ -10,10 +10,10 @@ assignees: ''
 # Bug: [Bug Name]
 
 ### Informations
-theSpawn Version: [1.0.1]
+theSpawn Version: [1.5.0]
 Server-OS: [Linux Ubuntu 20.04]
-PHP Version: [7.4.13]
-PocketMine-MP Version: [3.19.1]
+PHP Version: [8.0.12]
+PocketMine-MP Version: [4.0.0]
 
 ### Error
 [Console Error:]

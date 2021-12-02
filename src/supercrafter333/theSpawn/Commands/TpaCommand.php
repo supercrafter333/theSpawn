@@ -4,14 +4,13 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
-class TpaCommand extends Command implements PluginIdentifiableCommand
+class TpaCommand extends Command
 {
 
     private theSpawn $pl;
@@ -45,7 +44,7 @@ class TpaCommand extends Command implements PluginIdentifiableCommand
             $s->sendMessage($this->usageMessage);
             return;
         }
-        $target = $pl->getServer()->getPlayer($args[0]);
+        $target = $pl->getServer()->getPlayerByPrefix($args[0]);
         if (!$target instanceof Player) {
             $s->sendMessage(str_replace("{name}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;
@@ -60,7 +59,7 @@ class TpaCommand extends Command implements PluginIdentifiableCommand
             return;
         }
         $tpa = new TpaInfo($s->getName());
-        $tpa->runTask($pl->getCfg()->get("tpa-time"));
+        $tpa->runTask($pl->getConfig()->get("tpa-time"));
         $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-send")));
         $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa")));
     }

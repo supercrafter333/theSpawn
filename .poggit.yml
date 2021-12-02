@@ -2,10 +2,10 @@
 build-by-default: true
 branches:
 - master
-- Dev
-- PM4
 projects:
   theSpawn:
     icon: "icon.png"
     path: ""
     php: 8.0
+    libs:
+      - src: https://poggit.pmmp.io/ci/CLADevs/FormAPI-4.0/libFormAPI

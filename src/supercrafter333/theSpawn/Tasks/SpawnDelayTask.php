@@ -2,8 +2,8 @@
 
 namespace supercrafter333\theSpawn\Tasks;
 
-use pocketmine\level\sound\PopSound;
-use pocketmine\Player;
+use pocketmine\world\sound\PopSound;
+use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -11,30 +11,22 @@ use supercrafter333\theSpawn\theSpawn;
 class SpawnDelayTask extends Task
 {
 
-    /**
-     * @var int
-     */
-    private int $secs;
+    public function __construct(private Player $player, private int $seconds) {}
 
-    public function __construct(private Player $player, int $seconds)
-    {
-        $this->secs = $seconds;
-    }
-
-    public function onRun(int $currentTick)
+    public function onRun(): void
     {
         $player = $this->player;
-        if ($this->secs > 3) {
-            $this->secs--;
+        if ($this->seconds > 3) {
+            $this->seconds--;
         }
-        if ($this->secs <= 3 && $this->secs > 0) {
-            $player->sendTip(str_replace("{secs}", (string)$this->secs, MsgMgr::getMsg("delay-tip")));
-            $this->secs--;
+        if ($this->seconds <= 3 && $this->seconds > 0) {
+            $player->sendTip(str_replace("{secs}", (string)$this->seconds, MsgMgr::getMsg("delay-tip")));
+            $this->seconds--;
         }
-        if ($this->secs <= 0) {
-            $player->teleport(theSpawn::getInstance()->getSpawn($player->getLevel()));
-            $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getLevel()->getName()], MsgMgr::getMsg("spawn-tp")));
-            $player->getLevel()->addSound(new PopSound($player));
+        if ($this->seconds <= 0) {
+            $player->teleport(theSpawn::getInstance()->getSpawn($player->getWorld()));
+            $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getWorld()->getDisplayName()], MsgMgr::getMsg("spawn-tp")));
+            $player->getWorld()->addSound($player->getPosition(), new PopSound());
             theSpawn::getInstance()->stopSpawnDelay($player);
         }
     }

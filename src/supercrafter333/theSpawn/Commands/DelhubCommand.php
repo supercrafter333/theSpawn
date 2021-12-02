@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\GhastShootSound;
-use pocketmine\Player;
+use pocketmine\world\sound\GhastShootSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class DelhubCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class DelhubCommand extends Command implements PluginIdentifiableCommand
+class DelhubCommand extends Command
 {
 
     /**
@@ -51,11 +50,7 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $pl->getConfig();
-        @mkdir($pl->getDataFolder());
-        $pl->saveResource("config.yml");
-        $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
+        $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.delhub.cmd")) {
@@ -70,13 +65,13 @@ class DelhubCommand extends Command implements PluginIdentifiableCommand
                     }
                     $pl->removeHub($args[0]);
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-                    $s->getLevel()->addSound(new GhastShootSound($s));
+                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
                     return true;
                 }
                 if ($hub->exists("hub")) {
                     $pl->removeHub();
                     $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-                    $s->getLevel()->addSound(new GhastShootSound($s));
+                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
                     return true;
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));

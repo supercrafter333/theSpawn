@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\PopSound;
-use pocketmine\Player;
+use pocketmine\world\sound\PopSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class HubCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class HubCommand extends Command implements PluginIdentifiableCommand
+class HubCommand extends Command
 {
 
     /**
@@ -50,11 +49,7 @@ class HubCommand extends Command implements PluginIdentifiableCommand
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $pl->getConfig();
-        @mkdir($pl->getDataFolder());
-        $pl->saveResource("config.yml");
-        $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
+        $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
             if ($pl->getUseHubServer() == false) {
@@ -62,19 +57,19 @@ class HubCommand extends Command implements PluginIdentifiableCommand
                     $hubPos = $pl->getRandomHub();
                     if ($hubPos !== null) {
                         $s->teleport($hubPos);
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getLevel()->getName()], MsgMgr::getMsg("hub-tp")));
-                        $s->getLevel()->addSound(new PopSound($s));
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getWorld()->getDisplayName()], MsgMgr::getMsg("hub-tp")));
+                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }
                     return true;
                 }
                 if ($hub->exists("hub")) {
-                    $hublevel = $pl->getHub()->getLevel();
+                    $hublevel = $pl->getHub()->getWorld();
                     if ($hublevel !== null) {
                         $s->teleport($pl->getHub());
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getName()], MsgMgr::getMsg("hub-tp")));
-                        $s->getLevel()->addSound(new PopSound($s));
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getDisplayName()], MsgMgr::getMsg("hub-tp")));
+                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }

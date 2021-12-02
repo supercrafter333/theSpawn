@@ -4,8 +4,8 @@
 namespace supercrafter333\theSpawn\Others;
 
 
-use pocketmine\level\Level;
-use pocketmine\Player;
+use pocketmine\world\World;
+use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -98,17 +98,17 @@ class HomeInfo
     }
 
     /**
-     * @return false|Level|null
+     * @return false|World|null
      */
-    public function getLevel()
+    public function getWorld(): false|World|null
     {
         if ($this->existsHome() == true) {
             $lvlName = $this->getHomeCfg()->get($this->homeName)["level"];
-            if (theSpawn::getInstance()->getServer()->isLevelGenerated($lvlName) && theSpawn::getInstance()->getServer()->isLevelLoaded($lvlName)) {
-                return theSpawn::getInstance()->getServer()->getLevelByName($lvlName);
-            } elseif (theSpawn::getInstance()->getServer()->isLevelGenerated($lvlName)) {
-                theSpawn::getInstance()->getServer()->loadLevel($lvlName);
-                return theSpawn::getInstance()->getServer()->getLevelByName($lvlName);
+            if (theSpawn::getInstance()->getServer()->getWorldManager()->isWorldGenerated($lvlName) && theSpawn::getInstance()->getServer()->getWorldManager()->isWorldLoaded($lvlName)) {
+                return theSpawn::getInstance()->getServer()->getWorldManager()->getWorldByName($lvlName);
+            } elseif (theSpawn::getInstance()->getServer()->getWorldManager()->isWorldGenerated($lvlName)) {
+                theSpawn::getInstance()->getServer()->getWorldManager()->loadWorld($lvlName);
+                return theSpawn::getInstance()->getServer()->getWorldManager()->getWorldByName($lvlName);
             }
             return false;
         }

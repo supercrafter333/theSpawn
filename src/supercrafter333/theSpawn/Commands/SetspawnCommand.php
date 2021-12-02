@@ -4,9 +4,8 @@ namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
-use pocketmine\level\sound\DoorBumpSound;
-use pocketmine\Player;
+use pocketmine\world\sound\DoorBumpSound;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\MsgMgr;
@@ -16,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SetspawnCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SetspawnCommand extends Command implements PluginIdentifiableCommand
+class SetspawnCommand extends Command
 {
 
     /**
@@ -51,23 +50,19 @@ class SetspawnCommand extends Command implements PluginIdentifiableCommand
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
         $msgs = MsgMgr::getMsgs();
-        $pl->getConfig();
-        @mkdir($pl->getDataFolder());
-        $pl->saveResource("config.yml");
-        $config = new Config($pl->getDataFolder() . "config.yml", Config::YAML);
-        $config->save();
+        $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.setspawn.cmd")) {
-                $levelname = $s->getLevel()->getName();
-                $level = $s->getLevel();
+                $levelname = $s->getWorld()->getDisplayName();
+                $level = $s->getWorld();
                 $pl->setSpawn($s, $level);
                 if (!$spawn->exists($levelname)) {
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-set")));
                 } else {
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-changed")));
                 }
-                $s->getLevel()->addSound(new DoorBumpSound($s));
+                $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
             } else {
                 $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
             }

@@ -2,9 +2,10 @@
 
 namespace supercrafter333\theSpawn\Others;
 
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
+use pocketmine\scheduler\Task;
 use pocketmine\Server;
+use pocketmine\world\sound\XpLevelUpSound;
 use supercrafter333\theSpawn\Tasks\TpaTask;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -36,9 +37,9 @@ class TpaInfo
 
     /**
      * @param string $value
-     * @return string|null
+     * @return null|Task|string
      */
-    public function getVal(string $value): ?string
+    public function getVal(string $value): null|Task|string
     {
         if (!$this->isValSet($value)) return null;
         return $this->tpa[$value];
@@ -61,11 +62,11 @@ class TpaInfo
     }
 
     /**
-     * @return int|null
+     * @return Task|null
      */
-    public function getTaskId(): ?int
+    public function getTask(): ?Task
     {
-        return $this->getVal("taskId");
+        return $this->getVal("task");
     }
 
     /**
@@ -74,7 +75,7 @@ class TpaInfo
     public function getSourceAsPlayer(): ?Player
     {
         if ($this->getSource() === null) return null;
-        return Server::getInstance()->getPlayer($this->getSource());
+        return Server::getInstance()->getPlayerByPrefix($this->getSource());
     }
 
     /**
@@ -83,7 +84,7 @@ class TpaInfo
     public function getTargetAsPlayer(): ?Player
     {
         if ($this->getTarget() === null) return null;
-        return Server::getInstance()->getPlayer($this->getTarget());
+        return Server::getInstance()->getPlayerByPrefix($this->getTarget());
     }
 
     /**
@@ -101,23 +102,22 @@ class TpaInfo
     {
         $tpaTask = new TpaTask($seconds, $this);
         $task = theSpawn::getInstance()->getScheduler()->scheduleRepeatingTask($tpaTask, 20);
-        theSpawn::getInstance()->setTpaTaskId($this->getSource(), $task->getTaskId());
+        theSpawn::getInstance()->setTpaTask($this->getSource(), $task->getTask());
     }
 
     public function cancel(): void
     {
         theSpawn::getInstance()->removeTpa($this->getSource());
-        theSpawn::getInstance()->getScheduler()->cancelTask($this->getTaskId());
     }
 
     public function complete(): void
     {
         $this->cancel();
         if (!$this->isTpaHere()) {
-            $this->getSourceAsPlayer()->teleport($this->getTargetAsPlayer());
+            $this->getSourceAsPlayer()->teleport($this->getTargetAsPlayer()->getPosition());
         } else {
-            $this->getTargetAsPlayer()->teleport($this->getSourceAsPlayer());
+            $this->getTargetAsPlayer()->teleport($this->getSourceAsPlayer()->getPosition());
         }
-        $this->getSourceAsPlayer()->getLevel()->broadcastLevelSoundEvent($this->getSourceAsPlayer(), LevelSoundEventPacket::SOUND_LEVELUP, mt_rand());
+        $this->getSourceAsPlayer()->getWorld()->addSound($this->getSourceAsPlayer()->getPosition(), new XpLevelUpSound(mt_rand(1, 100)));
     }
 }
