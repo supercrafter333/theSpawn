@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
+use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\PopSound;
 use pocketmine\player\Player;
@@ -15,7 +16,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class HubCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class HubCommand extends Command
+class HubCommand extends theSpawnOwnedCommand
 {
 
     /**

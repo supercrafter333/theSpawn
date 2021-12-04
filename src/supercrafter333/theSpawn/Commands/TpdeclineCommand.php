@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
+use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
@@ -10,7 +11,7 @@ use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
-class TpdeclineCommand extends Command
+class TpdeclineCommand extends theSpawnOwnedCommand
 {
 
     private theSpawn $pl;

@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
+use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
 use pocketmine\player\Player;
@@ -13,13 +14,8 @@ use supercrafter333\theSpawn\theSpawn;
  * Class DelhomeCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class DelhomeCommand extends Command
+class DelhomeCommand extends theSpawnOwnedCommand
 {
-
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
 
     /**
      * SethomeCommand constructor.
@@ -30,7 +26,6 @@ class DelhomeCommand extends Command
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.delhome.cmd");
         parent::__construct("delhome", "Delete a home!", "§4Use: §r/delhome <name>", ["deletehome", "rmhome"]);
     }

@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
+use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
 use pocketmine\player\Player;
@@ -14,7 +15,7 @@ use supercrafter333\theSpawn\theSpawn;
  * Class SetaliasCommand
  * @package supercrafter333\theSpawn\Commands
  */
-class SetaliasCommand extends Command
+class SetaliasCommand extends theSpawnOwnedCommand
 {
 
     /**
