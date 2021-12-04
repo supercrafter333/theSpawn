@@ -70,8 +70,14 @@ class MsgMgr
         return false;
     }
 
+    private static function getLowerLang(): string
+    {
+        return strtolower(theSpawn::getInstance()->getConfig()->get("language"));
+    }
+
     public static function getMessagesLanguage(): string
     {
+        if (self::getLowerLang() == "custom") return theSpawn::getInstance()->getConfig()->get("language");
         if (isset(self::$languages[theSpawn::getInstance()->getConfig()->get("language")])) return theSpawn::getInstance()->getConfig()->get("language");
         return self::LANG_en_BE;
     }

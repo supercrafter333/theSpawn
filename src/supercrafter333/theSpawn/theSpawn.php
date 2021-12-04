@@ -84,7 +84,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public string $version = "1.5.2";
+    public string $version = "1.5.3";
 
 
     /**
@@ -104,9 +104,6 @@ class theSpawn extends PluginBase implements Listener
         $this->saveResource("config.yml");
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
-        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom") {
-            $this->saveResource("Languages/messages.yml");
-        }
         # Version Check
         $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         ###
@@ -114,6 +111,9 @@ class theSpawn extends PluginBase implements Listener
         self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
         @mkdir($this->getDataFolder() . "Languages");
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom") {
+            $this->saveResource("Languages/messages.yml");
+        }
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
         $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);

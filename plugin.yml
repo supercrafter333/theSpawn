@@ -1,20 +1,8 @@
 name: theSpawn
-version: 1.5.2
+version: 1.5.3
 api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
-# -> NOT NEEDED:
-#mcpe-protocols:
-#  - 407
-#  - 408
-#  - 419
-#  - 422
-#  - 428
-#  - 431
-#  - 440
-#  - 448
-#  - 465
-#  - 471
 
 permissions:
   theSpawn.setspawn.cmd:
