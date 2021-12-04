@@ -84,7 +84,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public string $version = "1.5.1";
+    public string $version = "1.5.2";
 
 
     /**
@@ -1164,7 +1164,7 @@ class theSpawn extends PluginBase implements Listener
         if (!isset($this->spawnDelays[$player->getName()])) return false;
         $task = $this->spawnDelays["task"];
         if ($task instanceof Task) {
-            $task->onCancel();
+            $task->getHandler()->cancel();
         }
         unset($this->spawnDelays[$player->getName()]);
         return true;

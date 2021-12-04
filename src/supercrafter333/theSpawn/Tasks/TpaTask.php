@@ -28,18 +28,18 @@ class TpaTask extends Task
         if ($this->tpa->getSourceAsPlayer() == null && $this->tpa->getTargetAsPlayer() instanceof Player) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{source}", $this->tpa->getSource(), MsgMgr::getMsg("tpa-cancelled-by-source")));
             theSpawn::getInstance()->removeTpa($this->tpa->getSource());
-            $this->onCancel();
+            $this->getHandler()->cancel();
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() instanceof Player) {
             $this->tpa->getSourceAsPlayer()->sendMessage(str_replace("{target}", $this->tpa->getTarget(), MsgMgr::getMsg("tpa-cancelled-by-target")));
             theSpawn::getInstance()->removeTpa($this->tpa->getSource());
-            $this->onCancel();
+            $this->getHandler()->cancel();
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() == null) {
             theSpawn::getInstance()->removeTpa($this->tpa->getSource());
-            $this->onCancel();
+            $this->getHandler()->cancel();
             return;
         }
         if ($this->seconds > 10) {
@@ -51,7 +51,7 @@ class TpaTask extends Task
             $this->seconds--;
         } elseif ($this->seconds <= 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
-            $this->onCancel();
+            $this->getHandler()->cancel();
         }
     }
 }
