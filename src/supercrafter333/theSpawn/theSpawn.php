@@ -459,9 +459,9 @@ class theSpawn extends PluginBase implements Listener
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         $randHub = new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
-        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName()];
+        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
         if ($count !== null && $this->getUseRandomHubs()) {
-            $setRandHub = $x . '|' . $y . '|' . $z . '|' . $world->getDisplayName();
+            $setRandHub = $x . '|' . $y . '|' . $z . '|' . $world->getFolderName();
             $randHub->set($count, $setRandHub);
             $randHub->save();
         } else {
@@ -570,11 +570,11 @@ class theSpawn extends PluginBase implements Listener
         }
 
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $spawn->get($world->getDisplayName());
-        if ($spawn->exists($world->getDisplayName())) {
-            $X = $spawn->get($world->getDisplayName())["X"];
-            $Y = $spawn->get($world->getDisplayName())["Y"];
-            $Z = $spawn->get($world->getDisplayName())["Z"];
+        $spawn->get($world->getFolderName());
+        if ($spawn->exists($world->getFolderName())) {
+            $X = $spawn->get($world->getFolderName())["X"];
+            $Y = $spawn->get($world->getFolderName())["Y"];
+            $Z = $spawn->get($world->getFolderName())["Z"];
             return new Position($X, $Y, $Z, $world);
         } else {
             return false;
@@ -592,8 +592,8 @@ class theSpawn extends PluginBase implements Listener
         $x = $s->getPosition()->getX();
         $y = $s->getPosition()->getY();
         $z = $s->getPosition()->getZ();
-        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName()];
-        $spawn->set($world->getDisplayName(), $coords);
+        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
+        $spawn->set($world->getFolderName(), $coords);
         $spawn->save();
         return true;
     }
@@ -644,8 +644,8 @@ class theSpawn extends PluginBase implements Listener
     public function removeSpawn(World $world): bool
     {
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        if ($spawn->exists($world->getDisplayName())) {
-            $spawn->remove($world->getDisplayName());
+        if ($spawn->exists($world->getFolderName())) {
+            $spawn->remove($world->getFolderName());
             $spawn->save();
             return true;
         } else {
@@ -865,7 +865,7 @@ class theSpawn extends PluginBase implements Listener
     {
         if ($this->existsHome($homeName, $player) == false) {
             $home = $this->getHomeCfg($player->getName());
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getDisplayName(), "homeName" => $homeName];
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName(), "homeName" => $homeName];
             $home->set($homeName, $setThis);
             $home->save();
             return true;
@@ -1021,9 +1021,9 @@ class theSpawn extends PluginBase implements Listener
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
         if ($permission === null) {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getDisplayName(), "warpName" => $warpName];
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getFolderName(), "warpName" => $warpName];
         } else {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getDisplayName(), "warpName" => $warpName, "perm" => $permission];
+            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getFolderName(), "warpName" => $warpName, "perm" => $permission];
         }
         $warp->set($warpName, $setThis);
         $warp->save();

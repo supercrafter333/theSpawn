@@ -53,7 +53,7 @@ class SpawnCommand extends theSpawnOwnedCommand
         $config = $pl->getConfig();
         #########################
         if ($s instanceof Player) {
-            $levelname = $s->getWorld()->getDisplayName();
+            $levelname = $s->getWorld()->getFolderName();
             $level = $s->getWorld();
             if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
                 $pl->startSpawnDelay($s);

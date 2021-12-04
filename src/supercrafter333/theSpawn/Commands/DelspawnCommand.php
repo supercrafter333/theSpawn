@@ -55,7 +55,7 @@ class DelspawnCommand extends theSpawnOwnedCommand
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.delspawn.cmd")) {
-                $levelname = $s->getWorld()->getDisplayName();
+                $levelname = $s->getWorld()->getFolderName();
                 $level = $pl->getServer()->getWorldManager()->getWorldByName($levelname);
                 if ($spawn->exists($levelname)) {
                     $pl->removeSpawn($level);

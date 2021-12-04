@@ -55,7 +55,7 @@ class SetspawnCommand extends theSpawnOwnedCommand
         #########################
         if ($s instanceof Player) {
             if ($s->hasPermission("theSpawn.setspawn.cmd")) {
-                $levelname = $s->getWorld()->getDisplayName();
+                $levelname = $s->getWorld()->getFolderName();
                 $level = $s->getWorld();
                 $pl->setSpawn($s, $level);
                 if (!$spawn->exists($levelname)) {

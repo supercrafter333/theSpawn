@@ -58,7 +58,7 @@ class HubCommand extends theSpawnOwnedCommand
                     $hubPos = $pl->getRandomHub();
                     if ($hubPos !== null) {
                         $s->teleport($hubPos);
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getWorld()->getDisplayName()], MsgMgr::getMsg("hub-tp")));
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getWorld()->getFolderName()], MsgMgr::getMsg("hub-tp")));
                         $s->getWorld()->addSound($s->getPosition(), new PopSound());
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
@@ -69,7 +69,7 @@ class HubCommand extends theSpawnOwnedCommand
                     $hublevel = $pl->getHub()->getWorld();
                     if ($hublevel !== null) {
                         $s->teleport($pl->getHub());
-                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getDisplayName()], MsgMgr::getMsg("hub-tp")));
+                        $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getFolderName()], MsgMgr::getMsg("hub-tp")));
                         $s->getWorld()->addSound($s->getPosition(), new PopSound());
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));

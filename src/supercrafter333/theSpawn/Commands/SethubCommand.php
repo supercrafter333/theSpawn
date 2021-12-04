@@ -58,7 +58,7 @@ class SethubCommand extends theSpawnOwnedCommand
                 $x = $s->getPosition()->getX();
                 $y = $s->getPosition()->getY();
                 $z = $s->getPosition()->getZ();
-                $levelname = $s->getWorld()->getDisplayName();
+                $levelname = $s->getWorld()->getFolderName();
                 $level = $s->getWorld();
                 if ($pl->getUseHubServer() == false) {
                     if ($level === null) {

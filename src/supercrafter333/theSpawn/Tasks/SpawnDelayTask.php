@@ -25,7 +25,7 @@ class SpawnDelayTask extends Task
         }
         if ($this->seconds <= 0) {
             $player->teleport(theSpawn::getInstance()->getSpawn($player->getWorld()));
-            $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getWorld()->getDisplayName()], MsgMgr::getMsg("spawn-tp")));
+            $player->sendMessage(theSpawn::$prefix . str_replace(["{world}"], [$player->getWorld()->getFolderName()], MsgMgr::getMsg("spawn-tp")));
             $player->getWorld()->addSound($player->getPosition(), new PopSound());
             theSpawn::getInstance()->stopSpawnDelay($player);
         }
