@@ -30,7 +30,7 @@ class WarpForms
         $form->setContent(MsgMgr::getMsg("form-warp-menu-content"));
         foreach (theSpawn::getInstance()->getWarpCfg()->getAll() as $warp => $warpN) {
             $warpName = $warpN["warpName"];
-            $form->addButton(str_replace(["{warp}", "{line}"], [$warpName, "\n"], MsgMgr::getMsg("form-warp-menu-homeButton")), -1, "", $warpName);
+            $form->addButton(str_replace(["{warp}", "{line}"], [$warpName, "\n"], MsgMgr::getMsg("form-warp-menu-warpButton")), -1, "", $warpName);
         }
         $form->sendToPlayer($player);
         return $form;

@@ -2,14 +2,14 @@
 
 namespace supercrafter333\theSpawn;
 
-use pocketmine\command\Command;
+use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\plugin\Plugin;
 
 /**
  * Class AliasMap
  * @package supercrafter333\theSpawn
  */
-abstract class AliasMap extends Command
+abstract class AliasMap extends theSpawnOwnedCommand
 {
 
     /**

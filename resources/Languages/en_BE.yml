@@ -82,7 +82,7 @@ form-warp-menu-warpButton: "§b{warp}§r{line}§7click to teleport"
 #   homes
 form-home-menu-title: "Homes"
 form-home-menu-content: "Please select a home."
-form-home-menu-warpButton: "§b{home}§r{line}§7click to teleport"
+form-home-menu-homeButton: "§b{home}§r{line}§7click to teleport"
 
 #errors
 #uses: none

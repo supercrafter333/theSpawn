@@ -120,7 +120,7 @@ class WarpInfo
 
     public function getPermission(): ?string
     {
-        $perm = $this->getWarpCfg()->get($this->warpName, ["perm"]);
+        $perm = $this->getWarpCfg()->getNested($this->warpName . ".perm");
         if ($perm !== null && $perm !== false) return $perm;
         return null;
     }

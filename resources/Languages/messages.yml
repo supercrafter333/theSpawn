@@ -71,6 +71,18 @@ tpa-ended: "The TpaInfo from {source} to {target} is ended now."
 delay-tip: "§8[§eYou where teleported in §7{secs}§e!§8]"
 delay-stopped-by-move: "§cTeleport cancelled because you've moved you."
 
+
+#forms
+#   warps
+form-warp-menu-title: "Warps"
+form-warp-menu-content: "Please select a warp."
+form-warp-menu-warpButton: "§b{warp}§r{line}§7click to teleport"
+#   homes
+form-home-menu-title: "Homes"
+form-home-menu-content: "Please select a home."
+form-home-menu-homeButton: "§b{home}§r{line}§7click to teleport"
+
+
 #errors
 #uses: none
 no-spawn-set: "§4ERROR --> §cNo spawn was set for this world!"
@@ -96,7 +108,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.5.3"
+version: "1.5.4"
 
 
 ############################
