@@ -79,10 +79,27 @@ delay-stopped-by-move: "§cTeleport cancelled because you've moved you."
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Please select a warp."
 form-warp-menu-warpButton: "§b{warp}§r{line}§7click to teleport"
+#   setwarp
+form-setWarp-menu-title: "Set a warp"
+form-setWarp-menu-content: "Here you can set a new warp."
+form-setWarp-menu-inputNameDescription: "Name of the new warp"
+form-setWarp-menu-inputPermDescription: "Permission of the new warp (optional)"
+#   delwarp
+form-rmWarp-menu-title: "Delete a warp"
+form-rmWarp-menu-content: "Here you can delete a warp."
+form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7click to delete"
 #   homes
 form-home-menu-title: "Homes"
 form-home-menu-content: "Please select a home."
 form-home-menu-homeButton: "§b{home}§r{line}§7click to teleport"
+#   sethome
+form-setHome-menu-title: "Set a home"
+form-setHome-menu-content: "Here you can set a new home."
+form-setHome-menu-inputDescription: "Name of the new home"
+#   delhome
+form-rmHome-menu-title: "Delete a home"
+form-rmHome-menu-content: "Here you can delete a home."
+form-rmHome-menu-homeButton: "§b{home}§r{line}§7click to delete"
 
 #errors
 #uses: none
@@ -108,7 +125,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 
-#compatible with v1.5.0
+#compatible with v1.6.0 (and lower)
 
 
 ############################

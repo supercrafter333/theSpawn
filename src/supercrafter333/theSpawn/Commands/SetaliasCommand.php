@@ -64,10 +64,6 @@ class SetaliasCommand extends theSpawnOwnedCommand
                 $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
                 return true;
             }
-            if ($pl->aliasCfg->get("use-aliases") == "false") {
-                $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
-                return true;
-            }
             if ($pl->getSpawn($pl->levelCheck($args[1])) == false) {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-for-world"));
                 return true;

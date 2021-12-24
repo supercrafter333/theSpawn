@@ -8,6 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\Forms\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -55,8 +56,13 @@ class SethomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
             return true;
         }
-        if (!count($args) >= 1) {
-            $s->sendMessage($this->usageMessage);
+        if (count($args) < 1) {
+            if ($pl->useForms()) {
+                $warpForms = new HomeForms($s->getName());
+                $warpForms->openSetHome($s);
+            } else {
+                $s->sendMessage($this->usageMessage);
+            }
             return true;
         }
         $x = $s->getPosition()->getX();

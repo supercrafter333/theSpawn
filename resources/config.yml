@@ -41,7 +41,7 @@ use-forms: "true"
 # Languages:
 # -> 'en_BE' - British English
 # -> 'ger_DE' - German
-# -> 'fr_FR' - French
+# -> 'fr_FR' - French (outdated)
 # -> 'CUSTOM' - Edit the messages yourself
 #
 # Chose you language here:
@@ -49,7 +49,7 @@ language: "en_BE"
 
 
 #DON'T CHANGE THIS!!
-version: "1.5.4"
+version: "1.6.0"
 
 ############################
 ##########theSpawn##########

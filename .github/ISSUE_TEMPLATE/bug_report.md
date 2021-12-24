@@ -10,7 +10,7 @@ assignees: ''
 # Bug: [Bug Name]
 
 ### Informations
-theSpawn Version: [1.5.0]
+theSpawn Version: [1.6.0]
 Server-OS: [Linux Ubuntu 20.04]
 PHP Version: [8.0.12]
 PocketMine-MP Version: [4.0.0]

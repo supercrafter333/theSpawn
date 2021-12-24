@@ -79,10 +79,27 @@ delay-stopped-by-move: "§cTeleportation fehlgeschlagen! Du hast dich Bewegt."
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Bitte wähle einen Warp aus."
 form-warp-menu-warpButton: "§b{warp}§r{line}§7Klicke für Teleportation"
+#   setwarp
+form-setWarp-menu-title: "Setze einen Warp"
+form-setWarp-menu-content: "Hier kannst du einen neuen Warp setzen."
+form-setWarp-menu-inputNameDescription: "Name des neuen Warps"
+form-setWarp-menu-inputPermDescription: "Berechtigung des neuen Warps (optional)"
+#   delwarp
+form-rmWarp-menu-title: "Lösche einen Warp"
+form-rmWarp-menu-content: "Hier kannst du einen Warp löschen."
+form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7Klicke zum Löschen"
 #   homes
 form-home-menu-title: "Homes"
 form-home-menu-content: "Bitte wähle ein Home aus."
 form-home-menu-homeButton: "§b{home}§r{line}§7Klicke für Teleportation"
+#   sethome
+form-setHome-menu-title: "Setze ein Home"
+form-setHome-menu-content: "Hier kannst du ein neues Home setzen."
+form-setHome-menu-inputDescription: "Name des Homes"
+#   delhome
+form-rmHome-menu-title: "Lösche ein Home"
+form-rmHome-menu-content: "Hier kannst du ein Home löschen."
+form-rmHome-menu-homeButton: "§b{home}§r{line}§7Klicke zum Löschen"
 
 #errors
 #uses: none
@@ -108,7 +125,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v1.5.0
+#compatible with v1.6.0 (and lower)
 
 
 ############################

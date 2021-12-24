@@ -2,12 +2,12 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -50,20 +50,21 @@ class SetwarpCommand extends theSpawnOwnedCommand
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return;
         }
-        if (count($args) < 1) {
-            $s->sendMessage($this->usageMessage);
-            return;
-        }
         if (!$s->hasPermission("theSpawn.setwarp.cmd")) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
             return;
         }
-        if ($pl->useWarps() == false) {
-            $s->sendMessage($prefix . MsgMgr::getMsg("warps-deactivated"));
+        if (count($args) < 1) {
+            if ($pl->useForms()) {
+                $warpForms = new WarpForms();
+                $warpForms->openSetWarp($s);
+            } else {
+                $s->sendMessage($this->usageMessage);
+            }
             return;
         }
         if ($pl->existsWarp($args[0]) == false) {
-            $pl->addWarp($s->getPosition()->getX(), $s->getPosition()->getY(), $s->getPosition()->getZ(), $s->getPosition()->getWorld(), $args[0], isset($args[1]) ? $args[1] : null);
+            $pl->addWarp($s->getPosition()->getX(), $s->getPosition()->getY(), $s->getPosition()->getZ(), $s->getPosition()->getWorld(), $args[0], isset($args[1]) ? (string)$args[1] : null);
             $posMsg = (string)$s->getPosition()->getX() . $s->getPosition()->getY() . $s->getPosition()->getZ();
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getWorld()->getFolderName()], MsgMgr::getMsg("warp-set")))));
         } else {

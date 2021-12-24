@@ -7,6 +7,7 @@ use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\permission\PermissionManager;
 use pocketmine\scheduler\Task;
 use pocketmine\world\World;
 use pocketmine\world\Position;
@@ -84,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public string $version = "1.5.4";
+    public string $version = "1.6.0";
 
 
     /**
@@ -106,7 +107,14 @@ class theSpawn extends PluginBase implements Listener
         $cmdMap = $this->getServer()->getCommandMap();
         # Version Check
         $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
+        /*
+        $cfgVersion = $this->getConfig()->get("version");
+        $this->versionCheck($this->version, ($cfgVersion < "1.6.0"));
+        */
         ###
+
+        $this->registerPermissions();
+
         $this->msgCfg = MsgMgr::getMsgs();
         self::$prefix = MsgMgr::getPrefix();
         @mkdir($this->getDataFolder() . "homes");
@@ -220,27 +228,49 @@ class theSpawn extends PluginBase implements Listener
         }
         if (strtolower(MsgMgr::getMessagesLanguage()) == "custom" && (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version)) {
             if ($update == true) {
-                $this->getLogger()->debug("OUTDATED " . MsgMgr::getMessagesLanguage() . ".yml!! Your " . MsgMgr::getMessagesLanguage() . ".yml is outdated! Your " . MsgMgr::getMessagesLanguage() . ".yml will automatically updated!");
-                if (file_exists($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml")) {
-                    unlink($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml");
+                $this->getLogger()->debug("OUTDATED messages.yml!! Your messages.yml is outdated! Your " . MsgMgr::getMessagesLanguage() . ".yml will automatically updated!");
+                if (file_exists($this->getDataFolder() . "Languages/messagesOld.yml")) {
+                    unlink($this->getDataFolder() . "Languages/messagesOld.yml");
                 }
-                rename($this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . ".yml", $this->getDataFolder() . "Languages/" . MsgMgr::getMessagesLanguage() . "Old.yml");
-                $this->saveResource("Languages/" . MsgMgr::getMessagesLanguage() . ".yml");
-                $this->getLogger()->debug(MsgMgr::getMessagesLanguage() . ".yml Updated for version: §b$version");
-                $this->getLogger()->notice("INFORMATION: Your old " . MsgMgr::getMessagesLanguage() . ".yml can be found under `" . MsgMgr::getMessagesLanguage() . "Old.yml`");
+                rename($this->getDataFolder() . "Languages/messages.yml", $this->getDataFolder() . "Languages/messagesOld.yml");
+                $this->saveResource("Languages/messages.yml");
+                $this->getLogger()->debug("messages.yml Updated for version: §b$version");
+                $this->getLogger()->notice("INFORMATION: Your old messages.yml can be found under `" . MsgMgr::getMessagesLanguage() . "Old.yml`");
             } else {
-                $this->getLogger()->warning("Your " . MsgMgr::getMessagesLanguage() . ".yml is outdated but that's not so bad.");
+                $this->getLogger()->warning("Your messages.yml is outdated but that's not so bad.");
             }
         }
     }
 
-    /**
-     *
-     */
-    public function updateCfg()
+    private function registerPermissions(): void
     {
-        rename($this->getDataFolder() . "config.yml", $this->getDataFolder() . "configOld.yml");
-        $this->saveResource("config.yml");
+        $defaultPerms = [
+            "theSpawn.setspawn.cmd",
+            "theSpawn.delspawn.cmd",
+            "theSpawn.sethub.cmd",
+            "theSpawn.delhub.cmd",
+            "theSpawn.setalias.cmd",
+            "theSpawn.removealias.cmd",
+            "theSpawn.setwarp.cmd",
+            "theSpawn.delwarp.cmd",
+            "theSpawn.sethome.cmd",
+            "theSpawn.delhome.cmd",
+            "theSpawn.home.cmd",
+            "theSpawn.warp.cmd",
+            "theSpawn.tpa.cmd",
+            "theSpawn.tpahere.cmd",
+            "theSpawn.tpaccept.cmd",
+            "theSpawn.tpdecline.cmd",
+
+            # ADMIN PERMISSIONS:
+            "theSpawn.warp.admin"
+        ];
+
+        $bypassPerm = PermissionManager::getInstance()->getPermission("theSpawn.bypass");
+
+        foreach ($defaultPerms as $perm) {
+            $bypassPerm->addChild($perm, true);
+        }
     }
 
     /**

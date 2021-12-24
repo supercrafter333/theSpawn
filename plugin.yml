@@ -1,10 +1,12 @@
 name: theSpawn
-version: 1.5.4
+version: 1.6.0
 api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
 
 permissions:
+  theSpawn.bypass:
+    default: op
   theSpawn.setspawn.cmd:
     default: op
   theSpawn.delspawn.cmd:
@@ -37,12 +39,5 @@ permissions:
     default: true
   theSpawn.tpdecline.cmd:
     default: true
-
-# TODO: add permissions with childrens
-#  theSpawn.bypass:
-#    default: op
-#    children:
-#
-#      theSpawn.tpas.cmd:
-#        default: true
-#        children:
+  theSpawn.warp.admin: #teleport you to all warps with or without the permission for the warp
+    default: op

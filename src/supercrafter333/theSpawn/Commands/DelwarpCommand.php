@@ -8,6 +8,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -54,12 +55,17 @@ class DelwarpCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
             return;
         }
-        if ($pl->useWarps() == false) {
-            $s->sendMessage($prefix . MsgMgr::getMsg("warps-deactivated"));
-            return;
-        }
-        if (empty($args[0])) {
-            $s->sendMessage($prefix . $this->getUsage());
+        if (count($args) < 1) {
+            if ($pl->useForms()) {
+                if ($pl->listWarps() == null) {
+                    $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
+                    return;
+                }
+                $warpForms = new WarpForms();
+                $warpForms->openRmWarp($s);
+            } else {
+                $s->sendMessage($this->usageMessage);
+            }
             return;
         }
         if (!$pl->existsWarp($args[0])) {

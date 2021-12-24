@@ -97,8 +97,9 @@ remove-random-hub-before: "§cVeuillez supprimer le hub avant de supprimer celui
 no-spawn-set-for-world: "§cAucun spawn définis pour le monde {world}!"
 
 
+#compatible with v1.4.3 (and lower)
 
-#TODO: add compatiblity for v1.5.0
+#TODO: add compatiblity for v1.5.0 & v1.6.0
 
 
 ############################

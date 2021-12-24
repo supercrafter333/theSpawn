@@ -54,7 +54,6 @@ class WarpCommand extends theSpawnOwnedCommand
         }
         if (count($args) < 1) {
             if ($pl->listWarps() !== null) {
-                $s->getWorld()->addSound($s->getPosition(), new XpLevelUpSound(mt_rand(1, 100)));
                 if ($pl->useForms()) {
                     $warpForms = new WarpForms();
                     $warpForms->open($s);
@@ -72,14 +71,10 @@ class WarpCommand extends theSpawnOwnedCommand
             return;
         }
         if (theSpawn::getInstance()->getWarpInfo($args[0])->getPermission() !== null) {
-            if (!$s->hasPermission("theSpawn.warp." . theSpawn::getInstance()->getWarpInfo($args[0])->getPermission())) {
+            if (!$s->hasPermission("theSpawn.warp." . theSpawn::getInstance()->getWarpInfo($args[0])->getPermission()) && !$s->hasPermission("theSpawn.warp.admin")) {
                 $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
                 return;
             }
-        }
-        if ($pl->useWarps() == false) {
-            $s->sendMessage($prefix . MsgMgr::getMsg("warps-deactivated"));
-            return;
         }
         if (!$pl->existsWarp($args[0])) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
