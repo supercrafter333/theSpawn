@@ -23,7 +23,7 @@ class TpdeclineCommand extends theSpawnOwnedCommand
         parent::__construct($name, $description, $usageMessage, $aliases);
     }
 
-    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
+    public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $pl = $this->pl;
 

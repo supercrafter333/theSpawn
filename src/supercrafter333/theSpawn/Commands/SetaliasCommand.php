@@ -42,7 +42,7 @@ class SetaliasCommand extends theSpawnOwnedCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
+    public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();

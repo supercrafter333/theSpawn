@@ -30,7 +30,7 @@ class TpaCommand extends theSpawnOwnedCommand
      * @param string[] $args
      * @return mixed
      */
-    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
+    public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $pl = $this->pl;
 

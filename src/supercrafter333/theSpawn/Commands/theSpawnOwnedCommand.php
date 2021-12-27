@@ -26,8 +26,19 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
         return theSpawn::getInstance();
     }
 
-    abstract public function execute(CommandSender|Player $s, string $commandLabel, array $args): void;
+    /**
+     * @param CommandSender|Player $s
+     * @param string $commandLabel
+     * @param array $args
+     * @return void
+     */
+    abstract public function execute(CommandSender $s, string $commandLabel, array $args): void;
 
+    /**
+     * @param CommandSender|Player $sender
+     * @param bool $checkIsPlayer
+     * @return bool
+     */
     public function canUse(CommandSender|Player $sender, bool $checkIsPlayer = true): bool
     {
         $pl = $this->getOwningPlugin();
@@ -43,6 +54,11 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
         return !$checkIsPlayer;
     }
 
+    /**
+     * @param CommandSender|Player|string $sender
+     * @param bool $byPrefix
+     * @return bool
+     */
     public function isPlayer(CommandSender|Player|string $sender, bool $byPrefix = false): bool
     {
         if (!$byPrefix && ($player = $this->getOwningPlugin()->getServer()->getPlayerExact(!is_string($sender) ? $sender->getName() : $sender)) && $player->isOnline()) return true;
@@ -52,6 +68,12 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
         return false;
     }
 
+    /**
+     * @param Player $player
+     * @param string $permission
+     * @param string $commandName
+     * @return bool
+     */
     public static function testPermissionX(Player $player, string $permission, string $commandName): bool
     {
         if (!$player->hasPermission($permission)) {
