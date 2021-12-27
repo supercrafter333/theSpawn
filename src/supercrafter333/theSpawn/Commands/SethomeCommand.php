@@ -39,23 +39,18 @@ class SethomeCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if (!$s->hasPermission("theSpawn.sethome.cmd")) {
-            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return true;
-        }
-        if (!$s instanceof Player) {
-            $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
-            return true;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (count($args) < 1) {
             if ($pl->useForms()) {
                 $warpForms = new HomeForms($s->getName());
@@ -63,8 +58,19 @@ class SethomeCommand extends theSpawnOwnedCommand
             } else {
                 $s->sendMessage($this->usageMessage);
             }
-            return true;
+            return;
         }
+
+        self::simpleExecute($s, $args);
+    }
+
+    public static function simpleExecute(Player $s, array $args): void
+    {
+        $prefix = theSpawn::$prefix;
+        $pl = theSpawn::getInstance();
+
+        if (!self::testPermissionX($s, "theSpawn.sethome.cmd", "sethome")) return;
+
         $x = $s->getPosition()->getX();
         $y = $s->getPosition()->getY();
         $z = $s->getPosition()->getZ();
@@ -75,7 +81,7 @@ class SethomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));
             $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
         }
-        return true;
+        return;
     }
 
     /**

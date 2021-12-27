@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
@@ -39,12 +38,12 @@ class SetspawnCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -53,24 +52,19 @@ class SetspawnCommand extends theSpawnOwnedCommand
         $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
-        if ($s instanceof Player) {
-            if ($s->hasPermission("theSpawn.setspawn.cmd")) {
-                $levelname = $s->getWorld()->getFolderName();
-                $level = $s->getWorld();
-                $pl->setSpawn($s, $level);
-                if (!$spawn->exists($levelname)) {
-                    $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-set")));
-                } else {
-                    $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-changed")));
-                }
-                $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
-            } else {
-                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            }
+
+        if (!$this->canUse($s)) return;
+
+        $levelname = $s->getWorld()->getFolderName();
+        $level = $s->getWorld();
+        $pl->setSpawn($s, $level);
+        if (!$spawn->exists($levelname)) {
+            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-set")));
         } else {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
+            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-changed")));
         }
-        return true;
+        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+        return;
     }
 
     /**

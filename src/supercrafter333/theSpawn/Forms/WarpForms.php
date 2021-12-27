@@ -5,6 +5,9 @@ namespace supercrafter333\theSpawn\Forms;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\player\Player;
+use supercrafter333\theSpawn\Commands\DelwarpCommand;
+use supercrafter333\theSpawn\Commands\SetwarpCommand;
+use supercrafter333\theSpawn\Commands\WarpCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -24,7 +27,7 @@ class WarpForms
             $result = $data;
             if ($result === null) return;
 
-            theSpawn::getInstance()->getServer()->dispatchCommand($player, "warp $result");
+            WarpCommand::simpleExecute($player, [$result]);
         });
         $form->setTitle(MsgMgr::getMsg("form-warp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-warp-menu-content"));
@@ -46,7 +49,7 @@ class WarpForms
             $result = $data;
             if ($result === null) return;
 
-            theSpawn::getInstance()->getServer()->dispatchCommand($player, "delwarp $result");
+            DelwarpCommand::simpleExecute($player, [$result]);
             return;
         });
         $form->setTitle(MsgMgr::getMsg("form-rmWarp-menu-title"));
@@ -70,11 +73,11 @@ class WarpForms
 
             if (isset($data["warpName"])) {
                 if (isset($data["warpPermission"])) {
-                    theSpawn::getInstance()->getServer()->dispatchCommand($player, "setwarp " . $data["warpName"] . " " . $data["warpPermission"]);
+                    SetwarpCommand::simpleExecute($player, [$data["warpName"], $data["warpPermission"]]);
                     return;
                 }
 
-                theSpawn::getInstance()->getServer()->dispatchCommand($player, "setwarp " . $data["warpName"]);
+                SetwarpCommand::simpleExecute($player, [$data["warpName"]]);
                 return;
             }
         });

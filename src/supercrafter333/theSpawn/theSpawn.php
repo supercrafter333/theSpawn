@@ -85,7 +85,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public string $version = "1.6.0";
+    public string $version = "1.6.1";
 
 
     /**
@@ -106,11 +106,9 @@ class theSpawn extends PluginBase implements Listener
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         $cmdMap = $this->getServer()->getCommandMap();
         # Version Check
-        $this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
-        /*
+        //$this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         $cfgVersion = $this->getConfig()->get("version");
         $this->versionCheck($this->version, ($cfgVersion < "1.6.0"));
-        */
         ###
 
         $this->registerPermissions();
@@ -263,10 +261,16 @@ class theSpawn extends PluginBase implements Listener
             "theSpawn.tpdecline.cmd",
 
             # ADMIN PERMISSIONS:
-            "theSpawn.warp.admin"
+            "theSpawn.warp.admin",
+            "theSpawn.homes" #all home permissions
         ];
 
         $bypassPerm = PermissionManager::getInstance()->getPermission("theSpawn.bypass");
+        $homesPerm = PermissionManager::getInstance()->getPermission("theSpawn.homes");
+
+        $homesPerm->addChild("theSpawn.sethome.cmd", true);
+        $homesPerm->addChild("theSpawn.delhome.cmd", true);
+        $homesPerm->addChild("theSpawn.home.cmd", true);
 
         foreach ($defaultPerms as $perm) {
             $bypassPerm->addChild($perm, true);

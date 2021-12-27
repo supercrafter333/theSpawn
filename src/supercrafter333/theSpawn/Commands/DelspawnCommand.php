@@ -39,12 +39,12 @@ class DelspawnCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -53,24 +53,19 @@ class DelspawnCommand extends theSpawnOwnedCommand
         $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
-        if ($s instanceof Player) {
-            if ($s->hasPermission("theSpawn.delspawn.cmd")) {
-                $levelname = $s->getWorld()->getFolderName();
-                $level = $pl->getServer()->getWorldManager()->getWorldByName($levelname);
-                if ($spawn->exists($levelname)) {
-                    $pl->removeSpawn($level);
-                    $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
-                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
-                } else {
-                    $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
-                }
-            } else {
-                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            }
+
+        if (!$this->canUse($s)) return;
+
+        $levelname = $s->getWorld()->getFolderName();
+        $level = $pl->getServer()->getWorldManager()->getWorldByName($levelname);
+        if ($spawn->exists($levelname)) {
+            $pl->removeSpawn($level);
+            $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
+            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         } else {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
+            $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
         }
-        return true;
+        return;
     }
 
     /**

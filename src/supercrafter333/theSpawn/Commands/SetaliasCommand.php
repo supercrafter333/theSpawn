@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
@@ -38,42 +37,38 @@ class SetaliasCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if ($s instanceof Player) {
-            if (count($args) < 2) {
-                $s->sendMessage($this->usageMessage);
-                return true;
-            }
-            if (!$s->hasPermission("theSpawn.setalias.cmd")) {
-                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-                return true;
-            }
-            if (!is_string($args[0]) || !is_string($args[1])) {
-                $s->sendMessage($this->usageMessage);
-                return true;
-            }
-            if ($pl->existsLevel($args[1]) == false) {
-                $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
-                return true;
-            }
-            if ($pl->getSpawn($pl->levelCheck($args[1])) == false) {
-                $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-for-world"));
-                return true;
-            }
-            $pl->addAlias($args[0], $args[1]);
-            $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
-            $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
-            return true;
+
+        if (!$this->canUse($s)) return;
+
+        if (count($args) < 2) {
+            $s->sendMessage($this->usageMessage);
+            return;
         }
-        return true;
+        if (!is_string($args[0]) || !is_string($args[1])) {
+            $s->sendMessage($this->usageMessage);
+            return;
+        }
+        if ($pl->existsLevel($args[1]) == false) {
+            $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
+            return;
+        }
+        if ($pl->getSpawn($pl->levelCheck($args[1])) == false) {
+            $s->sendMessage($prefix . str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("no-spawn-set-for-world")));
+            return;
+        }
+        $pl->addAlias($args[0], $args[1]);
+        $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
+        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+        return;
     }
 
     /**

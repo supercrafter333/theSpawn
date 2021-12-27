@@ -39,22 +39,17 @@ class DelwarpCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): void
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if (!$s instanceof Player) {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return;
-        }
-        if (!$s->hasPermission($this->getPermission())) {
-            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (count($args) < 1) {
             if ($pl->useForms()) {
                 if ($pl->listWarps() == null) {
@@ -68,6 +63,22 @@ class DelwarpCommand extends theSpawnOwnedCommand
             }
             return;
         }
+        if (!$pl->existsWarp($args[0])) {
+            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            return;
+        }
+        $pl->removeWarp($args[0]);
+        $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-deleted")));
+        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+    }
+
+    public static function simpleExecute(Player $s, array $args): void
+    {
+        $prefix = theSpawn::$prefix;
+        $pl = theSpawn::getInstance();
+
+        if (!self::testPermissionX($s, "theSpawn.delwarp.cmd", "delwarp")) return;
+
         if (!$pl->existsWarp($args[0])) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;

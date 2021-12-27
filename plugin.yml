@@ -1,5 +1,5 @@
 name: theSpawn
-version: 1.6.0
+version: 1.6.1
 api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
@@ -40,4 +40,6 @@ permissions:
   theSpawn.tpdecline.cmd:
     default: true
   theSpawn.warp.admin: #teleport you to all warps with or without the permission for the warp
+    default: op
+  theSpawn.homes:
     default: op

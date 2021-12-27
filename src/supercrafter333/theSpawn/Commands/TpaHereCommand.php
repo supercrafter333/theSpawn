@@ -25,22 +25,17 @@ class TpaHereCommand extends theSpawnOwnedCommand
 
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param string[] $args
      * @return mixed
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): void
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $pl = $this->pl;
-        if (!$s->hasPermission($this->getPermission())) {
-            $s->sendMessage(MsgMgr::getNoPermMsg());
-            return;
-        }
-        if (!$s instanceof Player) {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return;
-        }
+
+        if (!$this->canUse($s)) return;
+        
         if (count($args) < 1) {
             $s->sendMessage($this->usageMessage);
             return;

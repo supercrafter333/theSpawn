@@ -38,12 +38,12 @@ class SpawnCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -52,23 +52,21 @@ class SpawnCommand extends theSpawnOwnedCommand
         $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
-        if ($s instanceof Player) {
-            $levelname = $s->getWorld()->getFolderName();
-            $level = $s->getWorld();
-            if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
-                $pl->startSpawnDelay($s);
-            } elseif ($spawn->exists($levelname)) {
-                $s->teleport($pl->getSpawn($level));
-                $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
-                $s->getWorld()->addSound($s->getPosition(), new PopSound());
-            } else {
-                $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
-            }
-            return true;
+
+        if (!$this->isPlayer($s)) return;
+
+        $levelname = $s->getWorld()->getFolderName();
+        $level = $s->getWorld();
+        if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
+            $pl->startSpawnDelay($s);
+        } elseif ($spawn->exists($levelname)) {
+            $s->teleport($pl->getSpawn($level));
+            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
+            $s->getWorld()->addSound($s->getPosition(), new PopSound());
         } else {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
+            $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
         }
+        return;
     }
 
     /**

@@ -40,23 +40,18 @@ class HomeCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if (!$s->hasPermission("theSpawn.home.cmd")) {
-            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return true;
-        }
-        if (!$s instanceof Player) {
-            $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
-            return true;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (!isset($args[0])) {
             if ($pl->listHomes($s) !== null) {
                 if ($pl->useForms()) {
@@ -69,21 +64,32 @@ class HomeCommand extends theSpawnOwnedCommand
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
             }
-            return true;
+            return;
         }
-        $lvlName = $pl->getHomeInfo($s, $args[0])->getLevelName();
-        if ($pl->getServer()->getWorldManager()->isWorldGenerated($lvlName) == false) {
+
+        self::simpleExecute($s, $args);
+    }
+
+    public static function simpleExecute(Player $s, array $args): void
+    {
+        $prefix = theSpawn::$prefix;
+        $pl = theSpawn::getInstance();
+
+        if (!self::testPermissionX($s, "theSpawn.home.cmd", "home")) return;
+        
+        $worldName = $pl->getHomeInfo($s, $args[0])->getLevelName();
+        if ($pl->getServer()->getWorldManager()->isWorldGenerated($worldName) == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
-            return true;
+            return;
         }
         if ($pl->getHomeInfo($s, $args[0])->existsHome() == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-not-exists")));
-            return true;
+            return;
         }
         $pl->teleportToHome($s, $args[0]);
         $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-teleport")));
         $s->getWorld()->addSound($s->getPosition(), new PopSound());
-        return true;
+        return;
     }
 
     /**

@@ -39,12 +39,12 @@ class SethubCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -53,60 +53,53 @@ class SethubCommand extends theSpawnOwnedCommand
         $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
-        if ($s instanceof Player) {
-            if ($s->hasPermission("theSpawn.sethub.cmd")) {
-                $x = $s->getPosition()->getX();
-                $y = $s->getPosition()->getY();
-                $z = $s->getPosition()->getZ();
-                $levelname = $s->getWorld()->getFolderName();
-                $level = $s->getWorld();
-                if ($pl->getUseHubServer() == false) {
-                    if ($level === null) {
-                        $s->sendMessage($prefix . MsgMgr::getErrorMsg());
-                        return true;
-                    }
-                    if (count($args) >= 1 && $pl->getUseRandomHubs()) {
-                        if (!is_numeric($args[0])) {
-                            $s->sendMessage($this->usageMessage);
-                            return true;
-                        }
-                        if ($pl->checkSetRandomHub($args[0])) {
-                            $pl->setHub($x, $y, $z, $level, $args[0]);
-                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
-                            $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
-                        } else {
-                            $s->sendMessage($prefix . MsgMgr::getMsg("set-random-hub-before"));
-                        }
-                    } else {
-                        if (!$hub->exists("hub")) {
-                            if ($level === null) {
-                                $s->sendMessage($prefix . MsgMgr::getErrorMsg());
-                                return true;
-                            }
-                            $pl->setHub($x, $y, $z, $level);
-                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
-                        } else {
-                            $pl->setHub($x, $y, $z, $level);
-                            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
-                        }
-                        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
-                    }
-                    return true;
-                } elseif ($pl->getUseHubServer() == true) {
-                    $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
-                    return true;
+
+        if (!$this->canUse($s)) return;
+
+        $x = $s->getPosition()->getX();
+        $y = $s->getPosition()->getY();
+        $z = $s->getPosition()->getZ();
+        $levelname = $s->getWorld()->getFolderName();
+        $level = $s->getWorld();
+        if ($pl->getUseHubServer() == false) {
+            if ($level === null) {
+                $s->sendMessage($prefix . MsgMgr::getErrorMsg());
+                return;
+            }
+            if (count($args) >= 1 && $pl->getUseRandomHubs()) {
+                if (!is_numeric($args[0])) {
+                    $s->sendMessage($this->usageMessage);
+                    return;
+                }
+                if ($pl->checkSetRandomHub($args[0])) {
+                    $pl->setHub($x, $y, $z, $level, $args[0]);
+                    $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
+                    $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
                 } else {
-                    $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));
+                    $s->sendMessage($prefix . MsgMgr::getMsg("set-random-hub-before"));
                 }
             } else {
-                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-                return true;
+                if (!$hub->exists("hub")) {
+                    if ($level === null) {
+                        $s->sendMessage($prefix . MsgMgr::getErrorMsg());
+                        return;
+                    }
+                    $pl->setHub($x, $y, $z, $level);
+                    $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
+                } else {
+                    $pl->setHub($x, $y, $z, $level);
+                    $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
+                }
+                $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
             }
+            return;
+        } elseif ($pl->getUseHubServer() == true) {
+            $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
+            return;
         } else {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
+            $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));
         }
-        return true;
+        return;
     }
 
     /**

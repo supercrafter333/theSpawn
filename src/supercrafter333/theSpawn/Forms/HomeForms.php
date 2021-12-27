@@ -5,6 +5,9 @@ namespace supercrafter333\theSpawn\Forms;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\player\Player;
+use supercrafter333\theSpawn\Commands\DelhomeCommand;
+use supercrafter333\theSpawn\Commands\HomeCommand;
+use supercrafter333\theSpawn\Commands\SethomeCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -29,7 +32,7 @@ class HomeForms
             $result = $data;
             if ($result === null) return;
 
-            theSpawn::getInstance()->getServer()->dispatchCommand($player, "home $result");
+            HomeCommand::simpleExecute($player, [$result]);
         });
         $form->setTitle(MsgMgr::getMsg("form-home-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-home-menu-content"));
@@ -51,7 +54,7 @@ class HomeForms
             $result = $data;
             if ($result === null) return;
 
-            theSpawn::getInstance()->getServer()->dispatchCommand($player, "delhome $result");
+            DelhomeCommand::simpleExecute($player, [$result]);
         });
         $form->setTitle(MsgMgr::getMsg("form-rmHome-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-rmHome-menu-content"));
@@ -73,7 +76,7 @@ class HomeForms
             if ($data === null) return;
 
             if (isset($data["homeName"])) {
-                theSpawn::getInstance()->getServer()->dispatchCommand($player, "sethome " . $data["homeName"]);
+                SethomeCommand::simpleExecute($player, [$data["homeName"]]);
                 return;
             }
         });

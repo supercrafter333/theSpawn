@@ -29,12 +29,12 @@ class Aliases extends AliasMap
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $pl = theSpawn::getInstance();
@@ -44,31 +44,31 @@ class Aliases extends AliasMap
                 if ($pl->existsAlias($this->cmdName) == true) {
                     if (theSpawn::getInstance()->getServer()->getWorldManager()->isWorldGenerated($lvl) == false) {
                         $s->sendMessage($prefix . "§cDie angegeben Welt existiert nicht!");
-                        return true;
+                        return;
                     }
                     if (Server::getInstance()->getWorldManager()->isWorldLoaded($lvl) == true) {
                         $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
                         $s->teleport($pl->getSpawn($level));
-                        return true;
+                        return;
                     } else {
                         Server::getInstance()->getWorldManager()->loadWorld($lvl);
                         $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
                         $s->teleport($pl->getSpawn($level));
                         $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getFolderName()], MsgMgr::getMsg("alias-teleport"))));
                         $s->getWorld()->addSound($s->getPosition(), new PopSound());
-                        return true;
+                        return;
                     }
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("something-went-wrong"));
                 }
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
-                return true;
+                return;
             }
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
+            return;
         }
-        return false;
+        return;
     }
 }

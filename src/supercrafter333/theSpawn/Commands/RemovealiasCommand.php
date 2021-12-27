@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
@@ -38,35 +37,30 @@ class RemovealiasCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if (!$s instanceof Player) {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
-        }
-        if (!$s->hasPermission("theSpawn.removealias.cmd")) {
-            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return true;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (!count($args) >= 1) {
             $s->sendMessage($this->usageMessage);
-            return true;
+            return;
         }
         if ($pl->existsAlias($args[0]) == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("alias-not-found"));
-            return true;
+            return;
         }
         $pl->rmAlias($args[0]);
         $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], MsgMgr::getMsg("alias-removed")));
         $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
-        return true;
+        return;
     }
 
     /**

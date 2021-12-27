@@ -40,18 +40,17 @@ class WarpCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): void
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if (!$s instanceof Player) {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (count($args) < 1) {
             if ($pl->listWarps() !== null) {
                 if ($pl->useForms()) {
@@ -66,10 +65,17 @@ class WarpCommand extends theSpawnOwnedCommand
             }
             return;
         }
-        if (!$s->hasPermission("theSpawn.warp.cmd")) {
-            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return;
-        }
+
+        self::simpleExecute($s, $args);
+    }
+
+    public static function simpleExecute(Player $s, array $args): void
+    {
+        $prefix = theSpawn::$prefix;
+        $pl = theSpawn::getInstance();
+
+        if (!self::testPermissionX($s, "theSpawn.warp.cmd", "warp")) return;
+
         if (theSpawn::getInstance()->getWarpInfo($args[0])->getPermission() !== null) {
             if (!$s->hasPermission("theSpawn.warp." . theSpawn::getInstance()->getWarpInfo($args[0])->getPermission()) && !$s->hasPermission("theSpawn.warp.admin")) {
                 $s->sendMessage($prefix . MsgMgr::getNoPermMsg());

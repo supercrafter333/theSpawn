@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
@@ -39,12 +38,12 @@ class DelhubCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -53,38 +52,32 @@ class DelhubCommand extends theSpawnOwnedCommand
         $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
-        if ($s instanceof Player) {
-            if ($s->hasPermission("theSpawn.delhub.cmd")) {
-                if ($pl->getUseRandomHubs()) {
-                    if (!count($args) >= 1) {
-                        $s->sendMessage($this->usageMessage);
-                        return true;
-                    }
-                    if (!$pl->checkSetRandomHub($args[0])) {
-                        $s->sendMessage($prefix . MsgMgr::getMsg("remove-random-hub-before"));
-                        return true;
-                    }
-                    $pl->removeHub($args[0]);
-                    $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
-                    return true;
-                }
-                if ($hub->exists("hub")) {
-                    $pl->removeHub();
-                    $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-                    $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
-                    return true;
-                } else {
-                    $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
-                }
-            } else {
-                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
+
+        if (!$this->canUse($s)) return;
+
+        if ($pl->getUseRandomHubs()) {
+            if (!count($args) >= 1) {
+                $s->sendMessage($this->usageMessage);
+                return;
             }
-        } else {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return true;
+            if (!$pl->checkSetRandomHub($args[0])) {
+                $s->sendMessage($prefix . MsgMgr::getMsg("remove-random-hub-before"));
+                return;
+            }
+            $pl->removeHub($args[0]);
+            $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
+            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+            return;
         }
-        return true;
+        if ($hub->exists("hub")) {
+            $pl->removeHub();
+            $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
+            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+            return;
+        } else {
+            $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
+        }
+        return;
     }
 
     /**

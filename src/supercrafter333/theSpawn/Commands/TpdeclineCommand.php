@@ -23,17 +23,12 @@ class TpdeclineCommand extends theSpawnOwnedCommand
         parent::__construct($name, $description, $usageMessage, $aliases);
     }
 
-    public function execute(CommandSender $s, string $commandLabel, array $args)
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $pl = $this->pl;
-        if (!$s->hasPermission($this->getPermission())) {
-            $s->sendMessage(MsgMgr::getNoPermMsg());
-            return;
-        }
-        if (!$s instanceof Player) {
-            $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (count($args) < 1) {
             $s->sendMessage($this->usageMessage);
             return;

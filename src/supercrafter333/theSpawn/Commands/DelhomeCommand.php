@@ -32,35 +32,30 @@ class DelhomeCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        if (!$s->hasPermission("theSpawn.delhome.cmd")) {
-            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-            return true;
-        }
-        if (!$s instanceof Player) {
-            $s->sendMessage($prefix . MsgMgr::getOnlyIGMsg());
-            return true;
-        }
+
+        if (!$this->canUse($s)) return;
+
         if (count($args) < 1) {
             if ($pl->useForms()) {
                 if ($pl->listHomes($s) == null) {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
-                    return true;
+                    return;
                 }
                 $warpForms = new HomeForms($s->getName());
                 $warpForms->openRmHome($s);
             } else {
                 $s->sendMessage($this->usageMessage);
             }
-            return true;
+            return;
         }
         if ($pl->rmHome($s, $args[0]) == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
@@ -68,6 +63,22 @@ class DelhomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
             $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         }
-        return true;
+        return;
+    }
+
+    public static function simpleExecute(Player $s, array $args): void
+    {
+        $prefix = theSpawn::$prefix;
+        $pl = theSpawn::getInstance();
+
+        if (!self::testPermissionX($s, "theSpawn.delhome.cmd", "delhome")) return;
+
+        if ($pl->rmHome($s, $args[0]) == false) {
+            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
+        } else {
+            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
+            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+        }
+        return;
     }
 }

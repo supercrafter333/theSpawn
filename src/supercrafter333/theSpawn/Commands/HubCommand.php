@@ -38,12 +38,12 @@ class HubCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender $s
+     * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $s, string $commandLabel, array $args): bool
+    public function execute(CommandSender|Player $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
@@ -52,7 +52,7 @@ class HubCommand extends theSpawnOwnedCommand
         $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
-        if ($s instanceof Player) {
+        if ($this->isPlayer($s)) {
             if ($pl->getUseHubServer() == false) {
                 if ($pl->getUseRandomHubs()) {
                     $hubPos = $pl->getRandomHub();
@@ -63,7 +63,7 @@ class HubCommand extends theSpawnOwnedCommand
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }
-                    return true;
+                    return;
                 }
                 if ($hub->exists("hub")) {
                     $hublevel = $pl->getHub()->getWorld();
@@ -87,7 +87,7 @@ class HubCommand extends theSpawnOwnedCommand
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
         }
-        return true;
+        return;
     }
 
     /**
