@@ -6,7 +6,6 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\scheduler\Task;
 use pocketmine\world\World;
 use pocketmine\world\Position;
-use pocketmine\world\sound\PopSound;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
@@ -65,17 +64,17 @@ class theSpawn extends PluginBase
     /**
      * @var array
      */
-    public $TPAs = [];
+    public array $TPAs = [];
 
     /**
      * @var array
      */
-    public $spawnDelays = [];
+    public array $spawnDelays = [];
 
     /**
      * @var Config
      */
-    public $warpCfg;
+    public Config $warpCfg;
 
     /**
      * @var string
@@ -181,7 +180,7 @@ class theSpawn extends PluginBase
     /**
      * @return Config
      */
-    public function getMsgCfg()
+    public function getMsgCfg(): Config
     {
         return MsgMgr::getMsgs();
     }
@@ -307,7 +306,7 @@ class theSpawn extends PluginBase
 
     /**
      * @param string $source
-     * @param int $taskId
+     * @param Task $task
      * @return bool
      */
     public function setTpaTask(string $source, Task $task): bool
@@ -839,9 +838,9 @@ class theSpawn extends PluginBase
     /**
      * @param Player $player
      * @param string $homeName
-     * @return false|Position
+     * @return Position|bool|string
      */
-    public function getHomePos(Player $player, string $homeName)
+    public function getHomePos(Player $player, string $homeName): Position|bool|string
     {
         if ($this->existsHome($homeName, $player) == true) {
             $home = $this->getHomeCfg($player->getName());
@@ -868,7 +867,7 @@ class theSpawn extends PluginBase
      * @param string $homeName
      * @return bool|string
      */
-    public function teleportToHome(Player $player, string $homeName)
+    public function teleportToHome(Player $player, string $homeName): bool|string
     {
         if ($this->existsHome($homeName, $player) == true) {
             if ($this->getHomePos($player, $homeName) == false) {
@@ -888,7 +887,7 @@ class theSpawn extends PluginBase
      * @param Player $player
      * @return string|null
      */
-    public function listHomes(Player $player)
+    public function listHomes(Player $player): ?string
     {
         $homes = null;
         if (file_exists($this->getDataFolder() . "homes/" . $player->getName() . ".yml")) {
@@ -909,7 +908,7 @@ class theSpawn extends PluginBase
      * @param string $homeName
      * @return HomeInfo
      */
-    public function getHomeInfo(Player $player, string $homeName)
+    public function getHomeInfo(Player $player, string $homeName): HomeInfo
     {
         return new HomeInfo($player, $homeName);
     }
@@ -960,8 +959,10 @@ class theSpawn extends PluginBase
      * @param $x
      * @param $y
      * @param $z
-     * @param World $world
+     * @param World $level
      * @param string $warpName
+     * @param string|null $permission
+     * @return bool
      */
     public function addWarp($x, $y, $z, World $level, string $warpName, string $permission = null): bool
     {
@@ -995,7 +996,7 @@ class theSpawn extends PluginBase
      * @param string $warpName
      * @return false|Position
      */
-    public function getWarpPosition(string $warpName)
+    public function getWarpPosition(string $warpName): Position|bool
     {
         $warpCfg = $this->getWarpCfg();
         if ($this->existsWarp($warpName) == false) {
@@ -1035,7 +1036,7 @@ class theSpawn extends PluginBase
      * @param string $warpName
      * @return WarpInfo
      */
-    public function getWarpInfo(string $warpName)
+    public function getWarpInfo(string $warpName): WarpInfo
     {
         return WarpInfo::getWarpInfo($warpName);
     }
@@ -1043,7 +1044,7 @@ class theSpawn extends PluginBase
     /**
      * @return string|null
      */
-    public function listWarps()
+    public function listWarps(): ?string
     {
         $warps = null;
         if (file_exists($this->getDataFolder() . "warps.yml")) {
@@ -1097,7 +1098,7 @@ class theSpawn extends PluginBase
      * @param Player $player
      * @return bool
      */
-    public function hasSpawnDelay(Player $player)
+    public function hasSpawnDelay(Player $player): bool
     {
         return isset($this->spawnDelays[$player->getName()]);
     }
