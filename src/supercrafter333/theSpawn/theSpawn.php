@@ -79,7 +79,7 @@ class theSpawn extends PluginBase
     /**
      * @var string
      */
-    public string $version = "1.7.0-DEV";
+    public string $version = "1.6.2-DEV";
 
 
     /**

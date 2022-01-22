@@ -34,6 +34,9 @@ hub-teleport-on-join: "true"
 #use Forms [true | false]
 use-forms: "true"
 
+#use world-flags [true | false]
+use-worldFlags: "false"
+
 ################
 ### Language ###
 ################
@@ -49,7 +52,7 @@ language: "en_BE"
 
 
 #DON'T CHANGE THIS!!
-version: "1.7.0-DEV"
+version: "1.6.2-DEV"
 
 ############################
 ##########theSpawn##########

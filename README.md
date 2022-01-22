@@ -3,14 +3,13 @@
 > This version is under development and can contain bugs!
 
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# theSpawn - V1.7.0-DEV   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# theSpawn - V1.6.2-DEV   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 
 **This plugin is a much better MSpawns alternative! Help me to make this plugin better!**
 
-### To-Do List V1.7.0 (Dev):
+### To-Do List V1.6.2 (Dev):
 - [X] Sourceout events from `theSpawn.php` to `EventListener.php`
-- [ ] Fix bug with warp-permission registering
-- [ ] World-Flags (maybe version bump to V2???; Using PM4.1 events too)
+- [?] Fix bug with warp-permission registering (testing...)
 
 This plugin is not out of date and will get better developed from time to time. If you need an much better MSpawns alternative, theSpawn is the alternative :)
 

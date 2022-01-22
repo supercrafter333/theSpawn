@@ -2,6 +2,8 @@
 
 namespace supercrafter333\theSpawn\Others;
 
+use pocketmine\permission\DefaultPermissionNames;
+use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionManager;
 use pocketmine\world\World;
@@ -128,9 +130,12 @@ class WarpInfo
 
         if ($perm !== null && $perm !== false && !is_array($perm)) {
 
-            if (PermissionManager::getInstance()->getPermission($perm) !== null) return $perm;
+            if (PermissionManager::getInstance()->getPermission($perm) instanceof Permission) return $perm;
 
-            PermissionManager::getInstance()->addPermission(new Permission($perm));
+            $op = PermissionManager::getInstance()->getPermission(DefaultPermissionNames::GROUP_OPERATOR);
+            $console = PermissionManager::getInstance()->getPermission(DefaultPermissionNames::GROUP_CONSOLE);
+
+            DefaultPermissions::registerPermission(new Permission($perm), [$op, $console]);
             PermissionManager::getInstance()->getPermission("theSpawn.warp.admin")->addChild($perm, true);
             return $perm;
         }
