@@ -2,6 +2,7 @@
 build-by-default: true
 branches:
 - master
+- development
 projects:
   theSpawn:
     icon: "icon.png"

@@ -1,6 +1,6 @@
 name: theSpawn
-version: 1.6.1
-api: 4.0.0
+version: 1.7.0-DEV
+api: 4.0.0 #TODO: [soon] bump api version to 4.1.0 (if theSpawn will use the new PM4.1 events)
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
 

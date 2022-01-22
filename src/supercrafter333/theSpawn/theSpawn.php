@@ -2,11 +2,6 @@
 
 namespace supercrafter333\theSpawn;
 
-use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerLoginEvent;
-use pocketmine\event\player\PlayerMoveEvent;
-use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\permission\PermissionManager;
 use pocketmine\scheduler\Task;
 use pocketmine\world\World;
@@ -44,7 +39,7 @@ use supercrafter333\theSpawn\Tasks\SpawnDelayTask;
  * Class theSpawn
  * @package supercrafter333\theSpawn
  */
-class theSpawn extends PluginBase implements Listener
+class theSpawn extends PluginBase
 {
 
     /**
@@ -85,7 +80,7 @@ class theSpawn extends PluginBase implements Listener
     /**
      * @var string
      */
-    public string $version = "1.6.1";
+    public string $version = "1.7.0-DEV";
 
 
     /**
@@ -103,7 +98,7 @@ class theSpawn extends PluginBase implements Listener
     public function onEnable(): void
     {
         $this->saveResource("config.yml");
-        $this->getServer()->getPluginManager()->registerEvents($this, $this);
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $cmdMap = $this->getServer()->getCommandMap();
         # Version Check
         //$this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
@@ -369,21 +364,6 @@ class theSpawn extends PluginBase implements Listener
     }
 
     /**
-     * @param PlayerLoginEvent $event
-     */
-    public function onPlayerLogin(PlayerLoginEvent $event)
-    {
-        if ($this->getConfig()->get("hub-teleport-on-join") == "true") {
-            $hub = $this->getHub();
-            if ($hub !== null && $hub !== false) {
-                $event->getPlayer()->teleport($hub);
-            } elseif ($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() !== null) {
-                $event->getPlayer()->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-            }
-        }
-    }
-
-    /**
      * @param string $worldName
      * @return World|null
      */
@@ -394,73 +374,6 @@ class theSpawn extends PluginBase implements Listener
             $this->getServer()->getWorldManager()->loadWorld($worldName);
         }
         return $this->getServer()->getWorldManager()->getWorldByName($worldName);
-    }
-
-    /**
-     * @param PlayerMoveEvent $event
-     */
-    public function onMove(PlayerMoveEvent $event)
-    {
-        $player = $event->getPlayer();
-        if ($this->hasSpawnDelay($player)) {
-            $this->stopSpawnDelay($player);
-            $player->sendMessage(self::$prefix . MsgMgr::getMsg("delay-stopped-by-move"));
-        }
-    }
-
-    /**
-     * @param PlayerQuitEvent $event
-     */
-    public function onQuit(PlayerQuitEvent $event)
-    {
-        $player = $event->getPlayer();
-        if ($this->hasSpawnDelay($player)) {
-            $this->stopSpawnDelay($player);
-        }
-    }
-
-    /**
-     * @param PlayerRespawnEvent $event
-     */
-    public function onPlayerRespawn(PlayerRespawnEvent $event)
-    {
-        $s = $event->getPlayer();
-        $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $world = $s->getWorld();
-        if ($world === null) {
-            if ($this->getHub() instanceof Position) {
-                $event->setRespawnPosition($this->getHub());
-            } else {
-                $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-            }
-        }
-        if ($this->getSpawn($world) instanceof Position) {
-            $event->setRespawnPosition($this->getSpawn($world));
-            $s->getWorld()->addSound($s->getPosition(), new PopSound());
-        } elseif ($this->getHub() instanceof Position) {
-            $event->setRespawnPosition($this->getHub());
-            $s->getWorld()->addSound($s->getPosition(), new PopSound());
-        } else {
-            if ($world->getSafeSpawn() === null) {
-                $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-            } else {
-                $event->setRespawnPosition($world->getSafeSpawn());
-            }
-        }
-        /*if ($this->getSpawn($worldname)) {
-            if ($this->getServer()->isLevelLoaded($worldname) == true && !$world == null) {
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
-                $s->getWorld()->addSound($s, new PopSound());
-            } elseif ($world == null) {
-                $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
-                $s->teleport($this->getHub());
-                $s->kick(MsgMgr::getMsg("no-spawn-found-kick"));
-            } elseif (!$this->getServer()->isLevelLoaded($worldname)) {
-                $this->getServer()->loadLevel($worldname);
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
-                $s->getWorld()->addSound($s, new PopSound());
-            }
-        }*/
     }
 
     /*public function isTpToHubOnRepawnEnabled(): bool
