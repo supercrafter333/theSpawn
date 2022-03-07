@@ -125,7 +125,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.6.2-DEV"
+version: "1.6.2"
 
 
 ############################

@@ -51,20 +51,20 @@ class TpacceptCommand extends theSpawnOwnedCommand
             $s->sendMessage($this->usageMessage);
             return;
         }
-        if (!$pl->hasTpaOf($args[0], $s->getName())) {
+        if (!$pl->hasTpaOf($s->getName(), $args[0])) {
             $s->sendMessage(str_replace("{target}", (string)$args[0], MsgMgr::getMsg("no-pending-tpa")));
             return;
         }
-        $tpaInfo = new TpaInfo($s->getName());
+        $tpaInfo = new TpaInfo($args[0]);
         if (!$tpaInfo->getTargetAsPlayer() instanceof Player) {
-            $s->sendMessage(str_replace("{target}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-online")));
+            $s->sendMessage(str_replace("{target}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;
         }
         $target = $tpaInfo->getTargetAsPlayer();
         $name = $target->getName();
         $tpaInfo->complete();
-        $target->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
-        $s->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
+        $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
+        $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
     }
 
     /**

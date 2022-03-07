@@ -79,11 +79,10 @@ class theSpawn extends PluginBase
     /**
      * @var string
      */
-    public string $version = "1.6.2-DEV";
+    public string $version = "1.6.2";
 
 
     /**
-     * On plugin loading. (That's before enabling)
      * On plugin loading. (That's before enabling)
      */
     public function onLoad(): void
@@ -116,7 +115,6 @@ class theSpawn extends PluginBase
         }
         $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
-        $aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
         $cmdMap->registerAll("theSpawn",
             [
                 new SpawnCommand("spawn"),
@@ -299,7 +297,6 @@ class theSpawn extends PluginBase
     {
         if (isset($this->TPAs[$source])) return false;
         $arr = ["target" => $target, "isTpaHere" => $isTpaHere];
-        $this->TPAs[] = $source;
         $this->TPAs[$source] = $arr;
         return true;
     }
