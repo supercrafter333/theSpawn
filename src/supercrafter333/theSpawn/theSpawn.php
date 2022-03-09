@@ -2,6 +2,7 @@
 
 namespace supercrafter333\theSpawn;
 
+use JsonException;
 use pocketmine\permission\PermissionManager;
 use pocketmine\scheduler\Task;
 use pocketmine\world\World;
@@ -79,7 +80,11 @@ class theSpawn extends PluginBase
     /**
      * @var string
      */
-    public string $version = "1.6.2";
+    public string $version = "1.7.0-dev";
+
+
+    public const DEVELOPMENT_VERSION = true;
+
 
 
     /**
@@ -95,6 +100,8 @@ class theSpawn extends PluginBase
      */
     public function onEnable(): void
     {
+        if (self::DEVELOPMENT_VERSION) $this->getLogger()->warning("You're using a development version of theSpawn!! This version can contain bugs, please report them on github!");
+
         $this->saveResource("config.yml");
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $cmdMap = $this->getServer()->getCommandMap();
@@ -960,6 +967,7 @@ class theSpawn extends PluginBase
      * @param string $warpName
      * @param string|null $permission
      * @return bool
+     * @throws JsonException
      */
     public function addWarp($x, $y, $z, World $level, string $warpName, string $permission = null): bool
     {
@@ -979,6 +987,7 @@ class theSpawn extends PluginBase
 
     /**
      * @param string $warpName
+     * @throws JsonException
      */
     public function removeWarp(string $warpName)
     {
