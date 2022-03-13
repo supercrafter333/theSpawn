@@ -43,3 +43,5 @@ permissions:
     default: op
   theSpawn.homes:
     default: op
+  theSpawn.homes.unlimited:
+    default: op

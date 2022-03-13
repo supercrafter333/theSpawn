@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\utils\Config;
+use function str_replace;
 
 /**
  * Class MsgMgr
@@ -107,12 +108,18 @@ class MsgMgr
 
     /**
      * @param string $message
+     * @param array|null $replace
      * @return string
      */
-    public static function getMsg(string $message): string
+    public static function getMsg(string $message, array|null $replace = null): string
     {
         if (self::getMsgs()->exists($message)) {
-            return self::getMsgs()->get($message);
+            if ($replace === null) return self::getMsgs()->get($message);
+            $replaced = self::getMsgs()->get($message);
+            foreach (array_keys($replace) as $i) {
+                $replaced = str_replace($i, $replace[$i], $replaced);
+            }
+            return $replaced;
         } elseif (self::getDefaultMsgs()->exists($message)) {
             return self::getDefaultMsgs()->get($message);
         }

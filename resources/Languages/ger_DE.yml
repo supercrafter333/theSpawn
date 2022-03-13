@@ -37,6 +37,8 @@ home-deleted: "§aDu hast erfolgreich dein Home namens §b{home}§a gelöscht!"
 home-already-exists: "§cDu hast bereits ein Home namens §b{home}§c erstellt!"
 #uses: {homelist}
 homelist: "§eDeine Homes: §7{homelist}"
+#uses: {max-homes}
+highest-home-count-reached: "§cDu hast bereits die maximale Anzahl von §r{max-homes}§c Homes erreicht!"
 
 #warp messages
 #uses: {warpname} {position} {world}
@@ -83,7 +85,8 @@ form-warp-menu-warpButton: "§b{warp}§r{line}§7Klicke für Teleportation"
 form-setWarp-menu-title: "Setze einen Warp"
 form-setWarp-menu-content: "Hier kannst du einen neuen Warp setzen."
 form-setWarp-menu-inputNameDescription: "Name des neuen Warps"
-form-setWarp-menu-inputPermDescription: "Berechtigung des neuen Warps (optional)"
+form-setWarp-menu-togglePermDescription: "Soll der neue Warp eine Berechtigung haben? (optional)"
+form-setWarp-menu-inputIconPathDescription: "Icon-Pfad des neuen Warps (optional)"
 #   delwarp
 form-rmWarp-menu-title: "Lösche einen Warp"
 form-rmWarp-menu-content: "Hier kannst du einen Warp löschen."

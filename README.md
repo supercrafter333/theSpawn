@@ -19,7 +19,7 @@ This plugin is not out of date and will get better developed from time to time. 
   - API
   - Custom Messages
   - Config
-- waterdog teleport hub server support
+- waterdog teleport to hub server support
 - Homes [default: active]
 - Warps [default: active]
 - TPAs [default: active]
@@ -27,6 +27,8 @@ This plugin is not out of date and will get better developed from time to time. 
 - Teleport to hub on Join [default: active]
 - Multiple languages [default: English (BE)]  
 - Warp permissions
+- Warp icons
+- Max home count permission [default: inactive]
 - Forms
 
 ### TODOs
@@ -35,6 +37,7 @@ This plugin is not out of date and will get better developed from time to time. 
 - [X] Warps
 - [X] Random-Hubs ([#12](https://github.com/supercrafter333/theSpawn/issues/12))
 - [X] TPAs ([#14](https://github.com/supercrafter333/theSpawn/issues/14))
+- [X] Warp icons ([#31](https://github.com/supercrafter333/theSpawn/issues/31))
 
 ### Report Bug
 You've found a Bug?

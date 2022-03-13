@@ -5,10 +5,13 @@ namespace supercrafter333\theSpawn\Others;
 use pocketmine\permission\DefaultPermissionNames;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
+use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
+use pocketmine\player\Player;
 use pocketmine\world\World;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
+use function in_array;
 
 /**
  * Class WarpInfo
@@ -25,11 +28,11 @@ class WarpInfo
 
     /**
      * @param string $warpName
-     * @return WarpInfo
+     * @return WarpInfo|null
      */
-    public static function getWarpInfo(string $warpName): WarpInfo
+    public static function getWarpInfo(string $warpName): ?WarpInfo
     {
-        return new WarpInfo($warpName);
+        return theSpawn::getInstance()->existsWarp($warpName) ? new WarpInfo($warpName) : null;
     }
 
     /**
@@ -51,7 +54,7 @@ class WarpInfo
     /**
      * @return bool
      */
-    public function exists(): bool
+    private function exists(): bool
     {
         return $this->getWarpCfg()->exists($this->warpName);
     }
@@ -122,23 +125,68 @@ class WarpInfo
         return false;
     }
 
+    public function getIconPath(): ?string
+    {
+        $path = $this->getWarpCfg()->getNested($this->warpName . ".iconPath");
+        return ($path === null || $path === "") ? null : $path;
+    }
+
     public function getPermission(): ?string
     {
-        if (!isset($this->getWarpCfg()->get($this->warpName, [])["perm"])) return null;
 
         $perm = $this->getWarpCfg()->getNested($this->warpName . ".perm");
 
-        if ($perm !== null && $perm !== false && !is_array($perm)) {
+        if ($perm === null || $perm === "" || $perm === false) return null;
+
+        if ($perm) {
+
+            $perm = "theSpawn.warp." . $this->getName();
 
             if (PermissionManager::getInstance()->getPermission($perm) instanceof Permission) return $perm;
 
             $op = PermissionManager::getInstance()->getPermission(DefaultPermissionNames::GROUP_OPERATOR);
             $console = PermissionManager::getInstance()->getPermission(DefaultPermissionNames::GROUP_CONSOLE);
 
-            DefaultPermissions::registerPermission(new Permission($perm), [$op, $console]);
+            DefaultPermissions::registerPermission(new Permission($perm, "Warp permission"), [$op, $console]);
             PermissionManager::getInstance()->getPermission("theSpawn.warp.admin")->addChild($perm, true);
             return $perm;
         }
         return null;
+    }
+
+    /*public function hasPermission(Player $player): bool //Code implementation from MyPlot (by jasonwynn10)
+    {
+        if ($this->getPermission() === null || $player->hasPermission("theSpawn.warp.admin")) return true;
+
+		$perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
+		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);
+		$perms = array_filter($perms, function(string $name) : bool {
+			return (str_starts_with($name, "theSpawn.warp."));
+		}, ARRAY_FILTER_USE_KEY);
+		if(count($perms) === 0)
+			return 0;
+		krsort($perms, SORT_FLAG_CASE | SORT_NATURAL);
+
+        if (in_array($this->getPermission(), $perms)) return true;
+
+		return false;
+    }*/
+
+    public function hasPermission(Player $player): bool
+    {
+        if (($permission = $this->getPermission()) === null || $player->hasPermission("theSpawn.warp.admin")) return true;
+
+        $perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
+		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);
+		if(count($perms) === 0)
+			return false;
+		/**
+		 * @var string $name
+		 * @var Permission $perm
+		 */
+		foreach($perms as $name => $perm) {
+			if ($name == $permission) return true;
+		}
+        return false;
     }
 }

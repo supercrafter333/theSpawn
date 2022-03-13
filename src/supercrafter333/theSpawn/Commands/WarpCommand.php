@@ -76,21 +76,22 @@ class WarpCommand extends theSpawnOwnedCommand
 
         if (!self::testPermissionX($s, "theSpawn.warp.cmd", "warp")) return;
 
-        if (theSpawn::getInstance()->getWarpInfo($args[0])->getPermission() !== null) {
-            if (!$s->hasPermission("theSpawn.warp." . theSpawn::getInstance()->getWarpInfo($args[0])->getPermission()) && !$s->hasPermission("theSpawn.warp.admin")) {
-                $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
-                return;
-            }
-        }
         if (!$pl->existsWarp($args[0])) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
+
+        if (!theSpawn::getInstance()->getWarpInfo($args[0])->hasPermission($s)) {
+            $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
+            return;
+        }
+
         $warpPos = $pl->getWarpPosition($args[0]);
         if ($warpPos == false) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
+
         $warpInfo = $pl->getWarpInfo($args[0]);
         $posMsg = $warpInfo->getX() . $warpInfo->getY() . $warpInfo->getZ();
         $worldName = $warpInfo->getLevelName();

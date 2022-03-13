@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn\Commands;
 
 use pocketmine\command\Command;
+use pocketmine\world\sound\AnvilFallSound;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
@@ -11,6 +12,8 @@ use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\Forms\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
+use function count;
+use function print_r;
 
 /**
  * Class SethomeCommand
@@ -75,6 +78,12 @@ class SethomeCommand extends theSpawnOwnedCommand
         $y = $s->getPosition()->getY();
         $z = $s->getPosition()->getZ();
         $level = $s->getWorld();
+        $homes = $pl->getHomesOfPlayer($s) !== null ? count($pl->getHomesOfPlayer($s), COUNT_RECURSIVE) : 0;
+        if (($maxHomes = $pl->getMaxHomesOfPlayer($s)) <= $homes) {
+            $s->sendMessage(MsgMgr::getMsg("highest-home-count-reached", ["{max-homes}" => $maxHomes]));
+            $s->getWorld()->addSound($s->getPosition(), new AnvilFallSound());
+            return;
+        }
         if ($pl->setHome($s, $args[0], $x, $y, $z, $level) == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
         } else {

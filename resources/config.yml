@@ -34,8 +34,8 @@ hub-teleport-on-join: "true"
 #use Forms [true | false]
 use-forms: "true"
 
-#use world-flags [true | false]
-use-worldFlags: "false"
+#use max home permissions [true | false]
+use-max-home-permissions: "false"
 
 ################
 ### Language ###

@@ -4,6 +4,7 @@ namespace supercrafter333\theSpawn\Tasks;
 
 use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
+use pocketmine\world\sound\XpCollectSound;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
@@ -48,9 +49,10 @@ class TpaTask extends Task
         }
         if ($this->seconds < 10 && $this->seconds > 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", (string)$this->seconds, MsgMgr::getMsg("tpa-secs")));
+            $this->tpa->getTargetAsPlayer()->broadcastSound(new XpCollectSound(), [$this->tpa->getTargetAsPlayer()]);
             $this->seconds--;
         } elseif ($this->seconds <= 0) {
-            $this->tpa->getTargetAsPlayer()->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
+            $this->tpa->getTargetAsPlayer()?->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
             $this->getHandler()->cancel();
         }
     }

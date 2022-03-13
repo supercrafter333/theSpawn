@@ -34,7 +34,7 @@ class SetwarpCommand extends theSpawnOwnedCommand
     {
         $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.setwarp.cmd");
-        parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname> [permission]", $aliases);
+        parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname> [permission: true|false] [iconPath | iconUrl]", $aliases);
     }
 
     /**
@@ -70,7 +70,11 @@ class SetwarpCommand extends theSpawnOwnedCommand
         if (!self::testPermissionX($s, "theSpawn.setwarp.cmd", "setwarp")) return;
 
         if ($pl->existsWarp($args[0]) == false) {
-            $pl->addWarp($s->getPosition()->getX(), $s->getPosition()->getY(), $s->getPosition()->getZ(), $s->getPosition()->getWorld(), $args[0], isset($args[1]) ? (string)$args[1] : null);
+            $perm = false;
+            $icon = null;
+            if (isset($args[1]) && $args[1] !== 'null' && $args[1] !== 'false' && $args[1] !== "") $perm = true;
+            if (isset($args[2]) && $args[2] !== 'null' && $args[2] !== "") $icon = $args[2];
+            $pl->addWarp($s->getPosition()->getX(), $s->getPosition()->getY(), $s->getPosition()->getZ(), $s->getPosition()->getWorld(), $args[0], $perm, $icon);
             $posMsg = (string)$s->getPosition()->getX() . $s->getPosition()->getY() . $s->getPosition()->getZ();
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getWorld()->getFolderName()], MsgMgr::getMsg("warp-set")))));
         } else {

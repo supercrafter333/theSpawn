@@ -3,6 +3,10 @@
 namespace supercrafter333\theSpawn;
 
 use JsonException;
+use pocketmine\block\BlockLegacyIds as BLI;
+use pocketmine\permission\DefaultPermissions;
+use pocketmine\permission\Permission;
+use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
 use pocketmine\scheduler\Task;
 use pocketmine\world\World;
@@ -34,6 +38,15 @@ use supercrafter333\theSpawn\Others\HomeInfo;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\Others\WarpInfo;
 use supercrafter333\theSpawn\Tasks\SpawnDelayTask;
+use function array_filter;
+use function array_map;
+use function array_merge;
+use function file_exists;
+use function is_numeric;
+use function krsort;
+use function mb_substr;
+use function print_r;
+use function str_starts_with;
 
 /**
  * Class theSpawn
@@ -108,7 +121,7 @@ class theSpawn extends PluginBase
         # Version Check
         //$this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         $cfgVersion = $this->getConfig()->get("version");
-        $this->versionCheck($this->version, ($cfgVersion < "1.6.0"));
+        $this->versionCheck($this->version, ($cfgVersion < "1.7.1"));
         ###
 
         $this->registerPermissions();
@@ -211,6 +224,7 @@ class theSpawn extends PluginBase
     {
         if (!$this->getConfig()->exists("version") || $this->getConfig()->get("version") !== $version) {
             if ($update == true) {
+                $this->convertOldWarpPermissions(); //TODO: remove after v1.7.x
                 $this->getLogger()->debug("OUTDATED CONFIG.YML!! You config.yml is outdated! Your config.yml will automatically updated!");
                 if (file_exists($this->getDataFolder() . "oldConfig.yml")) {
                     unlink($this->getDataFolder() . "oldConfig.yml");
@@ -261,7 +275,8 @@ class theSpawn extends PluginBase
 
             # ADMIN PERMISSIONS:
             "theSpawn.warp.admin",
-            "theSpawn.homes" #all home permissions
+            "theSpawn.homes", #all home permissions
+            "theSpawn.homes.unlimited"
         ];
 
         $bypassPerm = PermissionManager::getInstance()->getPermission("theSpawn.bypass");
@@ -910,11 +925,51 @@ class theSpawn extends PluginBase
     /**
      * @param Player $player
      * @param string $homeName
-     * @return HomeInfo
+     * @return HomeInfo|null
      */
-    public function getHomeInfo(Player $player, string $homeName): HomeInfo
+    public function getHomeInfo(Player $player, string $homeName): ?HomeInfo
     {
-        return new HomeInfo($player, $homeName);
+        return $this->existsHome($homeName, $player) ? new HomeInfo($player, $homeName) : null;
+    }
+
+    public function getHomesOfPlayer(Player $player): array|null
+    {
+        $file = theSpawn::getInstance()->getDataFolder() . "homes/" . $player->getName() . ".yml";
+
+        if (!file_exists($file)) return null;
+
+        return (new Config($file, Config::YAML))->getAll(true);
+    }
+
+    public function getMaxHomesOfPlayer(Player $player): int //copied from MyPlot (by jasonwynn10)
+    {
+		if($player->hasPermission("theSpawn.homes.unlimited") || !$this->useMaxHomePermissions()) return PHP_INT_MAX;
+
+		$perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
+		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);
+		$perms = array_filter($perms, function(string $name) : bool {
+			return (str_starts_with($name, "theSpawn.homes."));
+		}, ARRAY_FILTER_USE_KEY);
+		if(count($perms) === 0)
+			return 0;
+		krsort($perms, SORT_FLAG_CASE | SORT_NATURAL);
+		/**
+		 * @var string $name
+		 * @var Permission $perm
+		 */
+		foreach($perms as $name => $perm) {
+			$maxHomes = mb_substr($name, 15);
+			if(is_numeric($maxHomes)) {
+				return (int) $maxHomes;
+			}
+		}
+		return 0;
+	}
+
+    public function useMaxHomePermissions(): bool
+    {
+        if ($this->getConfig()->get("use-max-home-permissions") == "true" || $this->getConfig()->get("use-max-home-permissions") == "on") return true;
+        return false;
     }
 
     /**
@@ -956,7 +1011,7 @@ class theSpawn extends PluginBase
      */
     public function existsWarp(string $warpName): bool
     {
-        return WarpInfo::getWarpInfo($warpName)->exists();
+        return $this->getWarpCfg()->exists($warpName);
     }
 
     /**
@@ -965,20 +1020,21 @@ class theSpawn extends PluginBase
      * @param $z
      * @param World $level
      * @param string $warpName
-     * @param string|null $permission
+     * @param bool $permission
+     * @param string|null $iconPath
      * @return bool
      * @throws JsonException
      */
-    public function addWarp($x, $y, $z, World $level, string $warpName, string $permission = null): bool
+    public function addWarp($x, $y, $z, World $level, string $warpName, bool $permission = false, string|null $iconPath = null): bool
     {
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
-        if ($permission === null) {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getFolderName(), "warpName" => $warpName];
-        } else {
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getFolderName(), "warpName" => $warpName, "perm" => $permission];
-        }
-        $warp->set($warpName, $setThis);
+        $warpArray = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getFolderName(), "warpName" => $warpName];
+
+        if ($permission) $warpArray["perm"] = true;
+        if ($iconPath !== null && $iconPath !== "") $warpArray["iconPath"] = $iconPath;
+
+        $warp->set($warpName, $warpArray);
         $warp->save();
         return true;
         //}
@@ -1040,9 +1096,9 @@ class theSpawn extends PluginBase
 
     /**
      * @param string $warpName
-     * @return WarpInfo
+     * @return WarpInfo|null
      */
-    public function getWarpInfo(string $warpName): WarpInfo
+    public function getWarpInfo(string $warpName): ?WarpInfo
     {
         return WarpInfo::getWarpInfo($warpName);
     }
@@ -1133,6 +1189,17 @@ class theSpawn extends PluginBase
             return true;
         } else {
             return false;
+        }
+    }
+
+    private function convertOldWarpPermissions(): void
+    {
+        $cfg = $this->getWarpCfg();
+        foreach ($cfg->getAll() as $warp => $warpArray) {
+            if (isset($warpArray["perm"]) && $warpArray["perm"] !== true && $warpArray["perm"] !== false) {
+                $cfg->setNested($warpArray["warpName"] . ".perm", "true");
+                $cfg->save();
+            }
         }
     }
 }
