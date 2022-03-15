@@ -1,0 +1,137 @@
+# Aquí puedes seleccionar los mensajes de theSpawn
+
+# es_ES por @MrBlasyMSK
+
+
+#prefijo
+prefix: "§f[§7the§eSpawn§f] §8»§r "
+
+#mensajes de instalación y teletransporte
+#usos: {world}
+spawn-tp: "§aTe has teletransportado con éxito al spawn de este mundo! §7[§b{world}§7]"
+hub-tp: "§aTe has teletransportado con éxito al spawn del hub! §7[§b{world}§7]"
+spawn-set: "§aHas conseguido §7establecer con éxito §ael spawn para este mundo! §7[§b{world}§7]"
+spawn-changed: "§aHas cambiado con éxito §7el spawn de este mundo! §7[§b{world}§7]"
+hub-set: "Has conseguido §7establecer §ael hub en el mundo §b{world}§a!"
+hub-changed: "§aHas conseguido §7cambiar §ael hub al mundo §b{world}§a!"
+
+#mensajes de eliminación
+#usos: none
+spawn-removed: "§aHas eliminado con éxito el spawn de este mundo!"
+hub-removed: "§aHas eliminado con éxito el hub."
+
+#mensajes de alias
+#usos: {alias} {world}
+alias-teleport: "§aFuiste teletransportado al alias §7{alias}§a! §7§b{world}§7]"
+alias-set: "§aHas configurado con éxito el alias §b{alias}§a para el mundo §b{world}§a!"
+alias-command-description: "§r§aAlias para el mundo §b{world}§a!"
+#usos: {alias}
+alias-removed: "§aHas eliminado con éxito el alias §b{alias}§a!"
+
+#mensajes de casas
+#usos: {home}
+home-teleport: "§aHas sido teletransportado con éxito a tu casa §b{home}§a!"
+home-not-exists: "§cTu casa §b{home}§c no existe!"
+home-set: "§aHas guardado con éxito tu hogar §b{home}§a!"
+home-deleted: "§aHas eliminado con éxito tu casa §b{home}§a!"
+home-already-exists: "§cTu casa §b{home}§c ya existe!"
+#usos: {homelist}
+homelist: "§eTus casas: §7{homelist}"
+#usos: {max-homes}
+highest-home-count-reached: "§cYa has alcanzado el mayor número de §r{max-homes}§c casas disponibles!"
+
+#mensajes de warp
+#usos: {warpname} {position} {world}
+warp-set: "§aHas puesto el warp §b{warpname}§a en §7{position}§a en el mundo §7{world}§a!"
+#usos: {warpname} {position} {world}
+warp-teleport: "§aFuiste teletransportado al warp §b{warpname}§a en el mundo §7{world}§a!"
+#usos: {warpname}
+warp-deleted: "§aHas eliminado con éxito el warp §7{warpname}§a!"
+warp-not-exists: "§cLa warp llamado §7{warpname}§c no existe!"
+warp-already-set: "§cEl warp seleccionado §7[§b{warpname}§7]§c ya existe en este servidor! Por favor, borre el warp y vuelva a intentarlo!"
+#usos: {warplist}
+warplist: "§eLista de warps: §7{warplist}"
+#usos: none
+no-warps-set: "§cEste servidor aún no tiene warps!"
+
+#mensajes de solicitudes de teletransportación
+tpa-send: "§aHas enviado con éxito una solicitud de tpa a §7{target}§a!"
+new-tpa: "§7{source}§e te ha enviado una solicitud de tpa, para teletransporse a ti! Utiliza §8/tpaccept {source}§e para aceptar el tpa o §8/tpdecline {source} §8para denegarlo§e!"
+new-tpa-here: "§7{source}§e te ha enviado una solicitud de tpa, para que te teletransportes a el! Utiliza §8/tpaccept {source}§e ara aceptar el tpa o §8/tpdecline {source} §8para denegarlo§e!"
+tpa-secs: "§eSu solicitud de tpa termina en §7{secs}§e segundos"
+pending-tpa-error: "§cTienes una solicitud de tpa pendiente. Por favor, espere hasta que el tpa haya sido contestado o terminado y inténtalo de nuevo luego."
+no-pending-tpa: "§cNo tienes ninguna solicitud de tpa pendiente!"
+no-self-tpa: "§cNo puedes enviarte un tpa a ti mismo!"
+tpa-secs-left: "§eLa solicitud de tpa de {source} termina en §b{secs} segundos§e!"
+player-not-found: "§cEl jugador seleccionado §7{name}§c no está en línea!"
+tpa-cancelled-by-source: "§cLa solicitud de tpa de {source} se canceló porque el jugador está desconectado."
+tpa-cancelled-by-target: "§cLa solicitud de tpa a {target} se canceló porque el jugador está desconectado."
+tpa-accepted-source: "§7{target}§a ha aceptado tu solicitud de tpa!"
+tpa-accepted-target: "§aHas aceptado con éxito la solicitud de tpa de §{source}§a!"
+tpa-declined-source: "§7{target}§c ha rechazado su solicitud de tpa!"
+tpa-declined-target: "§aHas rechazado con éxito la solicitud de tpa de §{source}§a!"
+tpa-ended: "El TpaInfo de {source} a {target} se ha terminado ahora."
+
+#retraso de spawn
+delay-tip: "§8[§eSeras teletransportado en §7{secs}§e!§8]"
+delay-stopped-by-move: "§cEl teletransporte se ha cancelado porque te has movido."
+
+#formas
+#   warps
+form-warp-menu-title: "Warps"
+form-warp-menu-content: "Por favor elecciona un warp."
+form-warp-menu-warpButton: "§b{warp}§r{line}§7clic para teletransportarse"
+#   setwarp
+form-setWarp-menu-title: "Establecer un warp"
+form-setWarp-menu-content: "Aquí puedes establecer un nuevo warp."
+form-setWarp-menu-inputNameDescription: "Nombre del nuevo warp"
+form-setWarp-menu-togglePermDescription: "¿Debe el nuevo warp tener un permiso? (opcional)"
+form-setWarp-menu-inputIconPathDescription: "Icono del nuevo warp (opcional)"
+#   delwarp
+form-rmWarp-menu-title: "Eliminar un warp"
+form-rmWarp-menu-content: "Aquí puedes eliminar un warp."
+form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7clic para eliminarlo"
+#   homes
+form-home-menu-title: "Casas"
+form-home-menu-content: "Selecciona una casa."
+form-home-menu-homeButton: "§b{home}§r{line}§7clic para teletransportarse"
+#   sethome
+form-setHome-menu-title: "Establecer una casa"
+form-setHome-menu-content: "Aquí puedes establecer una nueva casa."
+form-setHome-menu-inputDescription: "Nombre de la nueva casa"
+#   delhome
+form-rmHome-menu-title: "Eliminar una casa"
+form-rmHome-menu-content: "Aquí puede eliminar una casa."
+form-rmHome-menu-homeButton: "§b{home}§r{line}§7clic para eliminarla"
+
+#errores
+#usos: none
+no-spawn-set: "§4ERROR --> §cNingún spawn fue establecido en este mundo!"
+no-hub-set: "§4ERROR --> §cNingún hub fue establecido en este servidor!"
+alias-not-found: "§cEste alias no existe!"
+hub-server-is-enabled: "§7'use-hub-server' §cesta §7'§atrue§7' §cen la configuración, no se puede establecer un hubspawn si esto está en §7'§atrue§7'§c!"
+something-went-wrong: "§4Algo salió mal!"
+no-perms: "§cNo tienes permisos para usar esto!"
+world-not-found: "§cNo se ha encontrado el mundo!"
+world-not-found-hub: "§cEl mundo del Hub no se ha encontrado!"
+no-spawn-set-in-this-world: "§cNo hay ningún spawn establecido para este mundo!"
+aliases-deactivated: "§cLos alias están desactivados en este servidor. Los alias pueden activarse en el config.yml de theSpawn!"
+warps-deactivated: "§cLos warps están desactivados en este servidor! Los warps pueden activarse en el config.yml de theSpawn!"
+only-In-Game: "Sólo en el juego!"
+false-config-setting: "§4ERROR FATAL --> §cFalso ajuste en la configuración, 'use-hub-server' <true|false> pero no esta en true ni en false!"
+no-spawn-found-kick: "§4No se ha encontrado ningún spawn para el mundo. Has sido expulsado para la depuración!"
+no-homes-set: "§cNo has establecido ninguna casa!"
+set-random-hub-before: "§cPor favor, establezca un hub antes de establecer un hub con este número!"
+remove-random-hub-before: "§cPor favor, retire el hub antes de quitar este hub!"
+#usos: {world}
+no-spawn-set-for-world: "§cNo hay ningún spawn establecido para el mundo {world}!"
+
+
+
+#compatible con v1.7.0-dev (y versiones anteriores)
+
+
+############################
+##########theSpawn##########
+############################
+#Con la licencia Apache License 2.0! Plugin creado por supercrafter333 inspirado por MSpawns de EvolSoft!

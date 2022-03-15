@@ -44,6 +44,7 @@ use-max-home-permissions: "false"
 # Languages:
 # -> 'en_BE' - British English
 # -> 'ger_DE' - German
+# -> 'es_ES' - Spanish
 # -> 'fr_FR' - French (outdated)
 # -> 'CUSTOM' - Edit the messages yourself
 #
