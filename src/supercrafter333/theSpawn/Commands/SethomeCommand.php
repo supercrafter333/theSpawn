@@ -78,13 +78,15 @@ class SethomeCommand extends theSpawnOwnedCommand
         $y = $s->getPosition()->getY();
         $z = $s->getPosition()->getZ();
         $level = $s->getWorld();
+        $yaw = $s->getLocation()->getYaw();
+        $pitch = $s->getLocation()->getPitch();
         $homes = $pl->getHomesOfPlayer($s) !== null ? count($pl->getHomesOfPlayer($s), COUNT_RECURSIVE) : 0;
         if (($maxHomes = $pl->getMaxHomesOfPlayer($s)) <= $homes) {
             $s->sendMessage(MsgMgr::getMsg("highest-home-count-reached", ["{max-homes}" => $maxHomes]));
             $s->getWorld()->addSound($s->getPosition(), new AnvilFallSound());
             return;
         }
-        if ($pl->setHome($s, $args[0], $x, $y, $z, $level) == false) {
+        if ($pl->setHome($s, $args[0], $x, $y, $z, $level, $yaw, $pitch) == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
         } else {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));

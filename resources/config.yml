@@ -52,7 +52,7 @@ language: "en_BE"
 
 
 #DON'T CHANGE THIS!!
-version: "1.7.0-dev"
+version: "1.7.0"
 
 ############################
 ##########theSpawn##########

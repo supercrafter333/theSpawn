@@ -4,6 +4,7 @@ namespace supercrafter333\theSpawn;
 
 use JsonException;
 use pocketmine\block\BlockLegacyIds as BLI;
+use pocketmine\entity\Location;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionAttachmentInfo;
@@ -45,7 +46,6 @@ use function file_exists;
 use function is_numeric;
 use function krsort;
 use function mb_substr;
-use function print_r;
 use function str_starts_with;
 
 /**
@@ -93,10 +93,10 @@ class theSpawn extends PluginBase
     /**
      * @var string
      */
-    public string $version = "1.7.0-dev";
+    public string $version = "1.7.0";
 
 
-    public const DEVELOPMENT_VERSION = true;
+    public const DEVELOPMENT_VERSION = false;
 
 
 
@@ -413,20 +413,28 @@ class theSpawn extends PluginBase
     }
 
     /**
-     * @param $x
-     * @param $y
-     * @param $z
+     * @param float $x
+     * @param float $y
+     * @param float $z
      * @param World $world
+     * @param float|null $yaw
+     * @param float|null $pitch
      * @param int|null $count
+     * @throws JsonException
      */
-    public function setHub($x, $y, $z, World $world, int $count = null)
+    public function setHub(float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null, int $count = null)
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         $randHub = new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
+        if ($yaw !== null && $pitch !== null) {
+            $hubcoords["yaw"] = $yaw;
+            $hubcoords["pitch"] = $pitch;
+        }
         if ($count !== null && $this->getUseRandomHubs()) {
             $setRandHub = $x . '|' . $y . '|' . $z . '|' . $world->getFolderName();
+            if ($yaw !== null && $pitch !== null) $setRandHub .= "|" . $yaw . "|" . $pitch;
             $randHub->set($count, $setRandHub);
             $randHub->save();
         } else {
@@ -437,9 +445,9 @@ class theSpawn extends PluginBase
 
     /**
      * @param int|null $count
-     * @return Position|null
+     * @return Position|Location|null
      */
-    public function getRandomHub(int $count = null): ?Position
+    public function getRandomHub(int $count = null): Position|Location|null
     {
         $randHubs = $this->getRandomHubList();
         if (!$this->getUseRandomHubs()) return null;
@@ -455,7 +463,8 @@ class theSpawn extends PluginBase
             $i = explode('|', $randHubs->get($count));
             $worldName = $i[3];
             if ($this->getHubLevel($worldName) instanceof World) {
-                return new Position($i[0], $i[1], $i[2], $this->levelCheck($worldName));
+                if (!isset($i[4])) return new Position($i[0], $i[1], $i[2], $this->levelCheck($worldName));
+                return new Location($i[0], $i[1], $i[2], $this->levelCheck($worldName), $i[4], $i[5]);
             } else {
                 return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
             }
@@ -493,9 +502,9 @@ class theSpawn extends PluginBase
 
     /**
      * @param int|null $count
-     * @return Position|false
+     * @return Position|Location|false|null
      */
-    public function getHub(int $count = null): ?Position
+    public function getHub(int $count = null): Position|Location|null|false
     {
         $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
@@ -506,25 +515,20 @@ class theSpawn extends PluginBase
             return $this->getRandomHub() === null ? false : $this->getRandomHub();
         }
         if ($hub->exists("hub")) {
-            $X = $hub->get("hub")["X"];
-            $Y = $hub->get("hub")["Y"];
-            $Z = $hub->get("hub")["Z"];
-            $worldname = $hub->get("hub")["level"];
+            $hubArray = $hub->get("hub", []);
+            $worldname = $hubArray["level"];
             $world = !$this->checkWorld($worldname) instanceof World ? $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() : $this->checkWorld($worldname);
-            $coords = new Position($X, $Y, $Z, $world);
-            return $coords;
+            return $this->convertArrayToPosition($hubArray);
         } else {
-            $this->getLogger()->error("!!Please set a Hub!!");
             return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
         }
     }
 
     /**
      * @param World|null $world
-     * @return false|Position
-     * @return false|Position
+     * @return Position|Location|false
      */
-    public function getSpawn(?World $world): Position|false
+    public function getSpawn(?World $world): Position|Location|false
     {
         if (!$world instanceof World) {
             $hub = $this->getHub();
@@ -537,10 +541,8 @@ class theSpawn extends PluginBase
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $spawn->get($world->getFolderName());
         if ($spawn->exists($world->getFolderName())) {
-            $X = $spawn->get($world->getFolderName())["X"];
-            $Y = $spawn->get($world->getFolderName())["Y"];
-            $Z = $spawn->get($world->getFolderName())["Z"];
-            return new Position($X, $Y, $Z, $world);
+            $spawnArray = $spawn->get($world->getFolderName(), []);
+            return $this->convertArrayToPosition($spawnArray);
         } else {
             return false;
         }
@@ -550,6 +552,7 @@ class theSpawn extends PluginBase
      * @param Player $s
      * @param World $world
      * @return bool
+     * @throws JsonException
      */
     public function setSpawn(Player $s, World $world): bool
     {
@@ -557,29 +560,27 @@ class theSpawn extends PluginBase
         $x = $s->getPosition()->getX();
         $y = $s->getPosition()->getY();
         $z = $s->getPosition()->getZ();
-        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
+        $yaw = $s->getLocation()->getYaw();
+        $pitch = $s->getLocation()->getPitch();
+        $coords = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName(), "yaw" => $yaw, "pitch" => $pitch];
         $spawn->set($world->getFolderName(), $coords);
         $spawn->save();
         return true;
     }
 
     /**
-     * @return false|mixed|World
+     * @param string $worldName
+     * @return World|null
      */
     public function getHubLevel(string $worldName): ?World
     {
-        if (!$this->getServer()->getWorldManager()->isWorldGenerated($worldName)) return null;
-        if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
-            $this->getServer()->getWorldManager()->loadWorld($worldName);
-            return $this->getServer()->getWorldManager()->getWorldByName($worldName);
-        }
-        return $this->getServer()->getWorldManager()->getWorldByName($worldName);
-        //TODO: return $this->checkWorld($worldName); ???
+        return $this->checkWorld($worldName);
     }
 
     /**
      * @param int|null $count
      * @return bool
+     * @throws JsonException
      */
     public function removeHub(int $count = null): bool
     {
@@ -605,6 +606,7 @@ class theSpawn extends PluginBase
     /**
      * @param World $world
      * @return bool
+     * @throws JsonException
      */
     public function removeSpawn(World $world): bool
     {
@@ -757,6 +759,7 @@ class theSpawn extends PluginBase
      * @param string $alias
      * @param string $worldName
      * @return bool
+     * @throws JsonException
      */
     public function addAlias(string $alias, string $worldName): bool
     {
@@ -820,17 +823,24 @@ class theSpawn extends PluginBase
     /**
      * @param Player $player
      * @param string $homeName
-     * @param $x
-     * @param $y
-     * @param $z
+     * @param float $x
+     * @param float $y
+     * @param float $z
      * @param World $world
+     * @param float|null $yaw
+     * @param float|null $pitch
      * @return bool
+     * @throws JsonException
      */
-    public function setHome(Player $player, string $homeName, $x, $y, $z, World $world): bool
+    public function setHome(Player $player, string $homeName, float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null): bool
     {
         if ($this->existsHome($homeName, $player) == false) {
             $home = $this->getHomeCfg($player->getName());
             $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName(), "homeName" => $homeName];
+            if ($yaw !== null && $pitch !== null) {
+                $setThis["yaw"] = $yaw;
+                $setThis["pitch"] = $pitch;
+            }
             $home->set($homeName, $setThis);
             $home->save();
             return true;
@@ -857,22 +867,20 @@ class theSpawn extends PluginBase
     /**
      * @param Player $player
      * @param string $homeName
-     * @return Position|bool|string
+     * @return Position|Location|bool|string
      */
-    public function getHomePos(Player $player, string $homeName): Position|bool|string
+    public function getHomePos(Player $player, string $homeName): Position|Location|bool|string
     {
         if ($this->existsHome($homeName, $player) == true) {
             $home = $this->getHomeCfg($player->getName());
-            $x = $home->get($homeName)["X"];
-            $y = $home->get($homeName)["Y"];
-            $z = $home->get($homeName)["Z"];
-            $worldName = $home->get($homeName)["level"];
+            $homeArray = $home->get($homeName, []);
+            $worldName = $homeArray["level"];
             if ($this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
                 if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
                     $this->getServer()->getWorldManager()->loadWorld($worldName);
                 }
                 $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
-                return new Position($x, $y, $z, $world);
+                return $this->convertArrayToPosition($homeArray);
             } else {
                 return "LevelError";
             }
@@ -1015,17 +1023,19 @@ class theSpawn extends PluginBase
     }
 
     /**
-     * @param $x
-     * @param $y
-     * @param $z
+     * @param float $x
+     * @param float $y
+     * @param float $z
      * @param World $level
      * @param string $warpName
+     * @param float|null $yaw
+     * @param float|null $pitch
      * @param bool $permission
      * @param string|null $iconPath
      * @return bool
      * @throws JsonException
      */
-    public function addWarp($x, $y, $z, World $level, string $warpName, bool $permission = false, string|null $iconPath = null): bool
+    public function addWarp(float $x, float $y, float $z, World $level, string $warpName, float $yaw = null, float $pitch = null, bool $permission = false, string|null $iconPath = null): bool
     {
         //if ($this->existsWarp($warpName) == true) {
         $warp = $this->getWarpCfg();
@@ -1033,6 +1043,10 @@ class theSpawn extends PluginBase
 
         if ($permission) $warpArray["perm"] = true;
         if ($iconPath !== null && $iconPath !== "") $warpArray["iconPath"] = $iconPath;
+        if ($yaw !== null && $pitch !== null) {
+            $warpArray["yaw"] = $yaw;
+            $warpArray["pitch"] = $pitch;
+        }
 
         $warp->set($warpName, $warpArray);
         $warp->save();
@@ -1064,22 +1078,12 @@ class theSpawn extends PluginBase
         if ($this->existsWarp($warpName) == false) {
             return false;
         }
-        $warp = $warpCfg->get($warpName);
-        $x = $warp["X"];
-        $y = $warp["Y"];
-        $z = $warp["Z"];
+        $warp = $warpCfg->get($warpName, []);
         $worldName = $warp["level"];
         if (!$this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
             return false;
         }
-        if ($this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
-            $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
-            return new Position($x, $y, $z, $world);
-        } else {
-            $this->getServer()->getWorldManager()->loadWorld($worldName);
-            $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
-            return new Position($x, $y, $z, $world);
-        }
+        return $this->convertArrayToPosition($warp);
     }
 
     /**
@@ -1201,5 +1205,26 @@ class theSpawn extends PluginBase
                 $cfg->save();
             }
         }
+    }
+
+    public function convertArrayToPosition(array $posArray): Position|Location|null
+    {
+        if (!isset($posArray["level"])) return null;
+
+        if (isset($posArray["yaw"]) && isset($posArray["pitch"])) return new Location(
+            $posArray["X"],
+            $posArray["Y"],
+            $posArray["Z"],
+            $this->checkWorld($posArray["level"]),
+            $posArray["yaw"],
+            $posArray["pitch"]
+        );
+
+        return new Position(
+            $posArray["X"],
+            $posArray["Y"],
+            $posArray["Z"],
+            $this->checkWorld($posArray["level"])
+        );
     }
 }

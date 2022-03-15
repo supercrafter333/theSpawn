@@ -114,9 +114,9 @@ class TpaInfo
     {
         $this->cancel();
         if (!$this->isTpaHere()) {
-            $this->getSourceAsPlayer()->teleport($this->getTargetAsPlayer()->getPosition());
+            $this->getSourceAsPlayer()->teleport($this->getTargetAsPlayer()->getLocation());
         } else {
-            $this->getTargetAsPlayer()->teleport($this->getSourceAsPlayer()->getPosition());
+            $this->getTargetAsPlayer()->teleport($this->getSourceAsPlayer()->getLocation());
         }
         $this->getSourceAsPlayer()->getWorld()->addSound($this->getSourceAsPlayer()->getPosition(), new XpLevelUpSound(mt_rand(1, 100)));
     }

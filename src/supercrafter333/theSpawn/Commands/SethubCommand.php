@@ -59,6 +59,8 @@ class SethubCommand extends theSpawnOwnedCommand
         $x = $s->getPosition()->getX();
         $y = $s->getPosition()->getY();
         $z = $s->getPosition()->getZ();
+        $yaw = $s->getLocation()->getYaw();
+        $pitch = $s->getLocation()->getPitch();
         $levelname = $s->getWorld()->getFolderName();
         $level = $s->getWorld();
         if ($pl->getUseHubServer() == false) {
@@ -72,7 +74,7 @@ class SethubCommand extends theSpawnOwnedCommand
                     return;
                 }
                 if ($pl->checkSetRandomHub($args[0])) {
-                    $pl->setHub($x, $y, $z, $level, $args[0]);
+                    $pl->setHub($x, $y, $z, $level, $yaw, $pitch, $args[0]);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
                     $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
                 } else {
@@ -84,10 +86,10 @@ class SethubCommand extends theSpawnOwnedCommand
                         $s->sendMessage($prefix . MsgMgr::getErrorMsg());
                         return;
                     }
-                    $pl->setHub($x, $y, $z, $level);
+                    $pl->setHub($x, $y, $z, $level, $yaw, $pitch);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
                 } else {
-                    $pl->setHub($x, $y, $z, $level);
+                    $pl->setHub($x, $y, $z, $level, $yaw, $pitch);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
                 }
                 $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());

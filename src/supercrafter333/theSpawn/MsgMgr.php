@@ -3,7 +3,9 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\utils\Config;
+use function array_keys;
 use function str_replace;
+use function strtolower;
 
 /**
  * Class MsgMgr
