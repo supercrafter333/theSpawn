@@ -128,7 +128,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v1.7.0 (and lower)
+#compatible with v1.7.1-dev (and lower)
 
 
 ############################
