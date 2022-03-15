@@ -37,6 +37,8 @@ home-deleted: "§aHas eliminado con éxito tu casa §b{home}§a!"
 home-already-exists: "§cTu casa §b{home}§c ya existe!"
 #usos: {homelist}
 homelist: "§eTus casas: §7{homelist}"
+#usos: {max-homes}
+highest-home-count-reached: "§cYa has alcanzado el mayor número de §r{max-homes}§c casas disponibles!"
 
 #mensajes de warp
 #usos: {warpname} {position} {world}
@@ -83,7 +85,8 @@ form-warp-menu-warpButton: "§b{warp}§r{line}§7clic para teletransportarse"
 form-setWarp-menu-title: "Establecer un warp"
 form-setWarp-menu-content: "Aquí puedes establecer un nuevo warp."
 form-setWarp-menu-inputNameDescription: "Nombre del nuevo warp"
-form-setWarp-menu-inputPermDescription: "Permiso del nuevo warp (opcional)"
+form-setWarp-menu-togglePermDescription: "¿Debe el nuevo warp tener un permiso? (opcional)"
+form-setWarp-menu-inputIconPathDescription: "Icono del nuevo warp (opcional)"
 #   delwarp
 form-rmWarp-menu-title: "Eliminar un warp"
 form-rmWarp-menu-content: "Aquí puedes eliminar un warp."
@@ -101,8 +104,8 @@ form-rmHome-menu-title: "Eliminar una casa"
 form-rmHome-menu-content: "Aquí puede eliminar una casa."
 form-rmHome-menu-homeButton: "§b{home}§r{line}§7clic para eliminarla"
 
-#errors
-#uses: none
+#errores
+#usos: none
 no-spawn-set: "§4ERROR --> §cNingún spawn fue establecido en este mundo!"
 no-hub-set: "§4ERROR --> §cNingún hub fue establecido en este servidor!"
 alias-not-found: "§cEste alias no existe!"
@@ -125,10 +128,10 @@ no-spawn-set-for-world: "§cNo hay ningún spawn establecido para el mundo {worl
 
 
 
-#compatible with v1.6.2 (and lower)
+#compatible con v1.7.0-dev (y versiones anteriores)
 
 
 ############################
 ##########theSpawn##########
 ############################
-#Licensed under Apache License 2.0! Plugin by supercrafter333 inspirated by MSpawns from EvolSoft!
+#Con la licencia Apache License 2.0! Plugin creado por supercrafter333 inspirado por MSpawns de EvolSoft!
