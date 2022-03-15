@@ -17,6 +17,7 @@ class MsgMgr
     public const LANG_en_BE = "en_BE"; # British English
     //TODO: public const LANG_en_AE = "en_AE"; # American English
     public const LANG_ger_DE = "ger_DE";
+    public const LANG_es_ES = "es_ES";
     public const LANG_fr_FR = "fr_FR";
     public const LANG_CUSTOM = "messages";
 
@@ -24,6 +25,7 @@ class MsgMgr
         self::LANG_en_BE => self::LANG_en_BE,
         //TODO: self::LANG_en_AE => self::LANG_en_AE,
         self::LANG_ger_DE => self::LANG_ger_DE,
+        self::LANG_es_ES => self::LANG_es_ES,
         self::LANG_fr_FR => self::LANG_fr_FR,
         self::LANG_CUSTOM => self::LANG_CUSTOM,
     ];

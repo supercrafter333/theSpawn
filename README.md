@@ -73,7 +73,7 @@ This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
 
 Owner: supercrafter333
 
-Helper: AyzrixYTB
+Helper: AyzrixYTB, MrBlasyMSK
 
 Icon: HannesTheDev [Thank you]
 
