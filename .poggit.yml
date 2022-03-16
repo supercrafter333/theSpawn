@@ -9,5 +9,5 @@ projects:
     path: ""
     php: 8.0
     libs:
-      - src: jojoe77777/FormAPI/libFormAPI
+      - src: "https://poggit.pmmp.io/ci/supercrafter333/FormAPI/libFormAPI"
         version: ^2.1
