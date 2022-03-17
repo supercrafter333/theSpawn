@@ -1,5 +1,9 @@
+> **Development Version!!** 
+> 
+> This version is under development and can contain bugs!
+
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# theSpawn - V1.7.0   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# theSpawn - V1.7.1-dev   [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 
 **This plugin is a much better MSpawns alternative! Help me to make this plugin better!**
 
