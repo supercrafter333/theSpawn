@@ -79,7 +79,7 @@ delay-stopped-by-move: "§cEl teletransporte se ha cancelado porque te has movid
 #formas
 #   warps
 form-warp-menu-title: "Warps"
-form-warp-menu-content: "Por favor elecciona un warp."
+form-warp-menu-content: "Por favor selecciona un warp."
 form-warp-menu-warpButton: "§b{warp}§r{line}§7clic para teletransportarse"
 #   setwarp
 form-setWarp-menu-title: "Establecer un warp"
