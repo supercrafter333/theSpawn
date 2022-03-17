@@ -102,7 +102,7 @@ class WarpForms
         $form->addLabel(MsgMgr::getMsg("form-setWarp-menu-content"));
         $form->addInput(MsgMgr::getMsg("form-setWarp-menu-inputNameDescription"), "", null, "warpName");
         $form->addToggle(MsgMgr::getMsg("form-setWarp-menu-togglePermDescription"), false, "warpPermission");
-        $form->addInput(MsgMgr::getMsg("form-setWarp-menu-inputIconPathDescription"), "", "textures/ui/world_glyph_colour_2x_black_outline", "warpIconPath"); //ui/world_glyph_colour_2x_black_outline
+        $form->addInput(MsgMgr::getMsg("form-setWarp-menu-inputIconPathDescription"), "", "textures/ui/world_glyph_color_2x_black_outline", "warpIconPath"); //ui/world_glyph_colour_2x_black_outline
         $form->sendToPlayer($player);
         return $form;
     }
