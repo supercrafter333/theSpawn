@@ -47,7 +47,7 @@ warp-set: "§aHas puesto el warp §b{warpname}§a en §7{position}§a en el mund
 warp-teleport: "§aFuiste teletransportado al warp §b{warpname}§a en el mundo §7{world}§a!"
 #usos: {warpname}
 warp-deleted: "§aHas eliminado con éxito el warp §7{warpname}§a!"
-warp-not-exists: "§cLa warp llamado §7{warpname}§c no existe!"
+warp-not-exists: "§cEl warp llamado §7{warpname}§c no existe!"
 warp-already-set: "§cEl warp seleccionado §7[§b{warpname}§7]§c ya existe en este servidor! Por favor, borre el warp y vuelva a intentarlo!"
 #usos: {warplist}
 warplist: "§eLista de warps: §7{warplist}"
@@ -80,7 +80,7 @@ delay-stopped-by-move: "§cEl teletransporte se ha cancelado porque te has movid
 #   warps
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Por favor selecciona un warp."
-form-warp-menu-warpButton: "§b{warp}§r{line}§7clic para teletransportarse"
+form-warp-menu-warpButton: "§b{warp}§r{line}§7clic para teletransportarte"
 #   setwarp
 form-setWarp-menu-title: "Establecer un warp"
 form-setWarp-menu-content: "Aquí puedes establecer un nuevo warp."
@@ -94,7 +94,7 @@ form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7clic para eliminarlo"
 #   homes
 form-home-menu-title: "Casas"
 form-home-menu-content: "Selecciona una casa."
-form-home-menu-homeButton: "§b{home}§r{line}§7clic para teletransportarse"
+form-home-menu-homeButton: "§b{home}§r{line}§7clic para teletransportarte"
 #   sethome
 form-setHome-menu-title: "Establecer una casa"
 form-setHome-menu-content: "Aquí puedes establecer una nueva casa."
