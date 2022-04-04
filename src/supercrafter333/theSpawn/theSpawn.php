@@ -933,14 +933,11 @@ class theSpawn extends PluginBase
     public function teleportToHome(Player $player, string $homeName): bool|string
     {
         if ($this->existsHome($homeName, $player) == true) {
-            if ($this->getHomePos($player, $homeName) == false) {
+            if (($pos = $this->getHomePos($player, $homeName)) == false) {
                 return false;
             } elseif ($this->getHomePos($player, $homeName) == "LevelError") {
                 return "LevelError";
             } else {
-                $pos = $this->getHomePos($player, $homeName);
-                if (!$this->isPositionSafe($pos)) return "PosNotSafeError";
-
                 $player->teleport($pos);
                 return true;
             }
@@ -1291,16 +1288,19 @@ class theSpawn extends PluginBase
     }
 
     /**
-     * @param Position|Location $position
+     * @param Position|Location|false|null $position
      * @return bool
      */
-    public function isPositionSafe(Position|Location $position): bool
+    public function isPositionSafe(Position|Location|null|false $position): bool
     {
+        if ($position === null || $position === false) return false;
+
         if (!$this->usePositionChecks()) return true;
+
+        if (!$position->isValid()) return false;
 
         $block1 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY() + 1, $position->getZ()));
         $block2 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY() + 2, $position->getZ()));
-
 
         $blocksToCheck = [];
 

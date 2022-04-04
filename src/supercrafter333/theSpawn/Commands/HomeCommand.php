@@ -83,7 +83,7 @@ class HomeCommand extends theSpawnOwnedCommand
             return;
         }
 
-        if ($pl->teleportToHome($s, $args[0]) == "PosNotSafeError") {
+        if (!$pl->isPositionSafe($pl->getHomePos($s, (string)$args[0]))) {
             $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
             return;
         }
