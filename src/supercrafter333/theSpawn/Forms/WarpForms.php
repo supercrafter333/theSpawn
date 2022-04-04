@@ -42,7 +42,7 @@ class WarpForms
             $warpInfo = theSpawn::getInstance()->getWarpInfo($warp);
             $warpName = $warpInfo->getName();
  ​           ​$​warpIcon​ = ​$​warpInfo​->​getIconPath​() === ​null​ ? ​""​ : ​$​warpInfo​->​getIconPath​();
-            $iconType = $warpIcon === null ? -1 : 0;
+            $iconType = $warpIcon === "" ? -1 : 0;
             if (str_contains($warpIcon, "http")) $iconType = 1;
             $form->addButton(str_replace(["{warp}", "{line}"], [$warpName, "\n"], MsgMgr::getMsg("form-warp-menu-warpButton")), $iconType, $warpIcon, $warpName);
         }
