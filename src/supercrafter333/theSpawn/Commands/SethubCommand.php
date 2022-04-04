@@ -19,11 +19,7 @@ use supercrafter333\theSpawn\theSpawn;
 class SethubCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * SethubCommand constructor.
      * @param string $name

@@ -22,10 +22,7 @@ use function print_r;
 class SethomeCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
+
 
     /**
      * DelhomeCommand constructor.

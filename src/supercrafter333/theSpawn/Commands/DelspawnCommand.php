@@ -19,11 +19,7 @@ use supercrafter333\theSpawn\theSpawn;
 class DelspawnCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * DelspawnCommand constructor.
      * @param string $name

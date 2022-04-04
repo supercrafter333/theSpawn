@@ -18,11 +18,7 @@ use supercrafter333\theSpawn\theSpawn;
 class SetwarpCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * SetwarpCommand constructor.
      * @param string $name

@@ -15,6 +15,10 @@ spawn-changed: "§aYou've successfully §7changed §athe spawn for this world! �
 hub-set: "§aYou've successfully §7set§a the hub to world §b{world}§a!"
 hub-changed: "§aYou've successfully §7changed§a the hub to world §b{world}§a!"
 
+#/back command messages
+no-deathposition-found: "§cCannot found your last death position."
+teleported-to-deathposition: "§aYou was successfully teleported to your last death position. §7[§b{X}; {Y}; {Z}; {world}§7]"
+
 #remove messages
 #uses: none
 spawn-removed: "§aYou've successfully removed the spawn of this world!"
@@ -76,6 +80,9 @@ tpa-ended: "The TpaInfo from {source} to {target} is ended now."
 delay-tip: "§8[§eYou where teleported in §7{secs}§e!§8]"
 delay-stopped-by-move: "§cTeleport cancelled because you've moved you."
 
+#position checks
+position-not-safe: "§cThe target position isn't safe. Teleport was cancelled."
+
 #forms
 #   warps
 form-warp-menu-title: "Warps"
@@ -91,6 +98,43 @@ form-setWarp-menu-inputIconPathDescription: "Icon-path of the new warp (optional
 form-rmWarp-menu-title: "Delete a warp"
 form-rmWarp-menu-content: "Here you can delete a warp."
 form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7click to delete"
+#   editwarp
+##### (choose warp)
+form-chooseEditWarp-menu-title: "Edit a warp"
+form-chooseEditWarp-menu-content: "Please choose a warp to edit."
+form-chooseEditWarp-menu-warpButton: "§b{warp}§r{line}§7click to edit"
+##### (choose action)
+form-editWarp-menu-title: "Edit a warp"
+form-editWarp-menu-content: "§bWarp: §7{warp}{line}§bPosition: §7X={X}; Y={Y}; Z={Z}; World={world}{line}§bPermission: §7{permission}{line}§bIcon: §7{icon}"
+form-editWarp-menu-button-editName: "Edit name"
+form-editWarp-menu-button-editPosition: "Set new position/location here"
+form-editWarp-menu-button-rmPermission: "Remove permission"
+form-editWarp-menu-button-addPermission: "Add permission"
+form-editWarp-menu-button-editIcon: "Edit icon"
+form-editWarp-menu-button-rmIcon: "Remove icon"
+form-editWarp-menu-button-addIcon: "Add icon"
+##### (edit name)
+form-editWarp-editName-title: "Edit a warp"
+form-editWarp-editName-content: "Here you can edit the name of the warp {warp}."
+form-editWarp-editName-inputNameDescription: "Warp-name"
+##### (edit icon-path)
+form-editWarp-editIcon-title: "Edit a warp"
+form-editWarp-editIcon-content: "Here you can add/edit a icon for the warp."
+form-editWarp-editIcon-inputNameDescription: "Icon-path"
+#   edit home
+##### (choose home)
+form-chooseEditHome-menu-title: "Edit a home"
+form-chooseEditHome-menu-content: "Please choose a home that you would like to edit."
+form-chooseEditHome-menu-homeButton: "§b{home}§r{line}§7click to edit"
+##### (choose action)
+form-editHome-menu-title: "Edit a home"
+form-editHome-menu-content: "§bHome: §7{home}{line}§bPosition: §7X={X}; Y={Y}; Z={Z}; World={world}"
+form-editHome-menu-editNameButton: "Edit name"
+form-editHome-menu-editPositionButton: "Set new position/location here"
+##### (edit name)
+form-editHome-editName-title: "Edit a home"
+form-editHome-editName-content: "Here you can edit the name of the home {home}."
+form-editHome-editName-inputNameDescription: "Home-name"
 #   homes
 form-home-menu-title: "Homes"
 form-home-menu-content: "Please select a home."
@@ -128,7 +172,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 
-#compatible with v1.7.1-dev (and lower)
+#compatible with v1.8.0-dev (and lower)
 
 
 ############################

@@ -20,11 +20,7 @@ use supercrafter333\theSpawn\theSpawn;
 class WarpCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * WarpCommand constructor.
      * @param string $name
@@ -95,6 +91,10 @@ class WarpCommand extends theSpawnOwnedCommand
         $warpInfo = $pl->getWarpInfo($args[0]);
         $posMsg = $warpInfo->getX() . $warpInfo->getY() . $warpInfo->getZ();
         $worldName = $warpInfo->getLevelName();
+        if (!$pl->isPositionSafe($warpPos)) {
+            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+            return;
+        }
         $s->teleport($warpPos);
         $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
     }

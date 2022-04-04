@@ -19,11 +19,7 @@ use supercrafter333\theSpawn\theSpawn;
 class HubCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * HubCommand constructor.
      * @param string $name
@@ -57,6 +53,10 @@ class HubCommand extends theSpawnOwnedCommand
                 if ($pl->getUseRandomHubs()) {
                     $hubPos = $pl->getRandomHub();
                     if ($hubPos !== null) {
+                        if (!$pl->isPositionSafe($hubPos)) {
+                            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+                            return;
+                        }
                         $s->teleport($hubPos);
                         $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getWorld()->getFolderName()], MsgMgr::getMsg("hub-tp")));
                         $s->getWorld()->addSound($s->getPosition(), new PopSound());
@@ -68,7 +68,12 @@ class HubCommand extends theSpawnOwnedCommand
                 if ($hub->exists("hub")) {
                     $hublevel = $pl->getHub()->getWorld();
                     if ($hublevel !== null) {
-                        $s->teleport($pl->getHub());
+                        $hubPos2 = $pl->getHub();
+                        if (!$pl->isPositionSafe($hubPos2)) {
+                            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+                            return;
+                        }
+                        $s->teleport($hubPos2);
                         $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getFolderName()], MsgMgr::getMsg("hub-tp")));
                         $s->getWorld()->addSound($s->getPosition(), new PopSound());
                     } else {

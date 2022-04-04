@@ -6,6 +6,7 @@ use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use pocketmine\world\sound\XpLevelUpSound;
+use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Tasks\TpaTask;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -114,9 +115,19 @@ class TpaInfo
     {
         $this->cancel();
         if (!$this->isTpaHere()) {
-            $this->getSourceAsPlayer()->teleport($this->getTargetAsPlayer()->getLocation());
+            $targetPos = $this->getTargetAsPlayer()->getLocation();
+            if (!theSpawn::getInstance()->isPositionSafe($targetPos)) {
+                $this->getSourceAsPlayer()->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("position-not-safe"));
+                return;
+            }
+            $this->getSourceAsPlayer()->teleport($targetPos);
         } else {
-            $this->getTargetAsPlayer()->teleport($this->getSourceAsPlayer()->getLocation());
+            $sourcePos = $this->getSourceAsPlayer()->getLocation();
+            if (!theSpawn::getInstance()->isPositionSafe($sourcePos)) {
+                $this->getSourceAsPlayer()->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("position-not-safe"));
+                return;
+            }
+            $this->getTargetAsPlayer()->teleport($sourcePos);
         }
         $this->getSourceAsPlayer()->getWorld()->addSound($this->getSourceAsPlayer()->getPosition(), new XpLevelUpSound(mt_rand(1, 100)));
     }

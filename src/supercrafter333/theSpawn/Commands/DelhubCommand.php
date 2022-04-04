@@ -18,11 +18,7 @@ use supercrafter333\theSpawn\theSpawn;
 class DelhubCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * DelhubCommand constructor.
      * @param string $name

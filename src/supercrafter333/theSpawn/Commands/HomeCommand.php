@@ -20,11 +20,7 @@ use supercrafter333\theSpawn\theSpawn;
 class HomeCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * HomeCommand constructor.
      * @param string $name
@@ -86,7 +82,12 @@ class HomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-not-exists")));
             return;
         }
-        $pl->teleportToHome($s, $args[0]);
+
+        if ($pl->teleportToHome($s, $args[0]) == "PosNotSafeError") {
+            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+            return;
+        }
+
         $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-teleport")));
         $s->getWorld()->addSound($s->getPosition(), new PopSound());
         return;

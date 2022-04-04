@@ -5,6 +5,7 @@ namespace supercrafter333\theSpawn\Commands;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\KnownTranslationFactory;
+use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
@@ -17,6 +18,17 @@ use supercrafter333\theSpawn\theSpawn;
  */
 abstract class theSpawnOwnedCommand extends Command implements PluginOwned
 {
+
+    protected theSpawn $plugin;
+
+    protected string $prefix;
+
+    public function __construct(string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [])
+    {
+        $this->plugin = theSpawn::getInstance();
+        $this->prefix = theSpawn::$prefix;
+        parent::__construct($name, $description, $usageMessage, $aliases);
+    }
 
     /**
      * @return theSpawn

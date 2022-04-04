@@ -1,5 +1,5 @@
 name: theSpawn
-version: 1.7.1-dev
+version: 1.8.0-dev
 api: 4.0.0
 main: supercrafter333\theSpawn\theSpawn
 author: supercrafter333
@@ -29,8 +29,12 @@ permissions:
     default: true
   theSpawn.home.cmd:
     default: true
+  theSpawn.edithome.cmd:
+    default: true
   theSpawn.warp.cmd:
     default: true
+  theSpawn.editwarp.cmd:
+    default: op
   theSpawn.tpa.cmd:
     default: true
   theSpawn.tpahere.cmd:
@@ -45,3 +49,5 @@ permissions:
     default: op
   theSpawn.homes.unlimited:
     default: op
+  theSpawn.back.cmd:
+    default: true

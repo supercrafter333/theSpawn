@@ -15,6 +15,10 @@ spawn-changed: "§aDu hast erfolgreich einen §7neuen §aSpawn für diese Welt f
 hub-set: "§aDu hast erfolgreich den Spawn der Lobby für die Welt §b{world} §7gesetzt§a!"
 hub-changed: "§aDu hast erfolgreich einen §7neuen §aSpawn der Lobby für die Welt §b{world}§a festgelegt!"
 
+#/back command messages
+no-deathposition-found: "§cLetzte Todesposition konnte nicht gefunden werden."
+teleported-to-deathposition: "§aDu wurdest erfolgreich zu deiner letzten Todesposition teleportiert. §7[§b{X}; {Y}; {Z}; {world}§7]"
+
 #remove messages
 #uses: none
 spawn-removed: "§aDu hast erfolgreich den Spawn dieser Welt entfernt!"
@@ -91,6 +95,43 @@ form-setWarp-menu-inputIconPathDescription: "Icon-Pfad des neuen Warps (optional
 form-rmWarp-menu-title: "Lösche einen Warp"
 form-rmWarp-menu-content: "Hier kannst du einen Warp löschen."
 form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7Klicke zum Löschen"
+#   editwarp
+##### (choose warp)
+form-chooseEditWarp-menu-title: "Edit a warp"
+form-chooseEditWarp-menu-content: "Please choose a warp to edit."
+form-chooseEditWarp-menu-warpButton: "§b{warp}§r{line}§7click to edit"
+##### (choose action)
+form-editWarp-menu-title: "Bearbeite einen Warp"
+form-editWarp-menu-content: "§bWarp: §7{warp}{line}§bPosition: §7X={X}; Y={Y}; Z={Z}; Welt={world}{line}§bBerechtigung: §7{permission}{line}§bIcon: §7{icon}"
+form-editWarp-menu-button-editName: "Name bearbeiten"
+form-editWarp-menu-button-editPosition: "Neue Position hier setzen"
+form-editWarp-menu-button-rmPermission: "Berechtigung entfernen"
+form-editWarp-menu-button-addPermission: "Berechtigung hinzufügen"
+form-editWarp-menu-button-editIcon: "Icon bearbeiten"
+form-editWarp-menu-button-rmIcon: "Icon entfernen"
+form-editWarp-menu-button-addIcon: "Icon hinzufügen"
+##### (edit name)
+form-editWarp-editName-title: "Bearbeite einen Warp"
+form-editWarp-editName-content: "Hier kannst du den Namen des Warp's {warp} bearbeiten."
+form-editWarp-editName-inputNameDescription: "Warp-Name"
+##### (edit icon-path)
+form-editWarp-editIcon-title: "Bearbeite einen Warp"
+form-editWarp-editIcon-content: "Hier kannst du das Icon für den Warp hinzufügen/bearbeiten."
+form-editWarp-editIcon-inputNameDescription: "Icon-Pfad"
+#   edit home
+##### (choose home)
+form-chooseEditHome-menu-title: "Bearbeite ein Home"
+form-chooseEditHome-menu-content: "Bitte wähle eine Home aus, welches du bearbeiten möchtest."
+form-chooseEditHome-menu-homeButton: "§b{home}§r{line}§7Klicke zum bearbeiten"
+##### (choose action)
+form-editHome-menu-title: "Bearbeite ein Home"
+form-editHome-menu-content: "§bHome: §7{home}{line}§bPosition: §7X={X}; Y={Y}; Z={Z}; World={world}"
+form-editHome-menu-editNameButton: "Name bearbeiten"
+form-editHome-menu-editPositionButton: "Neue Position hier setzen"
+##### (edit name)
+form-editHome-editName-title: "Bearbeite ein Home"
+form-editHome-editName-content: "Hier kannst du den Namen des Homes {home} ändern."
+form-editHome-editName-inputNameDescription: "Home-Name"
 #   homes
 form-home-menu-title: "Homes"
 form-home-menu-content: "Bitte wähle ein Home aus."
@@ -128,7 +169,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v1.7.1-dev (and lower)
+#compatible with v1.8.0-dev (and lower)
 
 
 ############################
