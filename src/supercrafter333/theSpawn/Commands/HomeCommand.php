@@ -83,13 +83,15 @@ class HomeCommand extends theSpawnOwnedCommand
             return;
         }
 
-        if (!$pl->isPositionSafe($pl->getHomePos($s, (string)$args[0]))) {
+        $homePos = $pl->getHomePos($s, (string)$args[0]);
+        if (!$pl->isPositionSafe($homePos)) {
             $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
             return;
         }
 
+        $s->teleport($homePos);
         $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-teleport")));
-        $s->getWorld()->addSound($s->getPosition(), new PopSound());
+        $s->broadcastSound(new PopSound(), [$s]);
         return;
     }
 
