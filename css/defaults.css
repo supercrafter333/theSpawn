@@ -1,0 +1,287 @@
+*{
+    margin: 0;
+    background: #444;
+    font-family: "Open Sans", sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    alignment: center;
+    align-content: center;
+    min-height: 60vh;
+    min-width: 100%;
+}
+
+.prew {
+    width: min(1200px, 100%);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    cursor: pointer;
+    line-height: normal;
+    vertical-align: middle;
+}
+
+.prew .item {
+    overflow: hidden;
+}
+
+.prew .pic {
+    width: 100%;
+    border-radius: 0.3rem;
+    transition: .3s linear;
+    filter: grayscale(75%);
+}
+
+.prew .content {
+    background: #ffffffdd;
+    color: black;
+    margin: 0 20px;
+    padding: 25px;
+    border-radius: 0.3rem;
+    transform: translateY(-50px);
+    transition: .3s linear;
+}
+
+.prew .content h3 {
+    background: transparent;
+    font-size: 2.5vh;
+}
+
+.prew .item:hover .pic {
+    transform: translateY(20px);
+    filter: grayscale(0%);
+}
+
+.prew .item:hover .content {
+    transform: translateY(-80px);
+}
+
+.headline {
+    text-align: center;
+    font-size: 8vh;
+    color: white;
+    text-shadow: 0px 0px 5px white;
+    margin: 10px;
+    transition: all 500ms ease;
+}
+
+.headline:hover {
+    text-shadow: 0px 0px 9px white;
+    letter-spacing: 2.5px;
+    transform: skewY(-5deg);
+}
+
+.secline {
+    text-align: center;
+    font-size: 4vh;
+    color: white;
+    text-shadow: 0px 0px 3px white;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    transition: all 450ms ease;
+}
+
+.secline:hover {
+    text-shadow: 0px 0px 5px white;
+}
+
+.base_table {
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    alignment: center;
+    align-content: center;
+    line-height: normal;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+}
+.base_table table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 5%;
+    transform: skewY(-5deg);
+}
+
+.base_table tr, td {
+    border: 3px white solid;
+    padding: 2%;
+    font-size: 2vh;
+}
+
+.base_table th {
+    padding: 4%;
+    font-size: 2.75vh;
+}
+
+.base_table td {
+    background-color: dimgray;
+    transition: background-color 350ms ease;
+}
+
+.base_table td:hover {
+    background-color: gray;
+    transition: background-color 350ms ease;
+}
+
+@media screen and (max-width: 1200px) {
+    .prew {
+        padding: 3%;
+    }
+    .prew .item {
+        /*width: min(600px, 100%);*/
+        width: 100%;
+        margin: 0;
+    }
+    .prew .content {
+        font-size: 2vh;
+    }
+    .base_table tr, td {
+        font-size: 1.5vh;
+    }
+    .base_table th {
+        font-size: 1.8vh;
+    }
+    .btn-hover {
+        width: 85%;
+        height: 12vh;
+    }
+}
+
+/*.btn_container {
+    position: absolute;
+    text-align: center;
+}
+
+.btn_container .btn {
+    padding: 24px;
+    border-radius: 0.5rem;
+    background-size: 200%;
+    text-transform: uppercase;
+    font-size: large;
+    cursor: pointer;
+    color: white;
+    width: 45%;
+    letter-spacing: 3px;
+    transition: .6s;
+}
+
+.btn:hover {
+    background-position: right;
+}
+
+.btn .btn_blue {
+    background-image: linear-gradient(to left, blue, deepskyblue, blue);
+}
+
+.btn .btn_green {
+    background-image: linear-gradient(to left, forestgreen, lime, forestgreen);
+}
+
+.btn .btn_red {
+    background-image: linear-gradient(to left, red, darkorange, red);
+}
+
+.btn .btn_yellow {
+    background-image: linear-gradient(to left, yellow, #ffff99, yellow);
+}*/
+
+.buttons {
+    margin-top: 0;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+    text-align: center;
+}
+
+.btn-hover {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    width: 60%;
+    font-size: 2vh;
+    font-weight: 650;
+    color: #fff;
+    cursor: pointer;
+    margin: 20px;
+    height: 12vh;
+    text-align: center;
+    border: none;
+    background-size: 300% 100%;
+
+    border-radius: 50px;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .4s ease-in-out;
+}
+
+.btn-hover:hover {
+    background-position: 100% 0;
+    moz-transition: all .4s ease-in-out;
+    -o-transition: all .4s ease-in-out;
+    -webkit-transition: all .4s ease-in-out;
+    transition: all .6s ease-in-out;
+}
+
+.btn-hover:focus {
+    outline: none;
+}
+
+.btn-hover.color-1 {
+    background-image: linear-gradient(to right, #25aae1, #40e495, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(49, 196, 190, 0.75);
+}
+.btn-hover.color-2 {
+    background-image: linear-gradient(to right, #f5ce62, #e43603, #fa7199, #e85a19);
+    box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
+}
+.btn-hover.color-3 {
+    background-image: linear-gradient(to right, #667eea, #764ba2, #6B8DD6, #8E37D7);
+    box-shadow: 0 4px 15px 0 rgba(116, 79, 168, 0.75);
+}
+.btn-hover.color-4 {
+    background-image: linear-gradient(to right, #fc6076, #ff9a44, #ef9d43, #e75516);
+    box-shadow: 0 4px 15px 0 rgba(252, 104, 110, 0.75);
+}
+.btn-hover.color-5 {
+    background-image: linear-gradient(to right, #0ba360, #3cba92, #30dd8a, #2bb673);
+    box-shadow: 0 4px 15px 0 rgba(23, 168, 108, 0.75);
+}
+.btn-hover.color-6 {
+    background-image: linear-gradient(to right, #009245, #FCEE21, #00A8C5, #D9E021);
+    box-shadow: 0 4px 15px 0 rgba(83, 176, 57, 0.75);
+}
+.btn-hover.color-7 {
+    background-image: linear-gradient(to right, #6253e1, #852D91, #A3A1FF, #F24645);
+    box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
+}
+.btn-hover.color-8 {
+    background-image: linear-gradient(to right, #29323c, #485563, #2b5876, #4e4376);
+    box-shadow: 0 4px 15px 0 rgba(45, 54, 65, 0.75);
+}
+.btn-hover.color-9 {
+    background-image: linear-gradient(to right, #25aae1, #4481eb, #04befe, #3f86ed);
+    box-shadow: 0 4px 15px 0 rgba(65, 132, 234, 0.75);
+}
+.btn-hover.color-10 {
+        background-image: linear-gradient(to right, #ed6ea0, #ec8c69, #f7186a , #FBB03B);
+    box-shadow: 0 4px 15px 0 rgba(236, 116, 149, 0.75);
+}
+.btn-hover.color-11 {
+       background-image: linear-gradient(to right, #eb3941, #f15e64, #e14e53, #e2373f);  box-shadow: 0 5px 15px rgba(242, 97, 103, .4);
+}
+.btn-hover.color-12 {
+    background-image: linear-gradient(to right, #5a5a5a, gray, #5A5A5AFF, gray);
+    box-shadow: 0 4px 15px 0 rgba(145, 154, 165, 0.75);
+}
