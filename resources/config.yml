@@ -40,9 +40,6 @@ use-forms: "true"
 #use max home permissions [true | false]
 use-max-home-permissions: "false"
 
-# check positions before teleport [true | false]
-check-positions: "false"
-
 # /back command for  return to the point where you have died [true | false]
 use-back-command: "true"
 # maximum time in which the player can return to the point of death, setting it to "0" will make it possible for the player to use it whenever he wants
@@ -66,8 +63,17 @@ back-time: 15
 language: "en_BE"
 
 
+
+####### BETA FEATURE #######
+# check positions before teleport [true | false]
+check-positions: "false"
+####### BETA FEATURE #######
+
+
+
+
 #DON'T CHANGE THIS!!
-version: "1.8.0-dev"
+version: "1.8.0"
 
 ############################
 ##########theSpawn##########
