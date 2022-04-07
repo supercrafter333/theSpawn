@@ -85,6 +85,22 @@ class HomeInfo
         }
         return false;
     }
+    
+    /**
+     * @return float|null
+     */
+    public function getYaw(): float|null
+    {
+        return isset($this->getHomeCfg()->get($this->homeName)["yaw"]) ? $this->getHomeCfg()->get($this->homeName)["yaw"] : null;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getPitch(): float|null
+    {
+        return isset($this->getHomeCfg()->get($this->homeName)["pitch"]) ? $this->getHomeCfg()->get($this->homeName)["pitch"] : null;
+    }
 
     /**
      * @return string|null

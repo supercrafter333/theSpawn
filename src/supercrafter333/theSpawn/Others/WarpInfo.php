@@ -96,6 +96,22 @@ class WarpInfo
     }
 
     /**
+     * @return float|null
+     */
+    public function getYaw(): float|null
+    {
+        return isset($this->getWarpCfg()->get($this->warpName)["yaw"]) ? $this->getWarpCfg()->get($this->warpName)["yaw"] : null;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getPitch(): float|null
+    {
+        return isset($this->getWarpCfg()->get($this->warpName)["pitch"]) ? $this->getWarpCfg()->get($this->warpName)["pitch"] : null;
+    }
+
+    /**
      * @return string
      */
     public function getLevelName(): string

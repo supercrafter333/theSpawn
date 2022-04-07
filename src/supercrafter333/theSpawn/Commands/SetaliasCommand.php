@@ -17,11 +17,7 @@ use supercrafter333\theSpawn\theSpawn;
 class SetaliasCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * SetaliasCommand constructor.
      * @param string $name

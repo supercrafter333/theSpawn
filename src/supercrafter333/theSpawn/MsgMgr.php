@@ -123,9 +123,14 @@ class MsgMgr
             foreach (array_keys($replace) as $i) {
                 $replaced = str_replace($i, $replace[$i], $replaced);
             }
-            return $replaced;
+            return str_replace("{line}", "\n", $replaced);
         } elseif (self::getDefaultMsgs()->exists($message)) {
-            return self::getDefaultMsgs()->get($message);
+            if ($replace === null) return self::getDefaultMsgs()->get($message);
+            $replaced = self::getDefaultMsgs()->get($message);
+            foreach (array_keys($replace) as $i) {
+                $replaced = str_replace($i, $replace[$i], $replaced);
+            }
+            return str_replace("{line}", "\n", $replaced);
         }
         return "ERROR";
     }

@@ -48,11 +48,19 @@ class Aliases extends AliasMap
                     }
                     if (Server::getInstance()->getWorldManager()->isWorldLoaded($lvl) == true) {
                         $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
+                        if (!$pl->isPositionSafe($pl->getSpawn($level))) {
+                            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+                            return;
+                        }
                         $s->teleport($pl->getSpawn($level));
                         return;
                     } else {
                         Server::getInstance()->getWorldManager()->loadWorld($lvl);
                         $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
+                        if (!$pl->isPositionSafe($pl->getSpawn($level))) {
+                            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+                            return;
+                        }
                         $s->teleport($pl->getSpawn($level));
                         $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getFolderName()], MsgMgr::getMsg("alias-teleport"))));
                         $s->getWorld()->addSound($s->getPosition(), new PopSound());

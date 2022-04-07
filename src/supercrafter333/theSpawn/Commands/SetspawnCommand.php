@@ -18,11 +18,7 @@ use supercrafter333\theSpawn\theSpawn;
 class SetspawnCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * SetspawnCommand constructor.
      * @param string $name
@@ -38,10 +34,11 @@ class SetspawnCommand extends theSpawnOwnedCommand
     }
 
     /**
-     * @param CommandSender|Player $s
+     * @param CommandSender $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
+     * @throws \JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {

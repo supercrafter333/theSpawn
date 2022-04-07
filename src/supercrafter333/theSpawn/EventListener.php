@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -11,6 +12,7 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\sound\PopSound;
+use function var_dump;
 
 /**
  * Class EventListener.php
@@ -47,12 +49,18 @@ class EventListener implements Listener
     /**
      * @param PlayerRespawnEvent $event
      */
-    public function onPlayerRespawn(PlayerRespawnEvent $event)
+    public function onPlayerRespawn(PlayerRespawnEvent $event): void
     {
         $pl = theSpawn::getInstance();
         $s = $event->getPlayer();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $world = $s->getWorld();
+
+        if ($pl->useHubTeleportOnDeath() && $pl->getHub() instanceof Position) {
+            $event->setRespawnPosition($pl->getHub());
+            return;
+        }
+
         if ($world === null) {
             if ($pl->getHub() instanceof Position) {
                 $event->setRespawnPosition($pl->getHub());
@@ -104,6 +112,14 @@ class EventListener implements Listener
                 $event->getPlayer()->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
             }
         }
+    }
+
+    public function onPlayerDeath(PlayerDeathEvent $ev): void
+    {
+        $pl = theSpawn::getInstance();
+        $player = $ev->getPlayer();
+
+        if ($pl->useBackCommand()) $pl->setLastDeathPosition($player, $player->getLocation());
     }
 
     /**

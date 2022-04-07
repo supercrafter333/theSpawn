@@ -19,11 +19,7 @@ use supercrafter333\theSpawn\theSpawn;
 class DelwarpCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * DelwarpCommand constructor.
      * @param string $name

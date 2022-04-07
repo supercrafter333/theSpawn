@@ -19,11 +19,7 @@ use supercrafter333\theSpawn\theSpawn;
 class SpawnCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * SpawnCommand constructor.
      * @param string $name
@@ -60,6 +56,10 @@ class SpawnCommand extends theSpawnOwnedCommand
         if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
             $pl->startSpawnDelay($s);
         } elseif ($spawn->exists($levelname)) {
+            if (!$pl->isPositionSafe($pl->getSpawn($level))) {
+                $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
+                return;
+            }
             $s->teleport($pl->getSpawn($level));
             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
             $s->getWorld()->addSound($s->getPosition(), new PopSound());

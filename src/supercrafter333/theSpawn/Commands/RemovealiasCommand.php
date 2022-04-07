@@ -17,11 +17,7 @@ use supercrafter333\theSpawn\theSpawn;
 class RemovealiasCommand extends theSpawnOwnedCommand
 {
 
-    /**
-     * @var theSpawn
-     */
-    private theSpawn $plugin;
-
+    
     /**
      * RemovealiasCommand constructor.
      * @param string $name
