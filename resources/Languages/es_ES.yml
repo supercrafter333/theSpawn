@@ -15,8 +15,12 @@ spawn-changed: "§aHas cambiado con éxito §7el spawn de este mundo! §7[§b{wo
 hub-set: "Has conseguido §7establecer §ael hub en el mundo §b{world}§a!"
 hub-changed: "§aHas conseguido §7cambiar §ael hub al mundo §b{world}§a!"
 
+#mensajes de /back
+no-deathposition-found: "§cNo se ha podido encontrar la última ubicación de tu muerte."
+teleported-to-deathposition: "§aHas sido teletransportado con éxito a la última posición de tu muerte. §7[§b{X}; {Y}; {Z}; {world}§7]"
+
 #mensajes de eliminación
-#usos: none
+#usos: ninguno
 spawn-removed: "§aHas eliminado con éxito el spawn de este mundo!"
 hub-removed: "§aHas eliminado con éxito el hub."
 
@@ -51,7 +55,7 @@ warp-not-exists: "§cEl warp llamado §7{warpname}§c no existe!"
 warp-already-set: "§cEl warp seleccionado §7[§b{warpname}§7]§c ya existe en este servidor! Por favor, borre el warp y vuelva a intentarlo!"
 #usos: {warplist}
 warplist: "§eLista de warps: §7{warplist}"
-#usos: none
+#usos: ninguno
 no-warps-set: "§cEste servidor aún no tiene warps!"
 
 #mensajes de solicitudes de teletransportación
@@ -76,36 +80,76 @@ tpa-ended: "El TpaInfo de {source} a {target} se ha terminado ahora."
 delay-tip: "§8[§eSeras teletransportado en §7{secs}§e!§8]"
 delay-stopped-by-move: "§cEl teletransporte se ha cancelado porque te has movido."
 
+#comprobar la posición
+position-not-safe: "§cLa posición del objetivo no es segura. El teletransporte fue cancelado."
+
 #formas
 #   warps
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Por favor selecciona un warp."
 form-warp-menu-warpButton: "§b{warp}§r{line}§7clic para teletransportarte"
-#   setwarp
+#   añadir warp
 form-setWarp-menu-title: "Establecer un warp"
 form-setWarp-menu-content: "Aquí puedes establecer un nuevo warp."
 form-setWarp-menu-inputNameDescription: "Nombre del nuevo warp"
 form-setWarp-menu-togglePermDescription: "¿Debe el nuevo warp tener un permiso? (opcional)"
 form-setWarp-menu-inputIconPathDescription: "Icono del nuevo warp (opcional)"
-#   delwarp
+#   eliminar warp
 form-rmWarp-menu-title: "Eliminar un warp"
 form-rmWarp-menu-content: "Aquí puedes eliminar un warp."
 form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7clic para eliminarlo"
-#   homes
+#   editar warp
+##### (elegir warp)
+form-chooseEditWarp-menu-title: "Editar un warp"
+form-chooseEditWarp-menu-content: "Por favor, elije un warp para editarlo."
+form-chooseEditWarp-menu-warpButton: "§b{warp}§r{line}§7clic para editar el warp"
+##### (elegir acción)
+form-editWarp-menu-title: "Editar un warp"
+form-editWarp-menu-content: "§bWarp: §7{warp}{line}§bPosición: §7X={X}; Y={Y}; Z={Z}; Mundo={world}{line}§bPermiso: §7{permission}{line}§bIcono: §7{icon}"
+form-editWarp-menu-button-editName: "Editar nombre"
+form-editWarp-menu-button-editPosition: "Establecer aquí la nueva posición/ubicación"
+form-editWarp-menu-button-rmPermission: "Eliminar el permiso"
+form-editWarp-menu-button-addPermission: "Añadir permiso"
+form-editWarp-menu-button-editIcon: "Editar icono"
+form-editWarp-menu-button-rmIcon: "Eliminar icono"
+form-editWarp-menu-button-addIcon: "Añadir icono"
+##### (editar nombre)
+form-editWarp-editName-title: "Editar un warp"
+form-editWarp-editName-content: "Aquí puedes editar el nombre del warp {warp}."
+form-editWarp-editName-inputNameDescription: "Nuevo nombre del warp:"
+##### (editar icono)
+form-editWarp-editIcon-title: "Editar un warp"
+form-editWarp-editIcon-content: "Aquí puedes añadir/editar un icono para el warp."
+form-editWarp-editIcon-inputNameDescription: "Nuevo icono del warp:"
+#   editar casa
+##### (elegir casa)
+form-chooseEditHome-menu-title: "Editar una casa"
+form-chooseEditHome-menu-content: "Por favor, elije una casa que te gustaría editar."
+form-chooseEditHome-menu-homeButton: "§b{home}§r{line}§7clic para editarla"
+##### (elegir acción)
+form-editHome-menu-title: "Editar una casa"
+form-editHome-menu-content: "§bCasa: §7{home}{line}§bPosición: §7X={X}; Y={Y}; Z={Z}; Mundo={world}"
+form-editHome-menu-editNameButton: "Editar nombre"
+form-editHome-menu-editPositionButton: "Establecer aquí la nueva posición/ubicación"
+##### (editar nombre)
+form-editHome-editName-title: "Editar una casa"
+form-editHome-editName-content: "Aquí puede editar el nombre de la casa {home}."
+form-editHome-editName-inputNameDescription: "Nuevo nombre de la casa:"
+#   casas
 form-home-menu-title: "Casas"
 form-home-menu-content: "Selecciona una casa."
 form-home-menu-homeButton: "§b{home}§r{line}§7clic para teletransportarte"
-#   sethome
+#   añadir casas
 form-setHome-menu-title: "Establecer una casa"
 form-setHome-menu-content: "Aquí puedes establecer una nueva casa."
 form-setHome-menu-inputDescription: "Nombre de la nueva casa"
-#   delhome
+#   eliminar casas
 form-rmHome-menu-title: "Eliminar una casa"
 form-rmHome-menu-content: "Aquí puede eliminar una casa."
 form-rmHome-menu-homeButton: "§b{home}§r{line}§7clic para eliminarla"
 
 #errores
-#usos: none
+#usos: ninguno
 no-spawn-set: "§4ERROR --> §cNingún spawn fue establecido en este mundo!"
 no-hub-set: "§4ERROR --> §cNingún hub fue establecido en este servidor!"
 alias-not-found: "§cEste alias no existe!"
@@ -128,7 +172,7 @@ no-spawn-set-for-world: "§cNo hay ningún spawn establecido para el mundo {worl
 
 
 
-#compatible con v1.7.1-dev (y versiones anteriores)
+#compatible con v1.8.0(y versiones anteriores)
 
 
 ############################
