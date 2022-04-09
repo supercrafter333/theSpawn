@@ -60,7 +60,7 @@ no-warps-set: "§cEste servidor aún no tiene warps!"
 
 #mensajes de solicitudes de teletransportación
 tpa-send: "§aHas enviado con éxito una solicitud de tpa a §7{target}§a!"
-new-tpa: "§7{source}§e te ha enviado una solicitud de tpa, para teletransporse a ti! Utiliza §8/tpaccept {source}§e para aceptar el tpa o §8/tpdecline {source} §8para denegarlo§e!"
+new-tpa: "§7{source}§e te ha enviado una solicitud de tpa, para teletransporse a ti! Utiliza §8/tpaccept {source}§e para aceptar el tpa o §8/tpdecline {source} §epara denegarlo!"
 new-tpa-here: "§7{source}§e te ha enviado una solicitud de tpa, para que te teletransportes a el! Utiliza §8/tpaccept {source}§e ara aceptar el tpa o §8/tpdecline {source} §8para denegarlo§e!"
 tpa-secs: "§eSu solicitud de tpa termina en §7{secs}§e segundos"
 pending-tpa-error: "§cTienes una solicitud de tpa pendiente. Por favor, espere hasta que el tpa haya sido contestado o terminado y inténtalo de nuevo luego."
