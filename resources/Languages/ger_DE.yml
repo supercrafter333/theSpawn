@@ -60,8 +60,8 @@ no-warps-set: "§cAuf diesem Server wurden noch keine Warps erstellt!"
 
 #tpa messages
 tpa-send: "§aDu hast erfolgreich eine TPA an §7{target}§a gesendet!"
-new-tpa: "§7{source}§e hat dir eine TPA gesendet, um sich zu dir zu Teleportieren! Führe §8/tpaccept {source}§e aus, um die TPA anzunehmen und §8/tpdecline {source}§e um die TPA abzulehnen!"
-new-tpa-here: "§7{source}§e hat dir eine TPA gesendet, um dich zu sich zu Teleportieren! Führe §8/tpaccept {source}§e aus, um die TPA anzunehmen und §8/tpdecline {source}§e um die TPA abzulehnen!"
+new-tpa: "§7{source}§e hat dir eine TPA gesendet, um sich zu dir zu Teleportieren! Führe §8/tpaccept {source}§e aus, um die TPA anzunehmen oder §8/tpdecline {source}§e um die TPA abzulehnen!"
+new-tpa-here: "§7{source}§e hat dir eine TPA gesendet, um dich zu sich zu Teleportieren! Führe §8/tpaccept {source}§e aus, um die TPA anzunehmen oder §8/tpdecline {source}§e um die TPA abzulehnen!"
 tpa-secs: "§eDeine TPA andet in §7{secs}§e Sekunden..."
 pending-tpa-error: "§cDu hast eine ausstehende TPA. Bitte warte, bis die TPA beantwortet wurde oder beendet wurde und versuche es dann erneut."
 no-pending-tpa: "§cDu hast keine ausstehende TPA!"
@@ -71,9 +71,9 @@ player-not-found: "§cDer vom dir ausgewählte Spieler namens §7{name}§c ist n
 tpa-cancelled-by-source: "§cDie TPA von {source} wurde abgebrochen, weil er Offline ist."
 tpa-cancelled-by-target: "§cDie TPA zu {target} wurde abgebrochen, weil er Offline ist."
 tpa-accepted-source: "§7{target}§a hat deine TPA akzeptiert!"
-tpa-accepted-target: "§aDu hast erfolgreich die TPA von §{source}§a angenommen!"
+tpa-accepted-target: "§aDu hast erfolgreich die TPA von §7{source}§a angenommen!"
 tpa-declined-source: "§7{target}§c hat deine TPA abgelehnt!"
-tpa-declined-target: "§aDu hast erfolgreich dei TPA von §{source}§a abgelehnt!"
+tpa-declined-target: "§aDu hast erfolgreich dei TPA von §7{source}§a abgelehnt!"
 tpa-ended: "Die TPA von {source} zu {target} ist nun beendet."
 
 #spawn delays
@@ -169,7 +169,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v1.8.1-dev(and lower)
+#compatible with v1.8.1(and lower)
 
 
 ############################

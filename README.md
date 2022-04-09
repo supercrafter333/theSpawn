@@ -1,9 +1,5 @@
-> **Development Version!!** 
-> 
-> This version is under development and can contain bugs!
-
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v1.8.1-dev  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v1.8.1  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 ✨ **The best teleportation plugin and the best MSpawns alternative!** ✨
 
 <br />
