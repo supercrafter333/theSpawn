@@ -10,6 +10,7 @@ use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
+use function implode;
 
 /**
  *
@@ -51,20 +52,24 @@ class TpacceptCommand extends theSpawnOwnedCommand
             $s->sendMessage($this->usageMessage);
             return;
         }
-        if (!$pl->hasTpaOf($s->getName(), $args[0])) {
-            $s->sendMessage(str_replace("{target}", (string)$args[0], MsgMgr::getMsg("no-pending-tpa")));
+
+        $source = $pl->getServer()->getPlayerByPrefix(implode(" ", $args)) instanceof Player
+        ? $pl->getServer()->getPlayerByPrefix(implode(" ", $args))->getName()
+        : implode(" ", $args);
+
+        if (!$pl->hasTpaOf($s->getName(), $source)) {
+            $s->sendMessage(str_replace("{target}", $source, MsgMgr::getMsg("no-pending-tpa")));
             return;
         }
-        $tpaInfo = new TpaInfo($args[0]);
-        if (!$tpaInfo->getTargetAsPlayer() instanceof Player) {
-            $s->sendMessage(str_replace("{target}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
+        $tpaInfo = new TpaInfo($source);
+        if (!$tpaInfo->getSourceAsPlayer() instanceof Player) {
+            $s->sendMessage(str_replace("{target}", $source, theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;
         }
-        $target = $tpaInfo->getTargetAsPlayer();
-        $name = $target->getName();
+        $sourcePlayer = $tpaInfo->getSourceAsPlayer();
         $tpaInfo->complete();
-        $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
-        $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
+        $sourcePlayer->sendMessage(str_replace("{target}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
+        $s->sendMessage(str_replace("{source}", $source, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
     }
 
     /**
