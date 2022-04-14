@@ -18,7 +18,7 @@ abstract class AliasMap extends theSpawnOwnedCommand
      * @param $cmdName
      * @param $cmdDescription
      */
-    public function __construct(private theSpawn $plugin, $cmdName, $cmdDescription)
+    public function __construct(protected theSpawn $plugin, $cmdName, $cmdDescription)
     {
         parent::__construct($cmdName, $cmdDescription);
     }
