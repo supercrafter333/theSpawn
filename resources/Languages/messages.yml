@@ -169,7 +169,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "1.8.2-dev"
+version: "1.8.2"
 
 
 ############################
