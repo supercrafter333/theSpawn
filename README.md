@@ -8,6 +8,7 @@
 
 This plugin won't be out of date, it will get better developed from time to time. If you need a much better MSpawns alternative, theSpawn is it :)
 
+
 ### Features
 - **All MSpawns features**:
   - set/change/remove spawns
@@ -35,6 +36,7 @@ This plugin won't be out of date, it will get better developed from time to time
 - Multiple languages [default: English (BE)]
 - Forms
 
+
 ### TODOs
 - [X] Homes
 - [X] Command files
@@ -47,6 +49,7 @@ This plugin won't be out of date, it will get better developed from time to time
 - [X] `/back`-command ([#43](https://github.com/supercrafter333/theSpawn/issues/43))
 - [X] Hub teleport on death ([#39](https://github.com/supercrafter333/theSpawn/issues/39))
 
+
 ### Report Bug
 You've found a Bug?
 - Go to [Issues](https://github.com/supercrafter333/theSpawn/issues)
@@ -54,6 +57,7 @@ You've found a Bug?
 - Write your bug with all Informations that you have down
 - Send Issue
 - Now wait, I'll awnser you soon
+
 
 ### Commands
 | **Command**                        | **Description**                                   |
@@ -80,8 +84,10 @@ You've found a Bug?
 | `/edithome [home]`                 | Edit a home                                       |
 | `/back`                            | Teleports you to the position where you have died |
 
+
 ### License:
 This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
+
 
 ### Credits
 **Information:** This plugin is inspired by [MSpawns](https://github.com/EvolSoft/MSpawns).
