@@ -11,7 +11,6 @@ use pocketmine\player\Player;
 use pocketmine\world\World;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
-use function in_array;
 
 /**
  * Class WarpInfo

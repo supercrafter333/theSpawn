@@ -3,8 +3,13 @@ build-by-default: true
 branches:
 - master
 - development
+- PM5-development
 projects:
   theSpawn:
+    #################
+    lint:
+      phpstan: false
+    #################
     icon: "icon.png"
     path: ""
     php: 8.0
