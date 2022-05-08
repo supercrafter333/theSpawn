@@ -58,9 +58,9 @@ class DelhomeCommand extends theSpawnOwnedCommand
             return;
         }
         if ($pl->rmHome($s, $args[0]) == false) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
+            $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-not-exists")));
         } else {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
+            $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-deleted")));
             $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         }
         return;
@@ -73,10 +73,10 @@ class DelhomeCommand extends theSpawnOwnedCommand
 
         if (!self::testPermissionX($s, "theSpawn.delhome.cmd", "delhome")) return;
 
-        if ($pl->rmHome($s, $args[0]) == false) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
+        if ($pl->rmHome($s, implode(" ", $args)) == false) {
+            $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-not-exists")));
         } else {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
+            $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-deleted")));
             $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         }
         return;

@@ -12,6 +12,7 @@ use pocketmine\world\sound\XpCollectSound;
 use supercrafter333\theSpawn\Forms\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
+use function implode;
 
 /**
  * Class HomeCommand
@@ -72,13 +73,18 @@ class HomeCommand extends theSpawnOwnedCommand
         $pl = theSpawn::getInstance();
 
         if (!self::testPermissionX($s, "theSpawn.home.cmd", "home")) return;
-        
-        $worldName = $pl->getHomeInfo($s, $args[0])->getLevelName();
+
+        if (($homeInfo = $pl->getHomeInfo($s, implode(" ", $args))) === null) {
+            $s->sendMessage($prefix . MsgMgr::getMsg("home-not-exists", ["{home}" => implode(" ", $args)]));
+            return;
+        }
+
+        $worldName = $homeInfo->getLevelName();
         if ($pl->getServer()->getWorldManager()->isWorldGenerated($worldName) == false) {
             $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
             return;
         }
-        if ($pl->getHomeInfo($s, $args[0])->existsHome() == false) {
+        if ($homeInfo->existsHome() == false) {
             $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-not-exists")));
             return;
         }

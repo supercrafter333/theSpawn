@@ -115,7 +115,7 @@ class theSpawn extends PluginBase
     /**
      * @var string
      */
-    public string $version = "1.8.2";
+    public string $version = "1.8.3";
 
 
     public const DEVELOPMENT_VERSION = false;
