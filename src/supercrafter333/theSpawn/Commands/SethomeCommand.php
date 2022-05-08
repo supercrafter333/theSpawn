@@ -13,6 +13,7 @@ use supercrafter333\theSpawn\Forms\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use function count;
+use function implode;
 use function print_r;
 
 /**
@@ -83,10 +84,10 @@ class SethomeCommand extends theSpawnOwnedCommand
             $s->getWorld()->addSound($s->getPosition(), new AnvilFallSound());
             return;
         }
-        if ($pl->setHome($s, $args[0], $x, $y, $z, $level, $yaw, $pitch) == false) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
+        if ($pl->setHome($s, implode(" ", $args), $x, $y, $z, $level, $yaw, $pitch) == false) {
+            $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-already-exists")));
         } else {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));
+            $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-set")));
             $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
         }
         return;
