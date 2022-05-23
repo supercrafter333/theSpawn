@@ -2,7 +2,7 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
+use JsonException;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
@@ -38,16 +38,14 @@ class DelspawnCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
-        $config = $pl->getConfig();
         #########################
 
         if (!$this->canUse($s)) return;
@@ -61,7 +59,6 @@ class DelspawnCommand extends theSpawnOwnedCommand
         } else {
             $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
         }
-        return;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -26,7 +25,7 @@ class TpacceptCommand extends theSpawnOwnedCommand
     /**
      * @param string $name
      * @param string $description
-     * @param string|null $usageMessage
+     * @param string $usageMessage
      * @param array $aliases
      */
     public function __construct(string $name, string $description = "Accept a tpa.", string $usageMessage = "§4Usage: §r/tpaccept <player>", array $aliases = [])

@@ -6,7 +6,6 @@ use DateTime;
 use jojoe77777\FormAPI\Form;
 use JsonException;
 use pocketmine\block\Air;
-use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\Crops;
 use pocketmine\block\DoubleTallGrass;
 use pocketmine\block\Flower;
@@ -72,29 +71,14 @@ use function var_dump;
 class theSpawn extends PluginBase
 {
 
-    /**
-     * @var theSpawn
-     */
     public static theSpawn $instance;
 
-    /**
-     * @var string
-     */
     public static string $prefix;
 
-    /**
-     * @var Config
-     */
     public Config $msgCfg;
 
-    /**
-     * @var Config
-     */
     public Config $aliasCfg;
 
-    /**
-     * @var array
-     */
     public array $TPAs = [];
 
     /**
@@ -103,18 +87,12 @@ class theSpawn extends PluginBase
     public array $spawnDelays = [];
 
     /**
-     * @var array
+     * @var Position[]|Location[]
      */
     public array $lastDeathPositions = [];
 
-    /**
-     * @var Config
-     */
     public Config $warpCfg;
 
-    /**
-     * @var string
-     */
     public string $version = "1.8.4-dev";
 
 
@@ -244,6 +222,8 @@ class theSpawn extends PluginBase
      *
      * @param $version
      * @param bool $update
+     * @throws JsonException
+     * @throws JsonException
      */
     private function versionCheck($version, bool $update = true)
     {
@@ -456,7 +436,6 @@ class theSpawn extends PluginBase
      */
     public function setHub(float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null, int $count = null)
     {
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         $randHub = new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
@@ -538,7 +517,6 @@ class theSpawn extends PluginBase
      */
     public function getHub(int $count = null): Position|Location|null|false
     {
-        $prefix = "§f[§7the§eSpawn§f] §8»§r ";
         $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
         if ($count !== null && $this->getUseRandomHubs()) {
             return $this->getRandomHub($count) === null ? false : $this->getRandomHub($count);
@@ -773,6 +751,8 @@ class theSpawn extends PluginBase
     /**
      * @param string $alias
      * @return bool
+     * @throws JsonException
+     * @throws JsonException
      */
     public function rmAlias(string $alias): bool
     {
@@ -1052,8 +1032,7 @@ class theSpawn extends PluginBase
      */
     public function getWarpCfg(): Config
     {
-        $cfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
-        return $cfg;
+        return new Config($this->getDataFolder() . "warps.yml", Config::YAML);
     }
 
     /**

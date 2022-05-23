@@ -2,7 +2,7 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
+use JsonException;
 use pocketmine\world\sound\AnvilFallSound;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
@@ -14,7 +14,6 @@ use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use function count;
 use function implode;
-use function print_r;
 
 /**
  * Class SethomeCommand
@@ -43,11 +42,11 @@ class SethomeCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
-        $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
 
         if (!$this->canUse($s)) return;
@@ -65,6 +64,9 @@ class SethomeCommand extends theSpawnOwnedCommand
         self::simpleExecute($s, $args);
     }
 
+    /**
+     * @throws JsonException
+     */
     public static function simpleExecute(Player $s, array $args): void
     {
         $prefix = theSpawn::$prefix;
@@ -90,7 +92,6 @@ class SethomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-set")));
             $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
         }
-        return;
     }
 
     /**

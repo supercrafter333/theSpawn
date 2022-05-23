@@ -16,23 +16,20 @@ class Aliases extends AliasMap
 
     /**
      * Aliases constructor.
-     * @param theSpawn $main
-     * @param $cmdName
-     * @param $cmdDescription
+     * @param theSpawn $pl
+     * @param string $cmdName
+     * @param string $cmdDescription
      */
-    public function __construct(theSpawn $main, $cmdName, $cmdDescription)
+    public function __construct(public theSpawn $pl, public string $cmdName, public string $cmdDescription)
     {
-        parent::__construct($main, $cmdName, $cmdDescription);
-        $this->cmdName = $cmdName;
-        $this->cmdDescription = $cmdDescription;
-        $this->pl = $main;
+        parent::__construct($pl, $cmdName, $cmdDescription);
     }
 
     /**
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -46,39 +43,25 @@ class Aliases extends AliasMap
                         $s->sendMessage($prefix . "§cDie angegeben Welt existiert nicht!");
                         return;
                     }
-                    if (Server::getInstance()->getWorldManager()->isWorldLoaded($lvl) == true) {
-                        $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
-                        if (!$pl->isPositionSafe($pl->getSpawn($level))) {
-                            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
-                            return;
-                        }
-                        $s->teleport($pl->getSpawn($level));
-                        $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getFolderName()], MsgMgr::getMsg("alias-teleport"))));
-                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
-                        return;
-                    } else {
+                    if (!Server::getInstance()->getWorldManager()->isWorldLoaded($lvl)) {
                         Server::getInstance()->getWorldManager()->loadWorld($lvl);
-                        $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
-                        if (!$pl->isPositionSafe($pl->getSpawn($level))) {
-                            $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
-                            return;
-                        }
-                        $s->teleport($pl->getSpawn($level));
-                        $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getFolderName()], MsgMgr::getMsg("alias-teleport"))));
-                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
+                    }
+                    $level = Server::getInstance()->getWorldManager()->getWorldByName($lvl);
+                    if (!$pl->isPositionSafe($pl->getSpawn($level))) {
+                        $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
                         return;
                     }
+                    $s->teleport($pl->getSpawn($level));
+                    $s->sendMessage(theSpawn::$prefix . str_replace(["{alias}"], [$this->cmdName], str_replace(["{world}"], [$level->getFolderName()], MsgMgr::getMsg("alias-teleport"))));
+                    $s->getWorld()->addSound($s->getPosition(), new PopSound());
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("something-went-wrong"));
                 }
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
-                return;
             }
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
-            return;
         }
-        return;
     }
 }

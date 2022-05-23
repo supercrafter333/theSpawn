@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\PopSound;
@@ -40,7 +39,7 @@ class HomeCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -98,7 +97,6 @@ class HomeCommand extends theSpawnOwnedCommand
         $s->teleport($homePos);
         $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-teleport")));
         $s->broadcastSound(new PopSound(), [$s]);
-        return;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\PopSound;
@@ -37,15 +36,13 @@ class HubCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
         if ($this->isPlayer($s)) {
@@ -66,7 +63,7 @@ class HubCommand extends theSpawnOwnedCommand
                     return;
                 }
                 if ($hub->exists("hub")) {
-                    $hublevel = $pl->getHub()->getWorld();
+                    $hublevel = $pl->getHub()?->getWorld();
                     if ($hublevel !== null) {
                         $hubPos2 = $pl->getHub();
                         if (!$pl->isPositionSafe($hubPos2)) {
@@ -92,7 +89,6 @@ class HubCommand extends theSpawnOwnedCommand
         } else {
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
         }
-        return;
     }
 
     /**

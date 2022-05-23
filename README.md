@@ -50,6 +50,9 @@ This plugin won't be out of date, it will get better developed from time to time
 - [X] Home editing ([#38](https://github.com/supercrafter333/theSpawn/issues/38))
 - [X] `/back`-command ([#43](https://github.com/supercrafter333/theSpawn/issues/43))
 - [X] Hub teleport on death ([#39](https://github.com/supercrafter333/theSpawn/issues/39))
+- [ ] Huge code update (PM5)
+- [ ] New small functions
+- [ ] Setting-Command for theSpawn's configuration
 
 ### Report Bug
 You've found a Bug?

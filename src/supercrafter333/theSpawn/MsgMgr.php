@@ -30,10 +30,7 @@ class MsgMgr
         self::LANG_CUSTOM => self::LANG_CUSTOM,
     ];
 
-    /**
-     * @var MsgMgr
-     */
-    private static $Me;
+    private static self $Me;
 
     /**
      * MsgMgr constructor.

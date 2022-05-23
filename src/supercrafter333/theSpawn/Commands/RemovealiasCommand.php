@@ -36,7 +36,7 @@ class RemovealiasCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -56,7 +56,6 @@ class RemovealiasCommand extends theSpawnOwnedCommand
         $pl->rmAlias($args[0]);
         $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], MsgMgr::getMsg("alias-removed")));
         $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
-        return;
     }
 
     /**

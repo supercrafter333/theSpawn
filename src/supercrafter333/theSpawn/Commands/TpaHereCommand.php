@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
@@ -28,7 +27,7 @@ class TpaHereCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param string[] $args
-     * @return mixed
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
