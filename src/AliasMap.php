@@ -2,8 +2,8 @@
 
 namespace supercrafter333\theSpawn;
 
-use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 
 /**
  * Class AliasMap

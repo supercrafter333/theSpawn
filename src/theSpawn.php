@@ -16,43 +16,43 @@ use pocketmine\block\TallGrass;
 use pocketmine\block\Torch;
 use pocketmine\entity\Location;
 use pocketmine\math\Vector3;
+use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\permission\DefaultPermissions;
 use pocketmine\permission\Permission;
 use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
-use pocketmine\scheduler\Task;
-use pocketmine\world\World;
-use pocketmine\world\Position;
-use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
-use supercrafter333\theSpawn\Commands\BackCommand;
-use supercrafter333\theSpawn\Commands\DelhomeCommand;
-use supercrafter333\theSpawn\Commands\DelhubCommand;
-use supercrafter333\theSpawn\Commands\DelspawnCommand;
-use supercrafter333\theSpawn\Commands\DelwarpCommand;
-use supercrafter333\theSpawn\Commands\EdithomeCommand;
-use supercrafter333\theSpawn\Commands\EditwarpCommand;
-use supercrafter333\theSpawn\Commands\HomeCommand;
-use supercrafter333\theSpawn\Commands\HubCommand;
-use supercrafter333\theSpawn\Commands\RemovealiasCommand;
-use supercrafter333\theSpawn\Commands\SetaliasCommand;
-use supercrafter333\theSpawn\Commands\SethomeCommand;
-use supercrafter333\theSpawn\Commands\SethubCommand;
-use supercrafter333\theSpawn\Commands\SetspawnCommand;
-use supercrafter333\theSpawn\Commands\SetwarpCommand;
-use supercrafter333\theSpawn\Commands\SpawnCommand;
-use supercrafter333\theSpawn\Commands\TpacceptCommand;
-use supercrafter333\theSpawn\Commands\TpaCommand;
-use supercrafter333\theSpawn\Commands\TpaHereCommand;
-use supercrafter333\theSpawn\Commands\TpdeclineCommand;
-use supercrafter333\theSpawn\Commands\WarpCommand;
-use supercrafter333\theSpawn\Others\HomeInfo;
-use supercrafter333\theSpawn\Others\TpaInfo;
-use supercrafter333\theSpawn\Others\WarpInfo;
+use pocketmine\world\Position;
+use pocketmine\world\World;
+use supercrafter333\theSpawn\commands\BackCommand;
+use supercrafter333\theSpawn\commands\DelhomeCommand;
+use supercrafter333\theSpawn\commands\DelhubCommand;
+use supercrafter333\theSpawn\commands\DelspawnCommand;
+use supercrafter333\theSpawn\commands\DelwarpCommand;
+use supercrafter333\theSpawn\commands\EdithomeCommand;
+use supercrafter333\theSpawn\commands\EditwarpCommand;
+use supercrafter333\theSpawn\commands\HomeCommand;
+use supercrafter333\theSpawn\commands\HubCommand;
+use supercrafter333\theSpawn\commands\RemovealiasCommand;
+use supercrafter333\theSpawn\commands\SetaliasCommand;
+use supercrafter333\theSpawn\commands\SethomeCommand;
+use supercrafter333\theSpawn\commands\SethubCommand;
+use supercrafter333\theSpawn\commands\SetspawnCommand;
+use supercrafter333\theSpawn\commands\SetwarpCommand;
+use supercrafter333\theSpawn\commands\SpawnCommand;
+use supercrafter333\theSpawn\commands\TpacceptCommand;
+use supercrafter333\theSpawn\commands\TpaCommand;
+use supercrafter333\theSpawn\commands\TpaHereCommand;
+use supercrafter333\theSpawn\commands\TpdeclineCommand;
+use supercrafter333\theSpawn\commands\WarpCommand;
+use supercrafter333\theSpawn\home\HomeInfo;
 use supercrafter333\theSpawn\Tasks\SpawnDelayTask;
+use supercrafter333\theSpawn\tpa\TpaInfo;
+use supercrafter333\theSpawn\warp\WarpInfo;
 use function array_filter;
 use function array_map;
 use function array_merge;
@@ -62,7 +62,6 @@ use function is_numeric;
 use function krsort;
 use function mb_substr;
 use function str_starts_with;
-use function var_dump;
 
 /**
  * Class theSpawn
@@ -114,7 +113,7 @@ class theSpawn extends PluginBase
     /**
      * @var string
      */
-    public string $version = "1.8.4-PM5-dev";
+    public string $version = "2.0.0-PM5-dev";
 
 
     public const DEVELOPMENT_VERSION = true;

@@ -12,7 +12,6 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\sound\PopSound;
-use function var_dump;
 
 /**
  * Class EventListener.php
