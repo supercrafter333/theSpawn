@@ -4,7 +4,7 @@ namespace supercrafter333\theSpawn;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
@@ -97,9 +97,9 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerLoginEvent $event
+     * @param PlayerJoinEvent $event
      */
-    public function onPlayerLogin(PlayerLoginEvent $event)
+    public function onPlayerLogin(PlayerJoinEvent $event)
     {
         $pl = theSpawn::getInstance();
 

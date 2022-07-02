@@ -200,6 +200,9 @@ class theSpawn extends PluginBase
                 ]);
         }
         if ($this->useBackCommand()) $cmdMap->register("theSpawn", new BackCommand("back"));
+
+        //TODO: remove with v2.1.0
+        WarpManager::migrateOldWarps();
     }
 
     /**
@@ -1064,10 +1067,10 @@ class theSpawn extends PluginBase
         $warps = null;
         if (file_exists($this->getDataFolder() . "warps.yml")) {
             $warp = WarpManager::getWarpConfig();
-            $all = $warp->getAll();
+            $all = $warp->getAll(true);
             $getRight = $all;
-            foreach ($getRight as $warpx => $warpz) {
-                $right = [$warpz["warpName"] . ", "];
+            foreach ($getRight as $warpName) {
+                $right = [$warpName . ", "];
                 $warps .= implode(", ", $right);
             }
             return $warps;
