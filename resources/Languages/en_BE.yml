@@ -87,7 +87,7 @@ position-not-safe: "§cThe target position isn't safe. Teleport was cancelled."
 #   warps
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Please select a warp."
-form-warp-menu-warpButton: "§b{warp}§r{line}§7click to teleport"
+form-warp-menu-warpButton: "§b{warp} §7(§a{player_count}§7)§r{line}§7click to teleport"
 #   setwarp
 form-setWarp-menu-title: "Set a warp"
 form-setWarp-menu-content: "Here you can set a new warp."

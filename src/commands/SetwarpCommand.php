@@ -9,6 +9,8 @@ use pocketmine\world\sound\DoorBumpSound;
 use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
+use supercrafter333\theSpawn\warp\Warp;
+use supercrafter333\theSpawn\warp\WarpManager;
 
 /**
  * Class SetwarpCommand
@@ -64,12 +66,12 @@ class SetwarpCommand extends theSpawnOwnedCommand
 
         if (!self::testPermissionX($s, "theSpawn.setwarp.cmd", "setwarp")) return;
 
-        if ($pl->existsWarp($args[0]) == false) {
+        if (!WarpManager::existsWarp($args[0])) {
             $perm = false;
             $icon = null;
             if (isset($args[1]) && $args[1] !== 'null' && $args[1] !== 'false' && $args[1] !== "") $perm = true;
             if (isset($args[2]) && $args[2] !== 'null' && $args[2] !== "") $icon = $args[2];
-            $pl->addWarp($s->getPosition()->getX(), $s->getPosition()->getY(), $s->getPosition()->getZ(), $s->getPosition()->getWorld(), $args[0], $s->getLocation()->getYaw(), $s->getLocation()->getPitch(), $perm, $icon);
+            WarpManager::createWarp(new Warp($s->getLocation(), $args[0], $perm, $icon));
             $posMsg = (string)$s->getPosition()->getX() . $s->getPosition()->getY() . $s->getPosition()->getZ();
             $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getWorld()->getFolderName()], MsgMgr::getMsg("warp-set")))));
         } else {

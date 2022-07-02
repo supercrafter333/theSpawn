@@ -52,7 +52,7 @@ use supercrafter333\theSpawn\commands\WarpCommand;
 use supercrafter333\theSpawn\home\HomeInfo;
 use supercrafter333\theSpawn\Tasks\SpawnDelayTask;
 use supercrafter333\theSpawn\tpa\TpaInfo;
-use supercrafter333\theSpawn\warp\WarpInfo;
+use supercrafter333\theSpawn\warp\WarpManager;
 use function array_filter;
 use function array_map;
 use function array_merge;
@@ -1046,104 +1046,14 @@ class theSpawn extends PluginBase
     }
 
     /**
-     * @return Config
-     */
-    public function getWarpCfg(): Config
-    {
-        $cfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
-        return $cfg;
-    }
-
-    /**
-     * @param string $warpName
-     * @return bool
-     */
-    public function existsWarp(string $warpName): bool
-    {
-        return $this->getWarpCfg()->exists($warpName);
-    }
-
-    /**
-     * @param float $x
-     * @param float $y
-     * @param float $z
-     * @param World $level
-     * @param string $warpName
-     * @param float|null $yaw
-     * @param float|null $pitch
-     * @param bool $permission
-     * @param string|null $iconPath
-     * @return bool
-     * @throws JsonException
-     */
-    public function addWarp(float $x, float $y, float $z, World $level, string $warpName, float $yaw = null, float $pitch = null, bool $permission = false, string|null $iconPath = null): bool
-    {
-        //if ($this->existsWarp($warpName) == true) {
-        $warp = $this->getWarpCfg();
-        $warpArray = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $level->getFolderName(), "warpName" => $warpName];
-
-        if ($permission) $warpArray["perm"] = true;
-        if ($iconPath !== null && $iconPath !== "") $warpArray["iconPath"] = $iconPath;
-        if ($yaw !== null && $pitch !== null) {
-            $warpArray["yaw"] = $yaw;
-            $warpArray["pitch"] = $pitch;
-        }
-
-        $warp->set($warpName, $warpArray);
-        $warp->save();
-        return true;
-    }
-
-    /**
-     * @param string $warpName
-     * @throws JsonException
-     */
-    public function removeWarp(string $warpName)
-    {
-        $warp = $this->getWarpCfg();
-        if ($this->existsWarp($warpName) == true) {
-            $warp->remove($warpName);
-            $warp->save();
-        }
-    }
-
-    /**
-     * @param string $warpName
-     * @return Position|Location|bool
-     */
-    public function getWarpPosition(string $warpName): Position|Location|bool
-    {
-        $warpCfg = $this->getWarpCfg();
-        if ($this->existsWarp($warpName) == false) {
-            return false;
-        }
-        $warp = $warpCfg->get($warpName, []);
-        $worldName = $warp["level"];
-        if (!$this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
-            return false;
-        }
-        return $this->convertArrayToPosition($warp);
-    }
-
-    /**
      * @return bool
      */
     public function useWarps(): bool
     {
-        if ($this->getConfig()->get("use-warps") == "true" || $this->getConfig()->get("use-warps") == "on") {
+        if ($this->getConfig()->get("use-warps") == "true" || $this->getConfig()->get("use-warps") == "on")
             return true;
-        } else {
-            return false;
-        }
-    }
 
-    /**
-     * @param string $warpName
-     * @return WarpInfo|null
-     */
-    public function getWarpInfo(string $warpName): ?WarpInfo
-    {
-        return WarpInfo::getWarpInfo($warpName);
+        return false;
     }
 
     /**
@@ -1153,7 +1063,7 @@ class theSpawn extends PluginBase
     {
         $warps = null;
         if (file_exists($this->getDataFolder() . "warps.yml")) {
-            $warp = $this->getWarpCfg();
+            $warp = WarpManager::getWarpConfig();
             $all = $warp->getAll();
             $getRight = $all;
             foreach ($getRight as $warpx => $warpz) {
@@ -1240,7 +1150,7 @@ class theSpawn extends PluginBase
      */
     private function convertOldWarpPermissions(): void
     {
-        $cfg = $this->getWarpCfg();
+        $cfg = WarpManager::getWarpConfig();
         foreach ($cfg->getAll() as $warp => $warpArray) {
             if (isset($warpArray["perm"]) && $warpArray["perm"] !== true && $warpArray["perm"] !== false) {
                 $cfg->setNested($warpArray["warpName"] . ".perm", "true");
@@ -1313,7 +1223,7 @@ class theSpawn extends PluginBase
             if($blockToCheck instanceof Liquid && !$blockToCheck instanceof Air && !$blockToCheck->isSolid()) return false;
         }
 
-        if($block1->getId() == 0 && $block2->getId() == 0) return true;
+        if($block1 instanceof Air && $block2 instanceof Air) return true;
 
         if (($block1 instanceof Torch || $block1 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling)
         && ($block2 instanceof Torch || $block2 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling))

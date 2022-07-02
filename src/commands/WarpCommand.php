@@ -9,6 +9,7 @@ use pocketmine\world\sound\XpCollectSound;
 use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
+use supercrafter333\theSpawn\warp\WarpManager;
 
 /**
  * Class WarpCommand
@@ -69,30 +70,27 @@ class WarpCommand extends theSpawnOwnedCommand
 
         if (!self::testPermissionX($s, "theSpawn.warp.cmd", "warp")) return;
 
-        if (!$pl->existsWarp($args[0])) {
+        if (!WarpManager::existsWarp($args[0])) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }
 
-        if (!theSpawn::getInstance()->getWarpInfo($args[0])->hasPermission($s)) {
+        $warp = WarpManager::getWarp($args[0]);
+
+        if (!$warp->hasPermission($s)) {
             $s->sendMessage($prefix . MsgMgr::getNoPermMsg());
             return;
         }
 
-        $warpPos = $pl->getWarpPosition($args[0]);
-        if ($warpPos == false) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
-            return;
-        }
-
-        $warpInfo = $pl->getWarpInfo($args[0]);
-        $posMsg = $warpInfo->getX() . $warpInfo->getY() . $warpInfo->getZ();
-        $worldName = $warpInfo->getLevelName();
-        if (!$pl->isPositionSafe($warpPos)) {
+        $loc = $warp->getLocation();
+        $posMsg = $loc->getX() . '|' . $loc->getY() . '|' . $loc->getZ();
+        $worldName = $loc->getWorld()->getFolderName();
+        if (!$pl->isPositionSafe($loc)) {
             $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
             return;
         }
-        $s->teleport($warpPos);
+
+        $s->teleport($loc);
         $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
     }
 

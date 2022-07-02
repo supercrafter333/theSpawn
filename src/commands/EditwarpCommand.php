@@ -7,6 +7,7 @@ use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
+use supercrafter333\theSpawn\warp\WarpManager;
 use function implode;
 
 class EditwarpCommand extends theSpawnOwnedCommand
@@ -36,7 +37,7 @@ class EditwarpCommand extends theSpawnOwnedCommand
             return;
         }
 
-        if (($warp = $pl->getWarpInfo(implode(" ", $args))) === null) {
+        if (($warp = WarpManager::getWarp(implode(" ", $args))) === null) {
             $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
             return;
         }

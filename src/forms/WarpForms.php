@@ -13,7 +13,8 @@ use supercrafter333\theSpawn\commands\SetwarpCommand;
 use supercrafter333\theSpawn\commands\WarpCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
-use supercrafter333\theSpawn\warp\WarpInfo;
+use supercrafter333\theSpawn\warp\Warp;
+use supercrafter333\theSpawn\warp\WarpManager;
 use function mb_strlen;
 use function str_contains;
 
@@ -27,7 +28,7 @@ class WarpForms
      * @param Player $player
      * @return SimpleForm
      */
-    public function open(Player $player): ?SimpleForm
+    public function open(Player $player): SimpleForm
     {
         $form = new SimpleForm(function (Player $player, $data = null) {
             $result = $data;
@@ -37,13 +38,13 @@ class WarpForms
         });
         $form->setTitle(MsgMgr::getMsg("form-warp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-warp-menu-content"));
-        foreach (theSpawn::getInstance()->getWarpCfg()->getAll(true) as $warp) {
-            $warpInfo = theSpawn::getInstance()->getWarpInfo($warp);
-            $warpName = $warpInfo->getName();
-            $warpIcon = $warpInfo->getIconPath() === null ? "" : $warpInfo->getIconPath();
+        foreach (WarpManager::getWarpConfig()->getAll(true) as $warp) {
+            $warp = WarpManager::getWarp($warp);
+            $warpName = $warp->getName();
+            $warpIcon = $warp->getIconPath() === null ? "" : $warp->getIconPath();
             $iconType = $warpIcon === "" ? -1 : 0;
             if (str_contains($warpIcon, "http")) $iconType = 1;
-            $form->addButton(str_replace(["{warp}", "{line}"], [$warpName, "\n"], MsgMgr::getMsg("form-warp-menu-warpButton")), $iconType, $warpIcon, $warpName);
+            $form->addButton(str_replace(["{warp}", "{line}", "{player_count}"], [$warpName, "\n", count($warp->getLocation()->getWorld()->getPlayers())], MsgMgr::getMsg("form-warp-menu-warpButton")), $iconType, $warpIcon, $warpName);
         }
         $form->sendToPlayer($player);
         return $form;
@@ -64,8 +65,8 @@ class WarpForms
         });
         $form->setTitle(MsgMgr::getMsg("form-rmWarp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-rmWarp-menu-content"));
-        foreach (theSpawn::getInstance()->getWarpCfg()->getAll(true) as $warp) {
-            $warpInfo = theSpawn::getInstance()->getWarpInfo($warp);
+        foreach (WarpManager::getWarpConfig()->getAll(true) as $warp) {
+            $warpInfo = WarpManager::getWarp($warp);
             $warpName = $warpInfo->getName();
             $warpIcon = $warpInfo->getIconPath() === null ? "" : $warpInfo->getIconPath();
             $iconType = $warpIcon === "" ? -1 : 0;
@@ -123,14 +124,14 @@ class WarpForms
             $result = $data;
             if ($result === null) return;
 
-            if (($warp = theSpawn::getInstance()->getWarpInfo($result)) === null) return;
+            if (($warp = WarpManager::getWarp($result)) === null) return;
 
             $this->openEditWarp($player, $warp);
         });
         $form->setTitle(MsgMgr::getMsg("form-chooseEditWarp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-chooseEditWarp-menu-content"));
-        foreach (theSpawn::getInstance()->getWarpCfg()->getAll(true) as $warp) {
-            $warpInfo = theSpawn::getInstance()->getWarpInfo($warp);
+        foreach (WarpManager::getWarpConfig()->getAll(true) as $warp) {
+            $warpInfo = WarpManager::getWarp($warp);
             $warpName = $warpInfo->getName();
             $warpIcon = $warpInfo->getIconPath() === null ? "" : $warpInfo->getIconPath();
             $iconType = $warpIcon === "" ? -1 : 0;
@@ -143,10 +144,10 @@ class WarpForms
 
     /**
      * @param Player $player
-     * @param WarpInfo $warp
+     * @param Warp $warp
      * @return SimpleForm
      */
-    public function openEditWarp(Player $player, WarpInfo $warp): SimpleForm
+    public function openEditWarp(Player $player, Warp $warp): SimpleForm
     {
         $form = new SimpleForm(function (Player $player, $data = null) use ($warp) {
             $result = $data;
@@ -154,19 +155,6 @@ class WarpForms
 
             $pl = theSpawn::getInstance();
             $warpName = $warp->getName();
-            $warpPos = $pl->getWarpPosition($warpName);
-            $warpIcon = $warp->getIconPath();
-            $warpPerm = $warp->getPermission();
-
-            $editWarp = function (string $warpName, Position|Location $warpPos, bool $warpPerm, string|null $warpIcon) use ($pl) {
-                $pl->removeWarp($warpName);
-                $pl->addWarp($warpPos->getX(), $warpPos->getY(), $warpPos->getZ(),
-                    $warpPos->getWorld(),
-                    $warpName,
-                    ($warpPos instanceof Location ? $warpPos->getYaw() : null),
-                    ($warpPos instanceof Location ? $warpPos->getPitch() : null),
-                    $warpPerm, $warpIcon);
-            };
 
             if ($result == "editName") {
                 $this->openEditWarpName($player, $warp);
@@ -174,30 +162,34 @@ class WarpForms
             }
 
             if ($result == "editPos") {
-                $editWarp($warpName, $player->getLocation(), ($warpPerm !== null), $warpIcon);
+                $warp->setLocation($player->getLocation());
+                $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditWarp($player, $pl->getWarpInfo($warpName));
+                $this->openEditWarp($player, WarpManager::getWarp($warpName));
                 return;
             }
 
             if ($result == "rmPerm") {
-                $editWarp($warpName, $warpPos, false, $warpIcon);
+                $warp->setPermissionEnabled(false);
+                $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditWarp($player, $pl->getWarpInfo($warpName));
+                $this->openEditWarp($player, WarpManager::getWarp($warpName));
                 return;
             }
 
             if ($result == "addPerm") {
-                $editWarp($warpName, $warpPos, true, $warpIcon);
+                $warp->setPermissionEnabled(true);
+                $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditWarp($player, $pl->getWarpInfo($warpName));
+                $this->openEditWarp($player, WarpManager::getWarp($warpName));
                 return;
             }
 
             if ($result == "rmIcon") {
-                $editWarp($warpName, $warpPos, ($warpPerm !== null), null);
+                $warp->setIconPath(null);
+                $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditWarp($player, $pl->getWarpInfo($warpName));
+                $this->openEditWarp($player, WarpManager::getWarp($warpName));
                 return;
             }
 
@@ -212,15 +204,16 @@ class WarpForms
             }
             return;
         });
+        $loc = $warp->getLocation();
         $form->setTitle(MsgMgr::getMsg("form-editWarp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-editWarp-menu-content", [
             "{warp}" => $warp->getName(),
-            "{world}" => $warp->getLevelName(),
-            "{X}" => $warp->getX(),
-            "{Y}" => $warp->getY(),
-            "{Z}" => $warp->getZ(),
-            "{yaw}" => ($warp->getYaw() !== null ? $warp->getYaw() : "---"),
-            "{pitch}" => ($warp->getPitch() !== null ? $warp->getPitch() : "---"),
+            "{world}" => $loc->getWorld()->getFolderName(),
+            "{X}" => $loc->getX(),
+            "{Y}" => $loc->getY(),
+            "{Z}" => $loc->getZ(),
+            "{yaw}" => ($loc->getYaw() !== null ? $loc->getYaw() : "---"),
+            "{pitch}" => ($loc->getPitch() !== null ? $loc->getPitch() : "---"),
             "{permission}" => ($warp->getPermission() !== null ? $warp->getPermission() : "---"),
             "{icon}" => ($warp->getIconPath() !== null ? $warp->getIconPath() : "---")
         ]));
@@ -242,34 +235,29 @@ class WarpForms
 
     /**
      * @param Player $player
-     * @param WarpInfo $warp
+     * @param Warp $warp
      * @return CustomForm
      */
-    public function openEditWarpName(Player $player, WarpInfo $warp): CustomForm
+    public function openEditWarpName(Player $player, Warp $warp): CustomForm
     {
         $form = new CustomForm(function (Player $player, array $data = null) use ($warp) {
             if ($data === null) return;
 
             $pl = theSpawn::getInstance();
             $warpName = $warp->getName();
-            $warpPos = $pl->getWarpPosition($warpName);
+            $warpPos = $warp->getLocation();
             $warpIcon = $warp->getIconPath();
             $warpPerm = $warp->getPermission();
 
             $editWarp = function (string $newWarpName, Position|Location $warpPos, bool $warpPerm, string|null $warpIcon) use ($pl, $warpName) {
-                $pl->removeWarp($warpName);
-                $pl->addWarp($warpPos->getX(), $warpPos->getY(), $warpPos->getZ(),
-                    $warpPos->getWorld(),
-                    $newWarpName,
-                    ($warpPos instanceof Location ? $warpPos->getYaw() : null),
-                    ($warpPos instanceof Location ? $warpPos->getPitch() : null),
-                    $warpPerm, $warpIcon);
+                WarpManager::removeWarp($warpName);
+                WarpManager::createWarp(new Warp($warpPos, $warpName, $warpPerm, $warpIcon));
             };
 
             if (isset($data["warpName"]) && mb_strlen($data["warpName"]) >= 1) {
                 $editWarp($data["warpName"], $warpPos, ($warpPerm !== null), $warpIcon);
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditWarp($player, $pl->getWarpInfo($data["warpName"]));
+                $this->openEditWarp($player, WarpManager::getWarp($data["warpName"]));
                 return;
             }
         });
@@ -282,35 +270,23 @@ class WarpForms
 
     /**
      * @param Player $player
-     * @param WarpInfo $warp
+     * @param Warp $warp
      * @param bool $edit
      * @return CustomForm
      */
-    public function openEditWarpIcon(Player $player, WarpInfo $warp, bool $edit = true): CustomForm
+    public function openEditWarpIcon(Player $player, Warp $warp, bool $edit = true): CustomForm
     {
         $form = new CustomForm(function (Player $player, array $data = null) use ($warp) {
             if ($data === null) return;
 
             $pl = theSpawn::getInstance();
             $warpName = $warp->getName();
-            $warpPos = $pl->getWarpPosition($warpName);
-            $warpIcon = $warp->getIconPath();
-            $warpPerm = $warp->getPermission();
-
-            $editWarp = function (string $warpName, Position|Location $warpPos, bool $warpPerm, string|null $warpIcon) use ($pl) {
-                $pl->removeWarp($warpName);
-                $pl->addWarp($warpPos->getX(), $warpPos->getY(), $warpPos->getZ(),
-                    $warpPos->getWorld(),
-                    $warpName,
-                    ($warpPos instanceof Location ? $warpPos->getYaw() : null),
-                    ($warpPos instanceof Location ? $warpPos->getPitch() : null),
-                    $warpPerm, $warpIcon);
-            };
 
             if (isset($data["warpIcon"]) && mb_strlen($data["warpIcon"]) >= 1) {
-                $editWarp($warpName, $warpPos, ($warpPerm !== null), $data["warpIcon"]);
+                $warp->setIconPath($data["warpIcon"]);
+                $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditWarp($player, $pl->getWarpInfo($warpName));
+                $this->openEditWarp($player, WarpManager::getWarp($warpName));
                 return;
             }
         });

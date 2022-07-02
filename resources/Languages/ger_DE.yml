@@ -80,11 +80,14 @@ tpa-ended: "Die TPA von {source} zu {target} ist nun beendet."
 delay-tip: "§8[§eDu wirst in §7{secs}§e Sekunden Teleportiert!§8]"
 delay-stopped-by-move: "§cTeleportation fehlgeschlagen! Du hast dich Bewegt."
 
+#position checks
+position-not-safe: "§cThe target position isn't safe. Teleport was cancelled."
+
 #forms
 #   warps
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Bitte wähle einen Warp aus."
-form-warp-menu-warpButton: "§b{warp}§r{line}§7Klicke für Teleportation"
+form-warp-menu-warpButton: "§b{warp} §7(§a{player_count}§7)§r{line}§7Klicke für Teleportation"
 #   setwarp
 form-setWarp-menu-title: "Setze einen Warp"
 form-setWarp-menu-content: "Hier kannst du einen neuen Warp setzen."
