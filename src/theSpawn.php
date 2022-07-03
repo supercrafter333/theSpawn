@@ -1142,7 +1142,8 @@ class theSpawn extends PluginBase
     public function useForms(): bool
     {
         if (($this->getConfig()->get("use-forms") == "true" || $this->getConfig()->get("use-forms") == "on")
-        && class_exists(Form::class)) return true;
+            && class_exists(Form::class))
+            return true;
 
         return false;
     }

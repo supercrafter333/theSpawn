@@ -5,7 +5,7 @@ namespace supercrafter333\theSpawn\commands;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
-use supercrafter333\theSpawn\Forms\HomeForms;
+use supercrafter333\theSpawn\form\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use function implode;
 

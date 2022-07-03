@@ -7,7 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\AnvilFallSound;
 use pocketmine\world\sound\DoorBumpSound;
-use supercrafter333\theSpawn\Forms\HomeForms;
+use supercrafter333\theSpawn\form\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use function count;

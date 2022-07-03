@@ -83,7 +83,7 @@ delay-stopped-by-move: "§cTeleport cancelled because you've moved you."
 #position checks
 position-not-safe: "§cThe target position isn't safe. Teleport was cancelled."
 
-#forms
+#form
 #   warps
 form-warp-menu-title: "Warps"
 form-warp-menu-content: "Please select a warp."

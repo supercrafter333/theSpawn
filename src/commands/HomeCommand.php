@@ -7,7 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\PopSound;
 use pocketmine\world\sound\XpCollectSound;
-use supercrafter333\theSpawn\Forms\HomeForms;
+use supercrafter333\theSpawn\form\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 

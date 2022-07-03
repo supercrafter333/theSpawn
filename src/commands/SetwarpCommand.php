@@ -6,7 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\DoorBumpSound;
-use supercrafter333\theSpawn\Forms\WarpForms;
+use supercrafter333\theSpawn\form\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\warp\Warp;

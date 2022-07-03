@@ -5,7 +5,7 @@ namespace supercrafter333\theSpawn\commands;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\world\sound\GhastShootSound;
-use supercrafter333\theSpawn\Forms\HomeForms;
+use supercrafter333\theSpawn\form\HomeForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 

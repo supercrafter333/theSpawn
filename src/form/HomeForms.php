@@ -1,6 +1,6 @@
 <?php
 
-namespace supercrafter333\theSpawn\forms;
+namespace supercrafter333\theSpawn\form;
 
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
