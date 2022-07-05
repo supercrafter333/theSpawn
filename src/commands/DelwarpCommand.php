@@ -4,8 +4,8 @@ namespace supercrafter333\theSpawn\commands;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\GhastShootSound;
+use supercrafter333\theSpawn\events\other\RemoveWarpEvent;
 use supercrafter333\theSpawn\form\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -17,7 +17,6 @@ use supercrafter333\theSpawn\warp\WarpManager;
  */
 class DelwarpCommand extends theSpawnOwnedCommand
 {
-
     
     /**
      * DelwarpCommand constructor.
@@ -47,23 +46,22 @@ class DelwarpCommand extends theSpawnOwnedCommand
 
         if (count($args) < 1) {
             if ($pl->useForms()) {
-                if ($pl->listWarps() == null) {
+                if ($pl->listWarps() == null)
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
-                    return;
-                }
-                $warpForms = new WarpForms();
-                $warpForms->openRmWarp($s);
-            } else {
+                else
+                    (new WarpForms())->openRmWarp($s);
+            } else
                 $s->sendMessage($this->usageMessage);
-            }
             return;
         }
+
         if (!WarpManager::existsWarp($args[0])) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            $s->sendMessage($prefix . MsgMgr::getMsg("warp-not-exists", ["{warpname}" => (string)$args[0]]));
             return;
         }
+
         WarpManager::removeWarp($args[0]);
-        $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-deleted")));
+        $s->sendMessage($prefix . MsgMgr::getMsg("warp-deleted", ["{warpname}" => (string)$args[0]]));
         $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
     }
 
@@ -75,19 +73,16 @@ class DelwarpCommand extends theSpawnOwnedCommand
         if (!self::testPermissionX($s, "theSpawn.delwarp.cmd", "delwarp")) return;
 
         if (!WarpManager::existsWarp($args[0])) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
+            $s->sendMessage($prefix . MsgMgr::getMsg("warp-not-exists", ["{warpname}" => (string)$args[0]]));
             return;
         }
-        WarpManager::removeWarp($args[0]);
-        $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-deleted")));
-        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
-    }
 
-    /**
-     * @return Plugin
-     */
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
+        $ev = new RemoveWarpEvent($args[0]);
+        $ev->call();
+        if ($ev->isCancelled()) return;
+
+        WarpManager::removeWarp($args[0]);
+        $s->sendMessage($prefix . MsgMgr::getMsg("warp-deleted", ["{warpname}" => (string)$args[0]]));
+        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
     }
 }

@@ -11,6 +11,7 @@ use pocketmine\world\sound\XpLevelUpSound;
 use supercrafter333\theSpawn\commands\DelwarpCommand;
 use supercrafter333\theSpawn\commands\SetwarpCommand;
 use supercrafter333\theSpawn\commands\WarpCommand;
+use supercrafter333\theSpawn\events\other\EditWarpEvent;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\warp\Warp;
@@ -162,6 +163,8 @@ class WarpForms
             }
 
             if ($result == "editPos") {
+                if (!$this->canEditWarp($warp)) return;
+
                 $warp->setLocation($player->getLocation());
                 $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
@@ -170,6 +173,8 @@ class WarpForms
             }
 
             if ($result == "rmPerm") {
+                if (!$this->canEditWarp($warp)) return;
+
                 $warp->setPermissionEnabled(false);
                 $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
@@ -178,6 +183,8 @@ class WarpForms
             }
 
             if ($result == "addPerm") {
+                if (!$this->canEditWarp($warp)) return;
+
                 $warp->setPermissionEnabled(true);
                 $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
@@ -186,6 +193,8 @@ class WarpForms
             }
 
             if ($result == "rmIcon") {
+                if (!$this->canEditWarp($warp)) return;
+
                 $warp->setIconPath(null);
                 $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
@@ -255,6 +264,8 @@ class WarpForms
             };
 
             if (isset($data["warpName"]) && mb_strlen($data["warpName"]) >= 1) {
+                if (!$this->canEditWarp($warp)) return;
+
                 $editWarp($data["warpName"], $warpPos, ($warpPerm !== null), $warpIcon);
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
                 $this->openEditWarp($player, WarpManager::getWarp($data["warpName"]));
@@ -283,6 +294,8 @@ class WarpForms
             $warpName = $warp->getName();
 
             if (isset($data["warpIcon"]) && mb_strlen($data["warpIcon"]) >= 1) {
+                if (!$this->canEditWarp($warp)) return;
+
                 $warp->setIconPath($data["warpIcon"]);
                 $warp->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
@@ -298,5 +311,13 @@ class WarpForms
             $form->addInput(MsgMgr::getMsg("form-editWarp-editIcon-inputNameDescription"), "", null, "warpIcon");
         $form->sendToPlayer($player);
         return $form;
+    }
+
+    private function canEditWarp(Warp $warp): bool
+    {
+        $ev = new EditWarpEvent($warp);
+        $ev->call();
+
+        return !$ev->isCancelled();
     }
 }

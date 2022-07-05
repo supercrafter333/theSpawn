@@ -4,8 +4,8 @@ namespace supercrafter333\theSpawn\commands;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\DoorBumpSound;
+use supercrafter333\theSpawn\events\position\SetWarpEvent;
 use supercrafter333\theSpawn\form\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -19,7 +19,6 @@ use supercrafter333\theSpawn\warp\WarpManager;
 class SetwarpCommand extends theSpawnOwnedCommand
 {
 
-    
     /**
      * SetwarpCommand constructor.
      * @param string $name
@@ -47,12 +46,10 @@ class SetwarpCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            if ($pl->useForms()) {
-                $warpForms = new WarpForms();
-                $warpForms->openSetWarp($s);
-            } else {
+            if ($pl->useForms())
+                (new WarpForms())->openSetWarp($s);
+            else
                 $s->sendMessage($this->usageMessage);
-            }
             return;
         }
 
@@ -71,20 +68,16 @@ class SetwarpCommand extends theSpawnOwnedCommand
             $icon = null;
             if (isset($args[1]) && $args[1] !== 'null' && $args[1] !== 'false' && $args[1] !== "") $perm = true;
             if (isset($args[2]) && $args[2] !== 'null' && $args[2] !== "") $icon = $args[2];
+
+            $ev = new SetWarpEvent($s->getLocation(), $args[0]);
+            $ev->call();
+            if ($ev->isCancelled()) return;
+
             WarpManager::createWarp(new Warp($s->getLocation(), $args[0], $perm, $icon));
             $posMsg = (string)$s->getPosition()->getX() . $s->getPosition()->getY() . $s->getPosition()->getZ();
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], str_replace(["{position}"], [$posMsg], str_replace(["{world}"], [$s->getWorld()->getFolderName()], MsgMgr::getMsg("warp-set")))));
-        } else {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [$args[0]], MsgMgr::getMsg("warp-already-set")));
-        }
+            $s->sendMessage($prefix . MsgMgr::getMsg("warp-set", ["{warpname}" => (string)$args[0], "{position}" => $posMsg, "{world}" => $s->getWorld()->getFolderName()]));
+        } else
+            $s->sendMessage($prefix . MsgMgr::getMsg("warp-already-set", ["{warpname}" => (string)$args[0]]));
         $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
-    }
-
-    /**
-     * @return Plugin
-     */
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
     }
 }

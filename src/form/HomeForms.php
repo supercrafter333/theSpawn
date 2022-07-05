@@ -11,6 +11,8 @@ use pocketmine\world\sound\XpLevelUpSound;
 use supercrafter333\theSpawn\commands\DelhomeCommand;
 use supercrafter333\theSpawn\commands\HomeCommand;
 use supercrafter333\theSpawn\commands\SethomeCommand;
+use supercrafter333\theSpawn\events\other\EditHomeEvent;
+use supercrafter333\theSpawn\home\Home;
 use supercrafter333\theSpawn\home\HomeInfo;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -194,5 +196,15 @@ class HomeForms
         $form->addInput(MsgMgr::getMsg("form-editHome-editName-inputNameDescription"), "", $home->getName(), "homeName");
         $form->sendToPlayer($player);
         return $form;
+    }
+
+    //TODO: update class
+
+    private function canEditHome(Home $home): bool
+    {
+        $ev = new EditHomeEvent($home);
+        $ev->call();
+
+        return !$ev->isCancelled();
     }
 }

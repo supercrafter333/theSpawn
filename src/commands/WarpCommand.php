@@ -6,10 +6,12 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\XpCollectSound;
+use supercrafter333\theSpawn\events\teleport\WarpTeleportEvent;
 use supercrafter333\theSpawn\form\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\warp\WarpManager;
+use function count;
 
 /**
  * Class WarpCommand
@@ -45,22 +47,18 @@ class WarpCommand extends theSpawnOwnedCommand
 
         if (!$this->canUse($s)) return;
 
-        if (count($args) < 1) {
-            if ($pl->listWarps() !== null) {
-                if ($pl->useForms()) {
-                    $warpForms = new WarpForms();
-                    $warpForms->open($s);
-                } else {
+        if (count($args) < 1 && $pl->listWarps() !== null)
+                if ($pl->useForms())
+                    (new WarpForms())->open($s);
+                else {
                     $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
+                    $s->getWorld()->addSound($s->getPosition(), new XpCollectSound());
                 }
-                $s->getWorld()->addSound($s->getPosition(), new XpCollectSound());
-            } else {
-                $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
-            }
-            return;
+        elseif (count($args) < 1) {
+            $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
         }
-
-        self::simpleExecute($s, $args);
+        else
+            self::simpleExecute($s, $args);
     }
 
     public static function simpleExecute(Player $s, array $args): void
@@ -90,8 +88,12 @@ class WarpCommand extends theSpawnOwnedCommand
             return;
         }
 
-        $s->teleport($loc);
-        $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], str_replace(["{world}"], [$worldName], str_replace(["{position}"], [$posMsg], MsgMgr::getMsg("warp-teleport")))));
+        $ev = new WarpTeleportEvent($s, $s->getLocation(), $loc, $warp->getName());
+        $ev->call();
+        if ($ev->isCancelled()) return;
+
+        $s->teleport($ev->getTarget());
+        $s->sendMessage($prefix . MsgMgr::getMsg("warp-teleport", ['{world}' => $worldName, '{position}' => $posMsg]));
     }
 
     /**

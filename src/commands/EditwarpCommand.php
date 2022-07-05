@@ -37,11 +37,9 @@ class EditwarpCommand extends theSpawnOwnedCommand
             return;
         }
 
-        if (($warp = WarpManager::getWarp(implode(" ", $args))) === null) {
-            $s->sendMessage($prefix . str_replace(["{warpname}"], [(string)$args[0]], MsgMgr::getMsg("warp-not-exists")));
-            return;
-        }
-
-        (new WarpForms())->openEditWarp($s, $warp);
+        if (($warp = WarpManager::getWarp(implode(" ", $args))) === null)
+            $s->sendMessage($prefix . MsgMgr::getMsg("warp-not-exists", ["{warpname}" => (string)$args[0]]));
+        else
+            (new WarpForms())->openEditWarp($s, $warp);
     }
 }

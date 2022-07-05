@@ -38,4 +38,12 @@ abstract class theSpawnPlayerTeleportEvent extends Event implements Cancellable
     {
         return $this->target;
     }
+
+    /**
+     * @param Location|Position $target
+     */
+    public function setTarget(Position|Location $target): void
+    {
+        $this->target = $target;
+    }
 }
