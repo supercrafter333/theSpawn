@@ -7,7 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
-use supercrafter333\theSpawn\tpa\TpaInfo;
+use supercrafter333\theSpawn\tpa\Tpa;
 
 class TpaHereCommand extends theSpawnOwnedCommand
 {
@@ -52,7 +52,7 @@ class TpaHereCommand extends theSpawnOwnedCommand
             $s->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("pending-tpa-error"));
             return;
         }
-        $tpa = new TpaInfo($s->getName());
+        $tpa = new Tpa($s->getName());
         $tpa->runTask($pl->getConfig()->get("tpa-time"));
         $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-send")));
         $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa-here")));

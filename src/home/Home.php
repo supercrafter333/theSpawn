@@ -2,13 +2,18 @@
 
 namespace supercrafter333\theSpawn\home;
 
+use JsonException;
 use pocketmine\entity\Location;
 use pocketmine\player\IPlayer;
 
 class Home
 {
-    //TODO: finish this class
 
+    /**
+     * @param IPlayer $player
+     * @param string $homeName
+     * @param Location $location
+     */
     public function __construct(private IPlayer $player, private string $homeName, private Location $location) {}
 
     /**
@@ -28,6 +33,14 @@ class Home
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->homeName;
+    }
+
+    /**
      * @return Location
      */
     public function getLocation(): Location
@@ -41,5 +54,14 @@ class Home
     public function setLocation(Location $location): void
     {
         $this->location = $location;
+    }
+
+    /**
+     * @return void
+     * @throws JsonException
+     */
+    public function save(): void
+    {
+        HomeManager::saveHome($this);
     }
 }

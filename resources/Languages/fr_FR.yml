@@ -22,7 +22,7 @@ hub-removed: "§aVous avez bien supprimer le hub du serveur."
 
 #alias messages
 #uses: {alias} {world}
-alias-teleport: "§aVous avez été téléporté à l'alias §7{alias}§a! §7§b{world}§7]"
+alias-teleport: "§aVous avez été téléporté à l'alias §7{alias}§a! §7[§b{world}§7]"
 alias-set: "§aVous avez bien définis l'alias §b{alias}§a pour le monde §b{world}§a!"
 alias-command-description: "§r§aAlias pour le monde §b{world}§a!"
 #uses: {alias}
@@ -68,7 +68,7 @@ tpa-accepted-source: "§7{target}§a a accepter votre demande de téléportation
 tpa-accepted-target: "§aVous avez bien accepté la demande de téléportation de §{source}§a!"
 tpa-declined-source: "§7{target}§c a refusé votre demande de téléportation !"
 tpa-declined-target: "§aVous avez bien refusé la demande de téléportation de §{source}§a!"
-tpa-ended: "Le TpaInfo de {source} vers {target} est désormais finit."
+tpa-ended: "Le Tpa de {source} vers {target} est désormais finit."
 
 #spawn delays
 delay-tip: "§8[§eVous serez téléporté dans §7{secs}§e!§8]"

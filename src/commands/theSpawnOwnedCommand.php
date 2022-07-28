@@ -6,6 +6,7 @@ use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\KnownTranslationFactory;
 use pocketmine\lang\Translatable;
+use pocketmine\permission\Permission;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
@@ -23,10 +24,11 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
 
     protected string $prefix;
 
-    public function __construct(string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [])
+    public function __construct(string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [], Permission|string|null $permission = null)
     {
         $this->plugin = theSpawn::getInstance();
         $this->prefix = theSpawn::$prefix;
+        $this->setPermission($permission);
         parent::__construct($name, $description, $usageMessage, $aliases);
     }
 

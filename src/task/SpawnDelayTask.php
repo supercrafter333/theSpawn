@@ -1,6 +1,6 @@
 <?php
 
-namespace supercrafter333\theSpawn\tasks;
+namespace supercrafter333\theSpawn\task;
 
 use pocketmine\player\Player;
 use pocketmine\scheduler\Task;

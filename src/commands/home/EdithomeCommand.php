@@ -1,11 +1,13 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\home;
 
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\form\HomeForms;
+use supercrafter333\theSpawn\home\HomeManager;
 use supercrafter333\theSpawn\MsgMgr;
 use function implode;
 
@@ -38,8 +40,8 @@ class EdithomeCommand extends theSpawnOwnedCommand
 
         $homeName = implode(" ", $args);
 
-        if (($home = $pl->getHomeInfo($s, $homeName)) === null) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [(string)$args[0]], MsgMgr::getMsg("home-not-exists")));
+        if (($home = HomeManager::getHome($homeName, $s)) === null) {
+            $s->sendMessage($prefix . MsgMgr::getMsg("home-not-exists", ["{home}" => $args[0]]));
             return;
         }
 

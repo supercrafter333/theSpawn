@@ -1,13 +1,16 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\home;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\AnvilFallSound;
 use pocketmine\world\sound\DoorBumpSound;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\events\position\SetHomeEvent;
 use supercrafter333\theSpawn\form\HomeForms;
+use supercrafter333\theSpawn\home\Home;
+use supercrafter333\theSpawn\home\HomeManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use function count;
@@ -22,7 +25,7 @@ class SethomeCommand extends theSpawnOwnedCommand
 
 
     /**
-     * DelhomeCommand constructor.
+     * SethomeCommand constructor.
      * @param string $name
      * @param string $description
      * @param string|null $usageMessage
@@ -39,7 +42,7 @@ class SethomeCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -49,12 +52,10 @@ class SethomeCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            if ($pl->useForms()) {
-                $warpForms = new HomeForms($s->getName());
-                $warpForms->openSetHome($s);
-            } else {
+            if ($pl->useForms())
+                (new HomeForms($s->getName()))->openSetHome($s);
+            else
                 $s->sendMessage($this->usageMessage);
-            }
             return;
         }
 
@@ -68,32 +69,23 @@ class SethomeCommand extends theSpawnOwnedCommand
 
         if (!self::testPermissionX($s, "theSpawn.sethome.cmd", "sethome")) return;
 
-        $x = $s->getPosition()->getX();
-        $y = $s->getPosition()->getY();
-        $z = $s->getPosition()->getZ();
-        $level = $s->getWorld();
-        $yaw = $s->getLocation()->getYaw();
-        $pitch = $s->getLocation()->getPitch();
-        $homes = $pl->getHomesOfPlayer($s) !== null ? count($pl->getHomesOfPlayer($s), COUNT_RECURSIVE) : 0;
-        if (($maxHomes = $pl->getMaxHomesOfPlayer($s)) <= $homes) {
+        $homes = count(HomeManager::getHomesOfPlayer($s), COUNT_RECURSIVE);
+        if (($maxHomes = HomeManager::getMaxHomesOfPlayer($s)) <= $homes) {
             $s->sendMessage(MsgMgr::getMsg("highest-home-count-reached", ["{max-homes}" => $maxHomes]));
             $s->getWorld()->addSound($s->getPosition(), new AnvilFallSound());
             return;
         }
-        if ($pl->setHome($s, $args[0], $x, $y, $z, $level, $yaw, $pitch) == false) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-already-exists")));
-        } else {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-set")));
+
+        $ev = new SetHomeEvent($s->getLocation(), $args[0], $s);
+        $ev->call();
+        if ($ev->isCancelled()) return;
+
+        if (!HomeManager::createHome(new Home($s, $args[0], $s->getLocation())))
+            $s->sendMessage($prefix . MsgMgr::getMsg("home-already-exists", ["{home}" => $args[0]]));
+        else {
+            $s->sendMessage($prefix . MsgMgr::getMsg("home-set", ["{home}" => $args[0]]));
             $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
         }
         return;
-    }
-
-    /**
-     * @return Plugin
-     */
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
     }
 }

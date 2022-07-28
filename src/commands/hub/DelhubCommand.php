@@ -1,12 +1,13 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\hub;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use pocketmine\world\sound\GhastShootSound;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -36,7 +37,7 @@ class DelhubCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {

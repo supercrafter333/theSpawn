@@ -7,14 +7,14 @@ use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use pocketmine\world\sound\XpLevelUpSound;
 use supercrafter333\theSpawn\MsgMgr;
-use supercrafter333\theSpawn\Tasks\TpaTask;
+use supercrafter333\theSpawn\task\TpaTask;
 use supercrafter333\theSpawn\theSpawn;
 
 /**
- * Class TpaInfo
+ * Class Tpa
  * @package supercrafter333\theSpawn\tpa
  */
-class TpaInfo
+class Tpa
 {
 
     /**

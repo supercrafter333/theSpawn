@@ -1,13 +1,13 @@
 <?php
 
-namespace supercrafter333\theSpawn\tasks;
+namespace supercrafter333\theSpawn\task;
 
 use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\world\sound\XpCollectSound;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
-use supercrafter333\theSpawn\tpa\TpaInfo;
+use supercrafter333\theSpawn\tpa\Tpa;
 
 /**
  *
@@ -17,9 +17,9 @@ class TpaTask extends Task
 
     /**
      * @param int $seconds
-     * @param TpaInfo $tpa
+     * @param Tpa $tpa
      */
-    public function __construct(private int $seconds, private TpaInfo $tpa) {}
+    public function __construct(private int $seconds, private Tpa $tpa) {}
 
     /**
      * Run function xD

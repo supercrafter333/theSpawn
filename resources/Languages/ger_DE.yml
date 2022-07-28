@@ -26,7 +26,7 @@ hub-removed: "§aDu hast erfolgreich den Lobby Spawn-Punkt entfernt!"
 
 #alias messages
 #uses: {alias} {world}
-alias-teleport: "§aDu wurdest zum Alias namens §7{alias}§a teleportiert! §7§b{world}§7]"
+alias-teleport: "§aDu wurdest zum Alias namens §7{alias}§a teleportiert! §7[§b{world}§7]"
 alias-set: "§aDu hast erfolgreich den Alias §b{alias}§a für die Welt §b{world}§a festgelegt!"
 alias-command-description: "§r§aAlias für die Welt §b{world}§a!"
 #uses: {alias}
@@ -172,7 +172,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v2.0.0-PM5-dev(and lower)
+#compatible with v2.0.0-PM5-dev2(and lower)
 
 
 ############################

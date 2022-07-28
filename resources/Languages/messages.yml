@@ -71,7 +71,7 @@ tpa-accepted-source: "§7{target}§a has accepted your tpa!"
 tpa-accepted-target: "§aYou've successfully accepted the tpa of §7{source}§a!"
 tpa-declined-source: "§7{target}§c has declined your tpa!"
 tpa-declined-target: "§aYou've successfully declined the tpa of §7{source}§a!"
-tpa-ended: "The TpaInfo from {source} to {target} is ended now."
+tpa-ended: "The Tpa from {source} to {target} is ended now."
 
 #spawn delays
 delay-tip: "§8[§eYou where teleported in §7{secs}§e!§8]"
@@ -171,7 +171,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "2.0.0-PM5-dev"
+version: "2.0.0-PM5-dev2"
 
 
 ############################

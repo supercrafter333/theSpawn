@@ -1,10 +1,11 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\warp;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\world\sound\GhastShootSound;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\events\other\RemoveWarpEvent;
 use supercrafter333\theSpawn\form\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;

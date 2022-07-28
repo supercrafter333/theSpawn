@@ -26,7 +26,7 @@ hub-removed: "§aYou've successfully removed the hub spawn."
 
 #alias messages
 #uses: {alias} {world}
-alias-teleport: "§aYou was teleported to the alias §7{alias}§a! §7§b{world}§7]"
+alias-teleport: "§aYou was teleported to the alias §7{alias}§a! §7[§b{world}§7]"
 alias-set: "§aYou've successfully set the alias §b{alias}§a for world §b{world}§a!"
 alias-command-description: "§r§aAlias for world §b{world}§a!"
 #uses: {alias}
@@ -74,7 +74,7 @@ tpa-accepted-source: "§7{target}§a has accepted your tpa!"
 tpa-accepted-target: "§aYou've successfully accepted the tpa of §7{source}§a!"
 tpa-declined-source: "§7{target}§c has declined your tpa!"
 tpa-declined-target: "§aYou've successfully declined the tpa of §7{source}§a!"
-tpa-ended: "The TpaInfo from {source} to {target} is ended now."
+tpa-ended: "The Tpa from {source} to {target} is ended now."
 
 #spawn delays
 delay-tip: "§8[§eYou where teleported in §7{secs}§e!§8]"
@@ -172,7 +172,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 
-#compatible with v2.0.0-PM5-dev(and lower)
+#compatible with v2.0.0-PM5-dev2(and lower)
 
 
 ############################

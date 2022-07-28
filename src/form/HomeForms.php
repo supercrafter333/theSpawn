@@ -4,16 +4,12 @@ namespace supercrafter333\theSpawn\form;
 
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
-use pocketmine\entity\Location;
 use pocketmine\player\Player;
-use pocketmine\world\Position;
 use pocketmine\world\sound\XpLevelUpSound;
-use supercrafter333\theSpawn\commands\DelhomeCommand;
-use supercrafter333\theSpawn\commands\HomeCommand;
-use supercrafter333\theSpawn\commands\SethomeCommand;
+use supercrafter333\theSpawn\commands\home\{DelhomeCommand, HomeCommand, SethomeCommand};
 use supercrafter333\theSpawn\events\other\EditHomeEvent;
 use supercrafter333\theSpawn\home\Home;
-use supercrafter333\theSpawn\home\HomeInfo;
+use supercrafter333\theSpawn\home\HomeManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use function mt_rand;
@@ -43,10 +39,8 @@ class HomeForms
         });
         $form->setTitle(MsgMgr::getMsg("form-home-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-home-menu-content"));
-        foreach (theSpawn::getInstance()->getHomeCfg($this->playerName)->getAll() as $home => $homeN) {
-            $homeName = $homeN["homeName"];
-            $form->addButton(str_replace(["{home}", "{line}"], [$homeName, "\n"], MsgMgr::getMsg("form-home-menu-homeButton")), -1, "", $homeName);
-        }
+        foreach (HomeManager::getHomesOfPlayer($player) as $home)
+            $form->addButton(MsgMgr::getMsg("form-home-menu-homeButton", ["{home}" => $home, "{line}" => "\n"]), -1, "", $home);
         $form->sendToPlayer($player);
         return $form;
     }
@@ -65,10 +59,8 @@ class HomeForms
         });
         $form->setTitle(MsgMgr::getMsg("form-rmHome-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-rmHome-menu-content"));
-        foreach (theSpawn::getInstance()->getHomeCfg($this->playerName)->getAll() as $home => $homeN) {
-            $homeName = $homeN["homeName"];
-            $form->addButton(str_replace(["{home}", "{line}"], [$homeName, "\n"], MsgMgr::getMsg("form-rmHome-menu-homeButton")), -1, "", $homeName);
-        }
+        foreach (HomeManager::getHomesOfPlayer($player) as $home)
+            $form->addButton(MsgMgr::getMsg("form-rmHome-menu-homeButton", ["{home}" => $home, "{line}" => "\n"]), -1, "", $home);
         $form->sendToPlayer($player);
         return $form;
     }
@@ -100,40 +92,24 @@ class HomeForms
             $result = $data;
             if ($result === null) return;
 
-            if (($home = theSpawn::getInstance()->getHomeInfo($player, $result)) === null) return;
+            if (!($home = HomeManager::getHome($result, $player)) instanceof Home) return;
 
             $this->openEditHome($player, $home);
         });
         $form->setTitle(MsgMgr::getMsg("form-chooseEditHome-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-chooseEditHome-menu-content"));
-        foreach (theSpawn::getInstance()->getHomeCfg($this->playerName)->getAll() as $home => $homeN) {
-            $homeName = $homeN["homeName"];
-            $form->addButton(str_replace(["{home}", "{line}"], [$homeName, "\n"], MsgMgr::getMsg("form-chooseEditHome-menu-homeButton")), -1, "", $homeName);
+        foreach (HomeManager::getHomesOfPlayer($player) as $home) {
+            $form->addButton(MsgMgr::getMsg("form-chooseEditHome-menu-homeButton", ["{home}" => $home, "{line}" => "\n"]), -1, "", $home);
         }
         $form->sendToPlayer($player);
         return $form;
     }
 
-    public function openEditHome(Player $player, HomeInfo $home): SimpleForm
+    public function openEditHome(Player $player, Home $home): SimpleForm
     {
         $form = new SimpleForm(function (Player $player, $data = null) use ($home) {
             $result = $data;
             if ($result === null) return;
-
-            $editHome = function (string $homeName, Location|Position $pos) use ($player, $home) {
-                $pl = theSpawn::getInstance();
-                $pl->rmHome($player, $home->getName());
-                $pl->setHome(
-                    $player,
-                    $homeName,
-                    $pos->getX(),
-                    $pos->getY(),
-                    $pos->getZ(),
-                    $pos->getWorld(),
-                    ($pos instanceof Location ? $pos->getYaw() : null),
-                    ($pos instanceof Location ? $pos->getPitch() : null)
-                );
-            };
 
             if ($result == "editName") {
                 $this->openEditHomeName($player, $home);
@@ -141,21 +117,26 @@ class HomeForms
             }
 
             if ($result == "editPosition") {
-                $editHome($home->getName(), $player->getLocation());
+                $ev = new EditHomeEvent($home);
+                $ev->call();
+                if ($ev->isCancelled()) return;
+
+                $home->setLocation($player->getLocation());
+                $home->save();
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditHome($player, theSpawn::getInstance()->getHomeInfo($player, $home->getName()));
+                $this->openEditHome($player, HomeManager::getHome($home->getName(), $home->getPlayer()));
                 return;
             }
         });
         $form->setTitle(MsgMgr::getMsg("form-editHome-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-editHome-menu-content", [
             "{home}" => $home->getName(),
-            "{world}" => $home->getLevelName(),
-            "{X}" => $home->getX(),
-            "{Y}" => $home->getY(),
-            "{Z}" => $home->getZ(),
-            "{yaw}" => ($home->getYaw() !== null ? $home->getYaw() : "---"),
-            "{pitch}" => ($home->getPitch() !== null ? $home->getPitch() : "---")
+            "{world}" => $home->getLocation()->getWorld()->getFolderName(),
+            "{X}" => $home->getLocation()->getX(),
+            "{Y}" => $home->getLocation()->getY(),
+            "{Z}" => $home->getLocation()->getZ(),
+            "{yaw}" => $home->getLocation()->getYaw(),
+            "{pitch}" => $home->getLocation()->getPitch()
         ]));
         $form->addButton(MsgMgr::getMsg("form-editHome-menu-editNameButton"), -1, "", "editName");
         $form->addButton(MsgMgr::getMsg("form-editHome-menu-editPositionButton"), -1, "", "editPosition");
@@ -163,31 +144,23 @@ class HomeForms
         return $form;
     }
 
-    public function openEditHomeName(Player $player, HomeInfo $home): CustomForm
+    public function openEditHomeName(Player $player, Home $home): CustomForm
     {
         $form = new CustomForm(function (Player $player, array $data = null) use ($home) {
             if ($data === null) return;
 
             $pl = theSpawn::getInstance();
 
-            $editHome = function (string $homeName, Location|Position $pos) use ($player, $home, $pl) {
-                $pl->rmHome($player, $home->getName());
-                $pl->setHome(
-                    $player,
-                    $homeName,
-                    $pos->getX(),
-                    $pos->getY(),
-                    $pos->getZ(),
-                    $pos->getWorld(),
-                    ($pos instanceof Location ? $pos->getYaw() : null),
-                    ($pos instanceof Location ? $pos->getPitch() : null)
-                );
-            };
 
             if (isset($data["homeName"]) && mb_strlen($data["homeName"]) >= 1) {
-                $editHome($data["homeName"], $pl->getHomePos($player, $home->getName()));
+                $ev = new EditHomeEvent($home);
+                $ev->call();
+                if ($ev->isCancelled()) return;
+
+                HomeManager::removeHome($home);
+                HomeManager::createHome(new Home($player, $data["homeName"], $home->getLocation()));
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
-                $this->openEditHome($player, $pl->getHomeInfo($player, $data["homeName"]));
+                $this->openEditHome($player, HomeManager::getHome($data["homeName"], $player));
                 return;
             }
         });
@@ -197,8 +170,6 @@ class HomeForms
         $form->sendToPlayer($player);
         return $form;
     }
-
-    //TODO: update class
 
     private function canEditHome(Home $home): bool
     {

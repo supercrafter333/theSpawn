@@ -7,7 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
-use supercrafter333\theSpawn\tpa\TpaInfo;
+use supercrafter333\theSpawn\tpa\Tpa;
 
 class TpdeclineCommand extends theSpawnOwnedCommand
 {
@@ -39,7 +39,7 @@ class TpdeclineCommand extends theSpawnOwnedCommand
             $s->sendMessage(str_replace("{target}", $source, MsgMgr::getMsg("no-pending-tpa")));
             return;
         }
-        $tpaInfo = new TpaInfo($source);
+        $tpaInfo = new Tpa($source);
         if (!$tpaInfo->getSourceAsPlayer() instanceof Player) {
             $s->sendMessage(str_replace("{target}", $source, theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;

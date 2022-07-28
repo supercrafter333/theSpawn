@@ -17,10 +17,8 @@ use pocketmine\block\Torch;
 use pocketmine\entity\Location;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
-use pocketmine\permission\DefaultPermissions;
-use pocketmine\permission\Permission;
-use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
+use pocketmine\player\IPlayer;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\Task;
@@ -28,40 +26,24 @@ use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\World;
+use supercrafter333\theSpawn\commands\alias\{AliasManager, RemovealiasCommand, SetaliasCommand};
 use supercrafter333\theSpawn\commands\BackCommand;
-use supercrafter333\theSpawn\commands\DelhomeCommand;
-use supercrafter333\theSpawn\commands\DelhubCommand;
 use supercrafter333\theSpawn\commands\DelspawnCommand;
-use supercrafter333\theSpawn\commands\DelwarpCommand;
-use supercrafter333\theSpawn\commands\EdithomeCommand;
-use supercrafter333\theSpawn\commands\EditwarpCommand;
-use supercrafter333\theSpawn\commands\HomeCommand;
-use supercrafter333\theSpawn\commands\HubCommand;
-use supercrafter333\theSpawn\commands\RemovealiasCommand;
-use supercrafter333\theSpawn\commands\SetaliasCommand;
-use supercrafter333\theSpawn\commands\SethomeCommand;
-use supercrafter333\theSpawn\commands\SethubCommand;
+use supercrafter333\theSpawn\commands\home\{DelhomeCommand, EdithomeCommand, HomeCommand, SethomeCommand};
+use supercrafter333\theSpawn\commands\hub\{DelhubCommand, HubCommand, SethubCommand};
 use supercrafter333\theSpawn\commands\SetspawnCommand;
-use supercrafter333\theSpawn\commands\SetwarpCommand;
 use supercrafter333\theSpawn\commands\SpawnCommand;
 use supercrafter333\theSpawn\commands\TpacceptCommand;
 use supercrafter333\theSpawn\commands\TpaCommand;
 use supercrafter333\theSpawn\commands\TpaHereCommand;
 use supercrafter333\theSpawn\commands\TpdeclineCommand;
-use supercrafter333\theSpawn\commands\WarpCommand;
-use supercrafter333\theSpawn\home\HomeInfo;
-use supercrafter333\theSpawn\Tasks\SpawnDelayTask;
-use supercrafter333\theSpawn\tpa\TpaInfo;
+use supercrafter333\theSpawn\commands\warp\{DelwarpCommand, EditwarpCommand, SetwarpCommand, WarpCommand};
+use supercrafter333\theSpawn\home\HomeManager;
+use supercrafter333\theSpawn\task\SpawnDelayTask;
 use supercrafter333\theSpawn\warp\WarpManager;
-use function array_filter;
-use function array_map;
-use function array_merge;
 use function class_exists;
 use function file_exists;
-use function is_numeric;
-use function krsort;
-use function mb_substr;
-use function str_starts_with;
+use function implode;
 
 /**
  * Class theSpawn
@@ -86,11 +68,6 @@ class theSpawn extends PluginBase
     public Config $msgCfg;
 
     /**
-     * @var Config
-     */
-    public Config $aliasCfg;
-
-    /**
      * @var array
      */
     public array $TPAs = [];
@@ -106,14 +83,9 @@ class theSpawn extends PluginBase
     public array $lastDeathPositions = [];
 
     /**
-     * @var Config
-     */
-    public Config $warpCfg;
-
-    /**
      * @var string
      */
-    public string $version = "2.0.0-PM5-dev";
+    public string $version = "2.0.0-PM5-dev2";
 
 
     public const DEVELOPMENT_VERSION = true;
@@ -153,8 +125,6 @@ class theSpawn extends PluginBase
 
         $this->msgCfg = MsgMgr::getMsgs();
         self::$prefix = MsgMgr::getPrefix();
-        $this->aliasCfg = new Config($this->getDataFolder() . "aliaslist.yml", Config::YAML);
-        $this->warpCfg = new Config($this->getDataFolder() . "warps.yml", Config::YAML);
         $cmdMap->registerAll("theSpawn",
             [
                 new SpawnCommand("spawn"),
@@ -164,15 +134,15 @@ class theSpawn extends PluginBase
                 new SethubCommand("sethub"),
                 new DelhubCommand("delhub")
             ]);
-        if ($this->useAliases() == true) {
+        if ($this->useAliases()) {
             $cmdMap->registerAll("theSpawn",
                 [
                     new SetaliasCommand("setalias"),
                     new RemovealiasCommand("removealias")
                 ]);
-            $this->reactivateAliases();
+            AliasManager::reactivateAliases();
         }
-        if ($this->useHomes() == true) {
+        if ($this->useHomes()) {
             $cmdMap->registerAll("theSpawn",
                 [
                     new SethomeCommand("sethome"),
@@ -181,7 +151,7 @@ class theSpawn extends PluginBase
                 ]);
             if ($this->useForms()) $cmdMap->register("theSpawn", new EdithomeCommand("edithome"));
         }
-        if ($this->useWarps() == true) {
+        if ($this->useWarps()) {
             $cmdMap->registerAll("theSpawn",
                 [
                     new SetwarpCommand("setwarp"),
@@ -190,7 +160,7 @@ class theSpawn extends PluginBase
                 ]);
             if ($this->useForms()) $cmdMap->register("theSpawn", new EditwarpCommand("editwarp"));
         }
-        if ($this->useTPAs() == true) {
+        if ($this->useTPAs())
             $cmdMap->registerAll("theSpawn",
                 [
                     new TpaCommand("tpa"),
@@ -198,11 +168,8 @@ class theSpawn extends PluginBase
                     new TpacceptCommand("tpaccept"),
                     new TpdeclineCommand("tpdecline")
                 ]);
-        }
         if ($this->useBackCommand()) $cmdMap->register("theSpawn", new BackCommand("back"));
 
-        //TODO: remove with v2.1.0
-        WarpManager::migrateOldWarps();
     }
 
     /**
@@ -229,6 +196,15 @@ class theSpawn extends PluginBase
         return MsgMgr::getMsgs();
     }
 
+     /**
+     * @return bool
+     */
+    public function useForms(): bool
+    {
+        return ($this->getConfig()->get("use-forms") == "true" || $this->getConfig()->get("use-forms") == "on")
+            && class_exists(Form::class);
+    }
+
     #OLD FUNCTION (new: versionCheck($version, bool $update = true))
     /*public function checkCfgVersion(string $version): bool
     {
@@ -245,13 +221,16 @@ class theSpawn extends PluginBase
      *
      * @param $version
      * @param bool $update
+     * @throws JsonException
      */
     private function versionCheck($version, bool $update = true)
     {
         if (!$this->getConfig()->exists("version") || $this->getConfig()->get("version") !== $version) {
-            if ($update == true) {
-                $this->convertOldWarpPermissions(); //TODO: remove after v1.7.x
+            if ($update) {
                 $this->getLogger()->debug("OUTDATED CONFIG.YML!! You config.yml is outdated! Your config.yml will automatically updated!");
+                $this->convertOldWarpPermissions();
+                WarpManager::migrateOldWarps();
+                HomeManager::migrateOldHomes();
                 if (file_exists($this->getDataFolder() . "oldConfig.yml")) {
                     unlink($this->getDataFolder() . "oldConfig.yml");
                 }
@@ -264,7 +243,7 @@ class theSpawn extends PluginBase
             }
         }
         if (strtolower(MsgMgr::getMessagesLanguage()) == "custom" && (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version)) {
-            if ($update == true) {
+            if ($update) {
                 $this->getLogger()->debug("OUTDATED messages.yml!! Your messages.yml is outdated! Your " . MsgMgr::getMessagesLanguage() . ".yml will automatically updated!");
                 if (file_exists($this->getDataFolder() . "Languages/messagesOld.yml")) {
                     unlink($this->getDataFolder() . "Languages/messagesOld.yml");
@@ -322,96 +301,6 @@ class theSpawn extends PluginBase
         foreach ($defaultPerms as $perm) {
             $bypassPerm->addChild($perm, true);
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getTPAs(): array
-    {
-        return $this->TPAs;
-    }
-
-    /**
-     * @param string $source
-     * @return array|null
-     */
-    public function getTpaOf(string $source): ?array
-    {
-        if (!isset($this->TPAs[$source])) return null;
-        return $this->TPAs[$source];
-    }
-
-    /**
-     * @param string $source
-     * @param string $target
-     * @param bool $isTpaHere
-     * @return bool
-     */
-    public function addTpa(string $source, string $target, bool $isTpaHere = false): bool
-    {
-        if (isset($this->TPAs[$source])) return false;
-        $arr = ["target" => $target, "isTpaHere" => $isTpaHere];
-        $this->TPAs[$source] = $arr;
-        return true;
-    }
-
-    /**
-     * @param string $source
-     * @param Task $task
-     * @return bool
-     */
-    public function setTpaTask(string $source, Task $task): bool
-    {
-        if ($this->getTpaOf($source) === null) return false;
-        $tpaInfo = new TpaInfo($source);
-        $target = $tpaInfo->getTarget();
-        $isTpaHere = $tpaInfo->isTpaHere();
-        $arr = ["target" => $target, "isTpaHere" => $isTpaHere, "task" => $task];
-        unset($this->TPAs[$source]);
-        $this->TPAs[] = $source;
-        $this->TPAs[$source] = $arr;
-        return true;
-    }
-
-    /**
-     * @param string $source
-     * @return bool
-     */
-    public function removeTpa(string $source): bool
-    {
-        if (!isset($this->TPAs[$source])) return false;
-        unset($this->TPAs[$source]);
-        return true;
-    }
-
-    /**
-     * @param string $target
-     * @param string $source
-     * @return bool
-     */
-    public function hasTpaOf(string $target, string $source): bool
-    {
-        $tpaInfo = new TpaInfo($source);
-        if ($tpaInfo->getTarget() === $target) return true;
-        return false;
-    }
-
-    /**
-     * @param string $target
-     * @return array|null
-     */
-    public function getTPAsOf(string $target): ?array
-    {
-        $TPAs = $this->getTPAs();
-        $newTPAs = [];
-        foreach ($TPAs as $TPA) {
-            if ($this->hasTpaOf($target, $TPA)) {
-                $newTPAs[] = $TPA;
-            }
-        }
-        if (count($newTPAs, COUNT_RECURSIVE) <= 0) return null;
-        return $newTPAs;
     }
 
     /**
@@ -496,8 +385,8 @@ class theSpawn extends PluginBase
             $i = explode('|', $randHubs->get($count));
             $worldName = $i[3];
             if ($this->getHubLevel($worldName) instanceof World) {
-                if (!isset($i[4])) return new Position($i[0], $i[1], $i[2], $this->levelCheck($worldName));
-                return new Location($i[0], $i[1], $i[2], $this->levelCheck($worldName), $i[4], $i[5]);
+                if (!isset($i[4])) return new Position($i[0], $i[1], $i[2], $this->checkWorld($worldName));
+                return new Location($i[0], $i[1], $i[2], $this->checkWorld($worldName), $i[4], $i[5]);
             } else {
                 return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
             }
@@ -660,7 +549,7 @@ class theSpawn extends PluginBase
     {
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         if ($config->get("use-hub-server") === "true" && $config->get("use-random-hubs") === "true") {
-            $this->getLogger()->alert("INFORMATION: Plase disable 'use-hub-server' in the config.yml to use random hubs!");
+            $this->getLogger()->alert("INFORMATION: Please disable 'use-hub-server' in the config.yml to use random hubs!");
             return false;
         } elseif ($config->get("use-hub-server") === "true") {
             return false;
@@ -730,298 +619,24 @@ class theSpawn extends PluginBase
      */
     public function useAliases(): bool
     {
-        if ($this->getConfig()->get("use-aliases") == "true") {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param string $alias
-     * @return string
-     */
-    public function getWorldOfAlias(string $alias): string
-    {
-        return $this->aliasCfg->get($alias);
-    }
-
-    /**
-     * @param string $worldName
-     * @return bool
-     */
-    public function existsLevel(string $worldName): bool
-    {
-        if ($this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param string $alias
-     * @return bool
-     */
-    public function existsAlias(string $alias): bool
-    {
-        if ($this->aliasCfg->exists($alias)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param string $alias
-     * @return bool
-     */
-    public function rmAlias(string $alias): bool
-    {
-        if ($this->existsAlias($alias) == true) {
-            $cmd = $this->getServer()->getCommandMap()->getCommand($alias);
-            $this->getServer()->getCommandMap()->unregister($cmd);
-            $this->aliasCfg->remove($alias);
-            $this->aliasCfg->save();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param string $alias
-     * @param string $worldName
-     * @return bool
-     * @throws JsonException
-     */
-    public function addAlias(string $alias, string $worldName): bool
-    {
-        $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
-        if ($this->getSpawn($world) == false) {
-            return false;
-        }
-        $this->aliasCfg->set($alias, $worldName);
-        $this->aliasCfg->save();
-        $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $alias, str_replace(["{alias}"], [$alias], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
-        return true;
-    }
-
-
-    /**
-     *
-     */
-    public function reactivateAliases()
-    {
-        foreach ($this->aliasCfg->getAll() as $cmd => $worldName) {
-            $this->getServer()->getCommandMap()->register("theSpawn", new Aliases($this, $cmd, str_replace(["{alias}"], [$cmd], str_replace(["{world}"], [$worldName], MsgMgr::getMsg("alias-command-description")))));
-        }
-    }
-
-    /**
-     * @param string $worldName
-     * @return World
-     */
-    public function levelCheck(string $worldName): World
-    {
-        if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
-            $this->getServer()->getWorldManager()->loadWorld($worldName);
-        }
-        return $this->getServer()->getWorldManager()->getWorldByName($worldName);
-    }
-
-    /**
-     * @param string $playerName
-     * @return Config
-     */
-    public function getHomeCfg(string $playerName): Config
-    {
-        return new Config($this->getDataFolder() . "homes/" . $playerName . ".yml", Config::YAML);
-    }
-
-    /**
-     * @param string $homeName
-     * @param Player $player
-     * @return bool
-     */
-    public function existsHome(string $homeName, Player $player): bool
-    {
-        if (file_exists($this->getDataFolder() . "homes/" . $player->getName() . ".yml")) {
-            if ($this->getHomeCfg($player->getName())->exists($homeName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @param Player $player
-     * @param string $homeName
-     * @param float $x
-     * @param float $y
-     * @param float $z
-     * @param World $world
-     * @param float|null $yaw
-     * @param float|null $pitch
-     * @return bool
-     * @throws JsonException
-     */
-    public function setHome(Player $player, string $homeName, float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null): bool
-    {
-        if ($this->existsHome($homeName, $player) == false) {
-            $home = $this->getHomeCfg($player->getName());
-            $setThis = ["X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName(), "homeName" => $homeName];
-            if ($yaw !== null && $pitch !== null) {
-                $setThis["yaw"] = $yaw;
-                $setThis["pitch"] = $pitch;
-            }
-            $home->set($homeName, $setThis);
-            $home->save();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param Player $player
-     * @param string $homeName
-     * @return bool
-     * @throws JsonException
-     */
-    public function rmHome(Player $player, string $homeName): bool
-    {
-        if ($this->existsHome($homeName, $player) == true) {
-            $home = $this->getHomeCfg($player->getName());
-            $home->remove($homeName);
-            $home->save();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param Player $player
-     * @param string $homeName
-     * @return Position|Location|bool|string
-     */
-    public function getHomePos(Player $player, string $homeName): Position|Location|bool|string
-    {
-        if ($this->existsHome($homeName, $player) == true) {
-            $home = $this->getHomeCfg($player->getName());
-            $homeArray = $home->get($homeName, []);
-            $worldName = $homeArray["level"];
-            if ($this->getServer()->getWorldManager()->isWorldGenerated($worldName)) {
-                if (!$this->getServer()->getWorldManager()->isWorldLoaded($worldName)) {
-                    $this->getServer()->getWorldManager()->loadWorld($worldName);
-                }
-                $world = $this->getServer()->getWorldManager()->getWorldByName($worldName);
-                return $this->convertArrayToPosition($homeArray);
-            } else {
-                return "LevelError";
-            }
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param Player $player
-     * @param string $homeName
-     * @return bool|string
-     */
-    public function teleportToHome(Player $player, string $homeName): bool|string
-    {
-        if ($this->existsHome($homeName, $player) == true) {
-            if (($pos = $this->getHomePos($player, $homeName)) == false) {
-                return false;
-            } elseif ($this->getHomePos($player, $homeName) == "LevelError") {
-                return "LevelError";
-            } else {
-                $player->teleport($pos);
-                return true;
-            }
-        }
-        return false;
+        return $this->getConfig()->get("use-aliases") == "true";
     }
 
     /**
      * @param Player $player
      * @return string|null
      */
-    public function listHomes(Player $player): ?string
+    public function listHomes(IPlayer $player): ?string
     {
-        $homes = null;
-        if (file_exists($this->getDataFolder() . "homes/" . $player->getName() . ".yml")) {
-            $home = $this->getHomeCfg($player->getName());
-            $all = $home->getAll();
-            $getRight = $all;
-            foreach ($getRight as $homex => $homez) {
-                $right = [$homez["homeName"] . ", "];
-                $homes .= implode(", ", $right);
-            }
-            return $homes;
-        }
-        return $homes;
+        return count(($homes = HomeManager::getHomesOfPlayer($player))) > 0 ? implode(", ", $homes) : null;
     }
-
-    /**
-     * @param Player $player
-     * @param string $homeName
-     * @return HomeInfo|null
-     */
-    public function getHomeInfo(Player $player, string $homeName): ?HomeInfo
-    {
-        return $this->existsHome($homeName, $player) ? new HomeInfo($player, $homeName) : null;
-    }
-
-    /**
-     * @param Player $player
-     * @return array|null
-     */
-    public function getHomesOfPlayer(Player $player): array|null
-    {
-        $file = theSpawn::getInstance()->getDataFolder() . "homes/" . $player->getName() . ".yml";
-
-        if (!file_exists($file)) return null;
-
-        return (new Config($file, Config::YAML))->getAll(true);
-    }
-
-    /**
-     * @param Player $player
-     * @return int
-     */
-    public function getMaxHomesOfPlayer(Player $player): int //copied from MyPlot (by jasonwynn10)
-    {
-		if($player->hasPermission("theSpawn.homes.unlimited") || !$this->useMaxHomePermissions()) return PHP_INT_MAX;
-
-		$perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
-		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);
-		$perms = array_filter($perms, function(string $name) : bool {
-			return (str_starts_with($name, "theSpawn.homes."));
-		}, ARRAY_FILTER_USE_KEY);
-		if(count($perms) === 0)
-			return 0;
-		krsort($perms, SORT_FLAG_CASE | SORT_NATURAL);
-		/**
-		 * @var string $name
-		 * @var Permission $perm
-		 */
-		foreach($perms as $name => $perm) {
-			$maxHomes = mb_substr($name, 15);
-			if(is_numeric($maxHomes)) {
-				return (int) $maxHomes;
-			}
-		}
-		return 0;
-	}
 
     /**
      * @return bool
      */
     public function useMaxHomePermissions(): bool
     {
-        if ($this->getConfig()->get("use-max-home-permissions") == "true" || $this->getConfig()->get("use-max-home-permissions") == "on") return true;
-        return false;
+        return $this->getConfig()->get("use-max-home-permissions") == "true" || $this->getConfig()->get("use-max-home-permissions") == "on";
     }
 
     /**
@@ -1029,11 +644,7 @@ class theSpawn extends PluginBase
      */
     public function useHomes(): bool
     {
-        if ($this->getConfig()->get("use-homes") == "true" || $this->getConfig()->get("use-homes") == "on") {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->getConfig()->get("use-homes") == "true" || $this->getConfig()->get("use-homes") == "on";
     }
 
     /**
@@ -1053,10 +664,7 @@ class theSpawn extends PluginBase
      */
     public function useWarps(): bool
     {
-        if ($this->getConfig()->get("use-warps") == "true" || $this->getConfig()->get("use-warps") == "on")
-            return true;
-
-        return false;
+        return $this->getConfig()->get("use-warps") == "true" || $this->getConfig()->get("use-warps") == "on";
     }
 
     /**
@@ -1083,11 +691,7 @@ class theSpawn extends PluginBase
      */
     public function useTPAs(): bool
     {
-        if ($this->getConfig()->get("use-tpas") == "true" || $this->getConfig()->get("use-tpas") == "on") {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->getConfig()->get("use-tpas") == "true" || $this->getConfig()->get("use-tpas") == "on";
     }
 
     /**
@@ -1134,18 +738,6 @@ class theSpawn extends PluginBase
         }
         unset($this->spawnDelays[$player->getName()]);
         return true;
-    }
-
-    /**
-     * @return bool
-     */
-    public function useForms(): bool
-    {
-        if (($this->getConfig()->get("use-forms") == "true" || $this->getConfig()->get("use-forms") == "on")
-            && class_exists(Form::class))
-            return true;
-
-        return false;
     }
 
     /**
@@ -1223,9 +815,9 @@ class theSpawn extends PluginBase
         $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() + 1));
         $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() - 1));
 
-        foreach ($blocksToCheck as $blockToCheck) {
-            if($blockToCheck instanceof Liquid && !$blockToCheck instanceof Air && !$blockToCheck->isSolid()) return false;
-        }
+        foreach ($blocksToCheck as $blockToCheck)
+            if($blockToCheck instanceof Liquid && !$blockToCheck instanceof Air && !$blockToCheck->isSolid())
+                return false;
 
         if($block1 instanceof Air && $block2 instanceof Air) return true;
 

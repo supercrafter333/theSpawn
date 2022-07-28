@@ -1,13 +1,19 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\home;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\world\sound\GhastShootSound;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\events\other\RemoveHomeEvent;
 use supercrafter333\theSpawn\form\HomeForms;
+use supercrafter333\theSpawn\home\Home;
+use supercrafter333\theSpawn\home\HomeManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
+use function count;
+use function is_string;
 
 /**
  * Class DelhomeCommand
@@ -17,7 +23,7 @@ class DelhomeCommand extends theSpawnOwnedCommand
 {
 
     /**
-     * SethomeCommand constructor.
+     * DelhomeCommand constructor.
      * @param string $name
      * @param string $description
      * @param string|null $usageMessage
@@ -33,7 +39,7 @@ class DelhomeCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -43,24 +49,23 @@ class DelhomeCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            if ($pl->useForms()) {
-                if ($pl->listHomes($s) == null) {
-                    $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
-                    return;
-                }
-                $warpForms = new HomeForms($s->getName());
-                $warpForms->openRmHome($s);
-            } else {
+            if (is_string($pl->listHomes($s)) && $pl->useForms())
+                (new HomeForms($s->getName()))->openRmHome($s);
+            elseif (!$pl->useForms() && is_string($pl->listHomes($s)))
                 $s->sendMessage($this->usageMessage);
-            }
+            elseif (!$pl->useForms() && !is_string($pl->listHomes($s)))
+                $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));
             return;
         }
-        if ($pl->rmHome($s, $args[0]) == false) {
+
+        if (!($home = HomeManager::getHome($args[0], $s)) instanceof Home) {
             $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
-        } else {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
-            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+            return;
         }
+
+        HomeManager::removeHome($home, $s);
+        $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
+        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         return;
     }
 
@@ -71,10 +76,14 @@ class DelhomeCommand extends theSpawnOwnedCommand
 
         if (!self::testPermissionX($s, "theSpawn.delhome.cmd", "delhome")) return;
 
-        if ($pl->rmHome($s, $args[0]) == false) {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists")));
-        } else {
-            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
+        if (!($home = HomeManager::getHome($args[0], $s)) instanceof Home)
+            $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-not-exists", ["{home}" => $args[0]])));
+        else {
+            $ev = new RemoveHomeEvent($args[0], $s);
+            $ev->call();
+            if ($ev->isCancelled()) return;
+
+            $s->sendMessage($prefix . MsgMgr::getMsg("home-deleted", ["{home}" => $args[0]]));
             $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         }
         return;

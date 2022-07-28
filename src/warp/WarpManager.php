@@ -7,40 +7,18 @@ use pocketmine\entity\Location;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\World;
+use supercrafter333\theSpawn\LocationHelper;
 use supercrafter333\theSpawn\theSpawn;
 use function count;
-use function explode;
-use function implode;
 use function microtime;
 
 class WarpManager
 {
 
     /**
-     * @param string $locationString
-     * @return Location
-     */
-    public static function stringToLocation(string $locationString): Location
-    {
-        $locArr = explode('|', $locationString);
-        return Location::fromObject(new Position(
-            $locArr[0], $locArr[1], $locArr[2],
-            theSpawn::getInstance()->checkWorld($locArr[3])),
-            theSpawn::getInstance()->checkWorld($locArr[3]),
-            $locArr[4], $locArr[5]);
-    }
-
-    /**
-     * @param Location $location
-     * @return string
-     */
-    public static function locationToString(Location $location): string
-    {
-        return implode('|', [$location->getX(), $location->getY(), $location->getZ(), $location->getWorld()->getFolderName(),
-            $location->getYaw(), $location->getPitch()]);
-    }
-
-    /**
+     * This method converts old warps to the new warp-format.
+     * This is an internal method.
+     * @internal
      * @return void
      * @throws JsonException
      */
@@ -71,6 +49,9 @@ class WarpManager
     }
 
     /**
+     * Converts an old warp to the new warp-format.
+     * This is an internal method.
+     * @internal
      * @param string $warpName
      * @param array $warpInfos
      * @return bool
@@ -114,6 +95,7 @@ class WarpManager
     }
 
     /**
+     * Checks if a warp is set.
      * @param string|Warp $warp
      * @return bool
      */
@@ -123,6 +105,8 @@ class WarpManager
     }
 
     /**
+     * Creates a warp if the warp wasn't already created.
+     * Returns 'false' if the warp already exists.
      * @param Warp $warp
      * @return bool
      * @throws JsonException
@@ -135,7 +119,7 @@ class WarpManager
         $cfg = self::getWarpConfig();
 
         $loc = $warp->getLocation();
-        $warpArray = ["location" => self::locationToString($loc)];
+        $warpArray = ["location" => LocationHelper::locationToString($loc)];
         if ($warp->isPermissionEnabled())
             $warpArray["perm"] = true;
         if ($warp->getIconPath() !== null && $warp->getIconPath() !== "")
@@ -147,6 +131,7 @@ class WarpManager
     }
 
     /**
+     * Returns the Warps-class if the warp-name exists and null if it doesn't.
      * @param string $warp
      * @return Warp|null
      */
@@ -158,7 +143,7 @@ class WarpManager
         $warpInfos = self::getWarpConfig()->get($warp, []);
 
         return new Warp(
-            self::stringToLocation($warpInfos["location"]),
+            LocationHelper::stringToLocation($warpInfos["location"]),
             $warp,
             (isset($warpInfos["perm"]) ? (bool)$warpInfos["perm"] : false),
             ($warpInfos["iconPath"] ?? null)
@@ -166,6 +151,7 @@ class WarpManager
     }
 
     /**
+     * Saves an existing warp to the config-file.
      * @param Warp $warp
      * @return bool
      * @throws JsonException
@@ -178,7 +164,7 @@ class WarpManager
         $cfg = self::getWarpConfig();
 
         $loc = $warp->getLocation();
-        $warpArray = ["location" => self::locationToString($loc)];
+        $warpArray = ["location" => LocationHelper::locationToString($loc)];
         if ($warp->isPermissionEnabled())
             $warpArray["perm"] = true;
         if ($warp->getIconPath() !== null && $warp->getIconPath() !== "")
@@ -190,6 +176,8 @@ class WarpManager
     }
 
     /**
+     * Removes an existing warp.
+     * Returns 'false' if the warp isn't created.
      * @param string|Warp $warp
      * @return bool
      * @throws JsonException
