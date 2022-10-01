@@ -5,15 +5,7 @@ namespace supercrafter333\theSpawn;
 use DateTime;
 use jojoe77777\FormAPI\Form;
 use JsonException;
-use pocketmine\block\Air;
-use pocketmine\block\Crops;
-use pocketmine\block\DoubleTallGrass;
-use pocketmine\block\Flower;
-use pocketmine\block\Grass;
-use pocketmine\block\Liquid;
-use pocketmine\block\Sapling;
-use pocketmine\block\TallGrass;
-use pocketmine\block\Torch;
+use pocketmine\block\{Air, Crops, DoubleTallGrass, Flower, Grass, Liquid, Sapling, TallGrass, Torch};
 use pocketmine\entity\Location;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
@@ -28,15 +20,10 @@ use pocketmine\world\Position;
 use pocketmine\world\World;
 use supercrafter333\theSpawn\commands\alias\{AliasManager, RemovealiasCommand, SetaliasCommand};
 use supercrafter333\theSpawn\commands\BackCommand;
-use supercrafter333\theSpawn\commands\DelspawnCommand;
 use supercrafter333\theSpawn\commands\home\{DelhomeCommand, EdithomeCommand, HomeCommand, SethomeCommand};
 use supercrafter333\theSpawn\commands\hub\{DelhubCommand, HubCommand, SethubCommand};
-use supercrafter333\theSpawn\commands\SetspawnCommand;
-use supercrafter333\theSpawn\commands\SpawnCommand;
-use supercrafter333\theSpawn\commands\TpacceptCommand;
-use supercrafter333\theSpawn\commands\TpaCommand;
-use supercrafter333\theSpawn\commands\TpaHereCommand;
-use supercrafter333\theSpawn\commands\TpdeclineCommand;
+use supercrafter333\theSpawn\commands\spawn\{DelspawnCommand, SetspawnCommand, SpawnCommand};
+use supercrafter333\theSpawn\commands\tpa\{TpacceptCommand, TpaCommand, TpaHereCommand, TpdeclineCommand};
 use supercrafter333\theSpawn\commands\warp\{DelwarpCommand, EditwarpCommand, SetwarpCommand, WarpCommand};
 use supercrafter333\theSpawn\home\HomeManager;
 use supercrafter333\theSpawn\task\SpawnDelayTask;
@@ -82,11 +69,6 @@ class theSpawn extends PluginBase
      */
     public array $lastDeathPositions = [];
 
-    /**
-     * @var string
-     */
-    public string $version = "2.0.0-PM5-dev2";
-
 
     public const DEVELOPMENT_VERSION = true;
 
@@ -105,20 +87,26 @@ class theSpawn extends PluginBase
      */
     public function onEnable(): void
     {
-        if (self::DEVELOPMENT_VERSION) $this->getLogger()->warning("You're using a development version of theSpawn!! This version can contain bugs, please report them on github!");
+        $pluginVersion = $this->getDescription()->getVersion();
+
+        if (self::DEVELOPMENT_VERSION)
+            $this->getLogger()->warning("You're using a development version of theSpawn ({$pluginVersion})!! This version can contain bugs, please report them on github!");
+
+        if ($this->getServer()->getVersion() < 5)
+            $this->getLogger()->error("This version of theSpawn has not been tested in PM4 and may contain bugs on PM4-servers!! You should upgrade to PocketMine-MP 5.0.0 or higher!");
 
         $this->saveResource("config.yml");
         @mkdir($this->getDataFolder() . "homes");
         @mkdir($this->getDataFolder() . "Languages");
-        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom") {
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom")
             $this->saveResource("Languages/messages.yml");
-        }
+
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $cmdMap = $this->getServer()->getCommandMap();
         # Version Check
         //$this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         $cfgVersion = $this->getConfig()->get("version");
-        $this->versionCheck($this->version, ($cfgVersion < "1.8.0"));
+        $this->versionCheck($pluginVersion, ($cfgVersion < "1.8.0"));
         ###
 
         $this->registerPermissions();
@@ -327,133 +315,13 @@ class theSpawn extends PluginBase
     }*/
 
     /**
-     * @return Config
-     */
-    public function getRandomHubList(): Config
-    {
-        return new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
-    }
-
-    /**
-     * @param float $x
-     * @param float $y
-     * @param float $z
-     * @param World $world
-     * @param float|null $yaw
-     * @param float|null $pitch
-     * @param int|null $count
-     * @throws JsonException
-     */
-    public function setHub(float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null, int $count = null)
-    {
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
-        $randHub = new Config($this->getDataFolder() . "theRandHubs.yml", Config::YAML);
-        $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
-        if ($yaw !== null && $pitch !== null) {
-            $hubcoords["yaw"] = $yaw;
-            $hubcoords["pitch"] = $pitch;
-        }
-        if ($count !== null && $this->getUseRandomHubs()) {
-            $setRandHub = $x . '|' . $y . '|' . $z . '|' . $world->getFolderName();
-            if ($yaw !== null && $pitch !== null) $setRandHub .= "|" . $yaw . "|" . $pitch;
-            $randHub->set($count, $setRandHub);
-            $randHub->save();
-        } else {
-            $hub->set("hub", $hubcoords);
-            $hub->save();
-        }
-    }
-
-    /**
-     * @param int|null $count
-     * @return Position|Location|null
-     */
-    public function getRandomHub(int $count = null): Position|Location|null
-    {
-        $randHubs = $this->getRandomHubList();
-        if (!$this->getUseRandomHubs()) return null;
-        if ($count === null) {
-            $matches = [];
-            if (!$randHubs->exists(1)) return null;
-            foreach ($randHubs->getAll() as $all) {
-                $matches[] = $all;
-            }
-            $matchCount = count($matches);
-            return $this->getRandomHub(mt_rand(1, $matchCount));
-        } else {
-            $i = explode('|', $randHubs->get($count));
-            $worldName = $i[3];
-            if ($this->getHubLevel($worldName) instanceof World) {
-                if (!isset($i[4])) return new Position($i[0], $i[1], $i[2], $this->checkWorld($worldName));
-                return new Location($i[0], $i[1], $i[2], $this->checkWorld($worldName), $i[4], $i[5]);
-            } else {
-                return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
-            }
-        }
-    }
-
-    /**
-     * @param int $count
-     * @return bool
-     */
-    public function checkSetRandomHub(int $count): bool
-    {
-        $randHubs = $this->getRandomHubList();
-        if ($randHubs->exists(($count - 1)) || $count == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @param int $count
-     * @return bool
-     */
-    public function checkRemoveRandomHub(int $count): bool
-    {
-        $randHubs = $this->getRandomHubList();
-        if (!$randHubs->exists(($count + 1)) || $count == 1) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * @param int|null $count
-     * @return Position|Location|false|null
-     */
-    public function getHub(int $count = null): Position|Location|null|false
-    {
-        $prefix = "§f[§7the§eSpawn§f] §8»§r ";
-        $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
-        if ($count !== null && $this->getUseRandomHubs()) {
-            return $this->getRandomHub($count) === null ? false : $this->getRandomHub($count);
-        }
-        if ($this->getUseRandomHubs()) {
-            return $this->getRandomHub() === null ? false : $this->getRandomHub();
-        }
-        if ($hub->exists("hub")) {
-            $hubArray = $hub->get("hub", []);
-            $worldname = $hubArray["level"];
-            $world = !$this->checkWorld($worldname) instanceof World ? $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() : $this->checkWorld($worldname);
-            return $this->convertArrayToPosition($hubArray);
-        } else {
-            return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
-        }
-    }
-
-    /**
      * @param World|null $world
      * @return Position|Location|false
      */
     public function getSpawn(?World $world): Position|Location|false
     {
         if (!$world instanceof World) {
-            $hub = $this->getHub();
+            $hub = HubManager::getInstance()->getHub();
             if (!$hub instanceof Position) {
                 return $this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn();
             }
@@ -488,41 +356,6 @@ class theSpawn extends PluginBase
         $spawn->set($world->getFolderName(), $coords);
         $spawn->save();
         return true;
-    }
-
-    /**
-     * @param string $worldName
-     * @return World|null
-     */
-    public function getHubLevel(string $worldName): ?World
-    {
-        return $this->checkWorld($worldName);
-    }
-
-    /**
-     * @param int|null $count
-     * @return bool
-     * @throws JsonException
-     */
-    public function removeHub(int $count = null): bool
-    {
-        $hub = new Config($this->getDataFolder() . "theHub.yml", Config::YAML);
-        $randHubs = $this->getRandomHubList();
-        if ($count !== null && $this->getUseRandomHubs()) {
-            if ($randHubs->exists($count)) {
-                $hub->remove("hub");
-                $hub->save();
-                return true;
-            } else {
-                return false;
-            }
-        } elseif ($hub->exists("hub")) {
-            $hub->remove("hub");
-            $hub->save();
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -648,6 +481,7 @@ class theSpawn extends PluginBase
     }
 
     /**
+     * @deprecated This will be removed soon (Reason: Waterdog is outdated and no longer under maintenance)
      * @param Player $player
      * @param string $server
      */

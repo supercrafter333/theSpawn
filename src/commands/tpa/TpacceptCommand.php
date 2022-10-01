@@ -1,13 +1,15 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\tpa;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\Tpa;
+use supercrafter333\theSpawn\tpa\TpaManager;
 use function implode;
 
 /**
@@ -55,7 +57,7 @@ class TpacceptCommand extends theSpawnOwnedCommand
         ? $pl->getServer()->getPlayerByPrefix(implode(" ", $args))->getName()
         : implode(" ", $args);
 
-        if (!$pl->hasTpaOf($s->getName(), $source)) {
+        if (!TpaManager::hasTpaOf($s->getName(), $source)) {
             $s->sendMessage(str_replace("{target}", $source, MsgMgr::getMsg("no-pending-tpa")));
             return;
         }

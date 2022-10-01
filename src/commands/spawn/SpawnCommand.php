@@ -1,12 +1,12 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\spawn;
 
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use pocketmine\world\sound\PopSound;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -17,7 +17,6 @@ use supercrafter333\theSpawn\theSpawn;
 class SpawnCommand extends theSpawnOwnedCommand
 {
 
-    
     /**
      * SpawnCommand constructor.
      * @param string $name
@@ -35,16 +34,13 @@ class SpawnCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
-        $config = $pl->getConfig();
         #########################
 
         if (!$this->isPlayer($s)) return;
@@ -60,18 +56,10 @@ class SpawnCommand extends theSpawnOwnedCommand
             }
             $s->teleport($pl->getSpawn($level));
             $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-tp")));
-            $s->getWorld()->addSound($s->getPosition(), new PopSound());
+            $s->broadcastSound(new PopSound(), [$s]);
         } else {
             $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
         }
         return;
-    }
-
-    /**
-     * @return Plugin
-     */
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
     }
 }

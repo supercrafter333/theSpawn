@@ -67,7 +67,7 @@ class SetaliasCommand extends theSpawnOwnedCommand
 
         AliasManager::setAlias($args[0], theSpawn::getInstance()->checkWorld($args[1]));
         $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
-        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+        $s->broadcastSound(new DoorBumpSound(), [$s]);
         return;
     }
 }

@@ -1,25 +1,26 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands;
+namespace supercrafter333\theSpawn\commands\spawn;
 
+use JsonException;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
-use pocketmine\world\sound\GhastShootSound;
+use pocketmine\world\sound\DoorBumpSound;
+use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
 /**
- * Class DelspawnCommand
+ * Class SetspawnCommand
  * @package supercrafter333\theSpawn\commands
  */
-class DelspawnCommand extends theSpawnOwnedCommand
+class SetspawnCommand extends theSpawnOwnedCommand
 {
 
     
     /**
-     * DelspawnCommand constructor.
+     * SetspawnCommand constructor.
      * @param string $name
      * @param string $description
      * @param string|null $usageMessage
@@ -28,45 +29,35 @@ class DelspawnCommand extends theSpawnOwnedCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        $this->setPermission("theSpawn.delspawn.cmd");
-        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn", "delthespawn"]);
+        $this->setPermission("theSpawn.setspawn.cmd");
+        parent::__construct("setspawn", "Set the spawn of this world!", $usageMessage, ["setthespawn"]);
     }
 
     /**
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
-        $config = $pl->getConfig();
         #########################
 
         if (!$this->canUse($s)) return;
 
         $levelname = $s->getWorld()->getFolderName();
-        $level = $pl->getServer()->getWorldManager()->getWorldByName($levelname);
-        if ($spawn->exists($levelname)) {
-            $pl->removeSpawn($level);
-            $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
-            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+        $level = $s->getWorld();
+        $pl->setSpawn($s, $level);
+        if (!$spawn->exists($levelname)) {
+            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-set")));
         } else {
-            $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
+            $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("spawn-changed")));
         }
+        $s->broadcastSound(new DoorBumpSound(), [$s]);
         return;
-    }
-
-    /**
-     * @return Plugin
-     */
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
     }
 }

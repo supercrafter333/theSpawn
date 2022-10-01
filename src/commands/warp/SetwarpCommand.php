@@ -79,6 +79,6 @@ class SetwarpCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-set", ["{warpname}" => (string)$args[0], "{position}" => $posMsg, "{world}" => $s->getWorld()->getFolderName()]));
         } else
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-already-set", ["{warpname}" => (string)$args[0]]));
-        $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+        $s->broadcastSound(new DoorBumpSound(), [$s]);
     }
 }

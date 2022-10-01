@@ -7,7 +7,7 @@ use pocketmine\scheduler\Task;
 class TpaManager
 {
 
-    protected static array $tpas;
+    public static array $tpas;
 
     /**
      * Returns all tpas.
@@ -67,7 +67,7 @@ class TpaManager
      * @param string $sourcePlayer
      * @return bool
      */
-    public function removeTpa(string $sourcePlayer): bool
+    public static function removeTpa(string $sourcePlayer): bool
     {
         if (!isset(self::$tpas[$sourcePlayer])) return false;
 
@@ -83,6 +83,7 @@ class TpaManager
      */
     public static function hasTpaOf(string $targetPlayer, string $sourcePlayer): bool
     {
+        if (!isset(self::$tpas[$sourcePlayer])) return false;
         return (new Tpa($sourcePlayer))->getTarget() === $targetPlayer;
     }
 

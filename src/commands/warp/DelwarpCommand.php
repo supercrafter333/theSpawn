@@ -63,7 +63,7 @@ class DelwarpCommand extends theSpawnOwnedCommand
 
         WarpManager::removeWarp($args[0]);
         $s->sendMessage($prefix . MsgMgr::getMsg("warp-deleted", ["{warpname}" => (string)$args[0]]));
-        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+        $s->broadcastSound(new GhastShootSound(), [$s]);
     }
 
     public static function simpleExecute(Player $s, array $args): void
@@ -84,6 +84,6 @@ class DelwarpCommand extends theSpawnOwnedCommand
 
         WarpManager::removeWarp($args[0]);
         $s->sendMessage($prefix . MsgMgr::getMsg("warp-deleted", ["{warpname}" => (string)$args[0]]));
-        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+        $s->broadcastSound(new GhastShootSound(), [$s]);
     }
 }

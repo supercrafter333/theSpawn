@@ -8,6 +8,7 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use pocketmine\world\sound\DoorBumpSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\HubManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -43,10 +44,8 @@ class SethubCommand extends theSpawnOwnedCommand
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
+        $hubMgr = HubManager::getInstance();
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
-        $config = $pl->getConfig();
         #########################
 
         if (!$this->canUse($s)) return;
@@ -58,7 +57,7 @@ class SethubCommand extends theSpawnOwnedCommand
         $pitch = $s->getLocation()->getPitch();
         $levelname = $s->getWorld()->getFolderName();
         $level = $s->getWorld();
-        if ($pl->getUseHubServer() == false) {
+        if (!$pl->getUseHubServer()) {
             if ($level === null) {
                 $s->sendMessage($prefix . MsgMgr::getErrorMsg());
                 return;
@@ -68,10 +67,10 @@ class SethubCommand extends theSpawnOwnedCommand
                     $s->sendMessage($this->usageMessage);
                     return;
                 }
-                if ($pl->checkSetRandomHub($args[0])) {
-                    $pl->setHub($x, $y, $z, $level, $yaw, $pitch, $args[0]);
+                if ($hubMgr->checkSetRandomHub($args[0])) {
+                    $hubMgr->setHub($x, $y, $z, $level, $yaw, $pitch, $args[0]);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
-                    $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+                    $s->broadcastSound(new DoorBumpSound(), [$s]);
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("set-random-hub-before"));
                 }
@@ -81,16 +80,16 @@ class SethubCommand extends theSpawnOwnedCommand
                         $s->sendMessage($prefix . MsgMgr::getErrorMsg());
                         return;
                     }
-                    $pl->setHub($x, $y, $z, $level, $yaw, $pitch);
+                    $hubMgr->setHub($x, $y, $z, $level, $yaw, $pitch);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-set")));
                 } else {
-                    $pl->setHub($x, $y, $z, $level, $yaw, $pitch);
+                    $hubMgr->setHub($x, $y, $z, $level, $yaw, $pitch);
                     $s->sendMessage($prefix . str_replace(["{world}"], [$levelname], MsgMgr::getMsg("hub-changed")));
                 }
-                $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+                $s->broadcastSound(new DoorBumpSound(), [$s]);
             }
             return;
-        } elseif ($pl->getUseHubServer() == true) {
+        } elseif ($pl->getUseHubServer()) {
             $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
             return;
         } else {

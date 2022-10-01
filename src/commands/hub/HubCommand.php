@@ -8,6 +8,7 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use pocketmine\world\sound\PopSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\HubManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -42,15 +43,15 @@ class HubCommand extends theSpawnOwnedCommand
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
+        $hubMgr = HubManager::getInstance();
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
         $config = $pl->getConfig();
         #########################
+
         if ($this->isPlayer($s)) {
-            if ($pl->getUseHubServer() == false) {
+            if (!$pl->getUseHubServer()) {
                 if ($pl->getUseRandomHubs()) {
-                    $hubPos = $pl->getRandomHub();
+                    $hubPos = $hubMgr->getRandomHub();
                     if ($hubPos !== null) {
                         if (!$pl->isPositionSafe($hubPos)) {
                             $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
@@ -58,32 +59,32 @@ class HubCommand extends theSpawnOwnedCommand
                         }
                         $s->teleport($hubPos);
                         $s->sendMessage($prefix . str_replace(["{world}"], [$hubPos->getWorld()->getFolderName()], MsgMgr::getMsg("hub-tp")));
-                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
+                        $s->broadcastSound(new PopSound(), [$s]);
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }
                     return;
                 }
                 if ($hub->exists("hub")) {
-                    $hublevel = $pl->getHub()->getWorld();
+                    $hublevel = $hubMgr->getHub()->getWorld();
                     if ($hublevel !== null) {
-                        $hubPos2 = $pl->getHub();
+                        $hubPos2 = $hubMgr->getHub();
                         if (!$pl->isPositionSafe($hubPos2)) {
                             $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));
                             return;
                         }
                         $s->teleport($hubPos2);
                         $s->sendMessage($prefix . str_replace(["{world}"], [$hublevel->getFolderName()], MsgMgr::getMsg("hub-tp")));
-                        $s->getWorld()->addSound($s->getPosition(), new PopSound());
+                        $s->broadcastSound(new PopSound(), [$s]);
                     } else {
                         $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found-hub"));
                     }
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
                 }
-            } elseif ($pl->getUseHubServer() == true && $pl->getUseWaterdogTransfer() == false) {
+            } elseif ($pl->getUseHubServer() && !$pl->getUseWaterdogTransfer()) {
                 $pl->teleportToHubServer($s);
-            } elseif ($pl->getUseHubServer() == true && $pl->getUseWaterdogTransfer() == true) {
+            } elseif ($pl->getUseHubServer() && $pl->getUseWaterdogTransfer()) {
                 $pl->transferToProxyServer($s, $config->get("waterdog-servername"));
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));

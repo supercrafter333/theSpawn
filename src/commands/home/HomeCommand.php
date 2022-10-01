@@ -54,7 +54,7 @@ class HomeCommand extends theSpawnOwnedCommand
                     (new HomeForms($s->getName()))->open($s);
                 else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("homelist", ["{homelist}" => $pl->listHomes($s)]));
-                    $s->getWorld()->addSound($s->getPosition(), new XpCollectSound());
+                    $s->broadcastSound(new XpCollectSound(), [$s]);
                 }
             else
                 $s->sendMessage($prefix . MsgMgr::getMsg("no-homes-set"));

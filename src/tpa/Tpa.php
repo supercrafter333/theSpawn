@@ -24,7 +24,7 @@ class Tpa
 
     public function __construct(private string $source)
     {
-        $this->tpa = theSpawn::getInstance()->getTpaOf($source);
+        $this->tpa = TpaManager::$tpas[$this->source];
     }
 
     /**
@@ -103,12 +103,12 @@ class Tpa
     {
         $tpaTask = new TpaTask($seconds, $this);
         $task = theSpawn::getInstance()->getScheduler()->scheduleRepeatingTask($tpaTask, 20);
-        theSpawn::getInstance()->setTpaTask($this->getSource(), $task->getTask());
+        TpaManager::setTpaTask($this->getSource(), $task->getTask());
     }
 
     public function cancel(): void
     {
-        theSpawn::getInstance()->removeTpa($this->getSource());
+        TpaManager::removeTpa($this->getSource());
     }
 
     public function complete(): void
@@ -129,6 +129,6 @@ class Tpa
             }
             $this->getTargetAsPlayer()->teleport($sourcePos);
         }
-        $this->getSourceAsPlayer()->getWorld()->addSound($this->getSourceAsPlayer()->getPosition(), new XpLevelUpSound(mt_rand(1, 100)));
+        $this->getSourceAsPlayer()->broadcastSound(new XpLevelUpSound(mt_rand(1, 100)), [$this->getSourceAsPlayer()]);
     }
 }

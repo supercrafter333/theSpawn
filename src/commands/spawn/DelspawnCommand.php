@@ -1,25 +1,26 @@
 <?php
 
-namespace supercrafter333\theSpawn\commands\alias;
+namespace supercrafter333\theSpawn\commands\spawn;
 
+use JsonException;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
-use pocketmine\plugin\Plugin;
+use pocketmine\utils\Config;
 use pocketmine\world\sound\GhastShootSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
 /**
- * Class RemovealiasCommand
+ * Class DelspawnCommand
  * @package supercrafter333\theSpawn\commands
  */
-class RemovealiasCommand extends theSpawnOwnedCommand
+class DelspawnCommand extends theSpawnOwnedCommand
 {
 
     
     /**
-     * RemovealiasCommand constructor.
+     * DelspawnCommand constructor.
      * @param string $name
      * @param string $description
      * @param string|null $usageMessage
@@ -28,8 +29,8 @@ class RemovealiasCommand extends theSpawnOwnedCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
-        $this->setPermission("theSpawn.removealias.cmd");
-        parent::__construct("removealias", "Remove an alias!", "§4Use: §r/removealias <alias>", ["rmalias"]);
+        $this->setPermission("theSpawn.delspawn.cmd");
+        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn", "delthespawn"]);
     }
 
     /**
@@ -37,33 +38,26 @@ class RemovealiasCommand extends theSpawnOwnedCommand
      * @param string $commandLabel
      * @param array $args
      * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
+        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
+        #########################
 
         if (!$this->canUse($s)) return;
 
-        if (!count($args) >= 1) {
-            $s->sendMessage($this->usageMessage);
-            return;
+        $levelname = $s->getWorld()->getFolderName();
+        $level = $pl->getServer()->getWorldManager()->getWorldByName($levelname);
+        if ($spawn->exists($levelname)) {
+            $pl->removeSpawn($level);
+            $s->sendMessage($prefix . MsgMgr::getMsg("spawn-removed"));
+            $s->broadcastSound(new GhastShootSound(), [$s]);
+        } else {
+            $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set-in-this-world"));
         }
-        if (!AliasManager::existsAlias($args[0])) {
-            $s->sendMessage($prefix . MsgMgr::getMsg("alias-not-found"));
-            return;
-        }
-        AliasManager::removeAlias($args[0]);
-        $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], MsgMgr::getMsg("alias-removed")));
-        $s->broadcastSound(new GhastShootSound(), [$s]);
         return;
-    }
-
-    /**
-     * @return Plugin
-     */
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
     }
 }

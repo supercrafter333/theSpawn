@@ -8,6 +8,7 @@ use pocketmine\plugin\Plugin;
 use pocketmine\utils\Config;
 use pocketmine\world\sound\GhastShootSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\HubManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -43,10 +44,8 @@ class DelhubCommand extends theSpawnOwnedCommand
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
-        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
+        $hubMgr = HubManager::getInstance();
         $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
-        $config = $pl->getConfig();
         #########################
 
         if (!$this->canUse($s)) return;
@@ -56,19 +55,19 @@ class DelhubCommand extends theSpawnOwnedCommand
                 $s->sendMessage($this->usageMessage);
                 return;
             }
-            if (!$pl->checkSetRandomHub($args[0])) {
+            if (!$hubMgr->checkSetRandomHub($args[0])) {
                 $s->sendMessage($prefix . MsgMgr::getMsg("remove-random-hub-before"));
                 return;
             }
-            $pl->removeHub($args[0]);
+            $hubMgr->removeHub($args[0]);
             $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+            $s->broadcastSound(new GhastShootSound(), [$s]);
             return;
         }
         if ($hub->exists("hub")) {
-            $pl->removeHub();
+            $hubMgr->removeHub();
             $s->sendMessage($prefix . MsgMgr::getMsg("hub-removed"));
-            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+            $s->broadcastSound(new GhastShootSound(), [$s]);
             return;
         } else {
             $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));

@@ -33,4 +33,29 @@ class LocationHelper
         return implode('|', [$location->getX(), $location->getY(), $location->getZ(), $location->getWorld()->getFolderName(),
             $location->getYaw(), $location->getPitch()]);
     }
+
+    /**
+     * @param array $posArray
+     * @return Position|Location|null
+     */
+    public static function legacyConvertArrayToPosition(array $posArray): Position|Location|null
+    {
+        if (!isset($posArray["level"])) return null;
+
+        if (isset($posArray["yaw"]) && isset($posArray["pitch"])) return new Location(
+            $posArray["X"],
+            $posArray["Y"],
+            $posArray["Z"],
+            theSpawn::getInstance()->checkWorld($posArray["level"]),
+            $posArray["yaw"],
+            $posArray["pitch"]
+        );
+
+        return new Position(
+            $posArray["X"],
+            $posArray["Y"],
+            $posArray["Z"],
+            theSpawn::getInstance()->checkWorld($posArray["level"])
+        );
+    }
 }

@@ -51,28 +51,29 @@ class EventListener implements Listener
     public function onPlayerRespawn(PlayerRespawnEvent $event): void
     {
         $pl = theSpawn::getInstance();
+        $hubMgr = HubManager::getInstance();
         $s = $event->getPlayer();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $world = $s->getWorld();
 
-        if ($pl->useHubTeleportOnDeath() && $pl->getHub() instanceof Position) {
-            $event->setRespawnPosition($pl->getHub());
+        if ($pl->useHubTeleportOnDeath() && $hubMgr->getHub() instanceof Position) {
+            $event->setRespawnPosition($hubMgr->getHub());
             return;
         }
 
         if ($world === null) {
-            if ($pl->getHub() instanceof Position) {
-                $event->setRespawnPosition($pl->getHub());
+            if ($hubMgr->getHub() instanceof Position) {
+                $event->setRespawnPosition($hubMgr->getHub());
             } else {
                 $event->setRespawnPosition($pl->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
             }
         }
         if ($pl->getSpawn($world) instanceof Position) {
             $event->setRespawnPosition($pl->getSpawn($world));
-            $s->getWorld()->addSound($s->getPosition(), new PopSound());
-        } elseif ($pl->getHub() instanceof Position) {
-            $event->setRespawnPosition($pl->getHub());
-            $s->getWorld()->addSound($s->getPosition(), new PopSound());
+            $s->broadcastSound(new PopSound(), [$s]);
+        } elseif ($hubMgr->getHub() instanceof Position) {
+            $event->setRespawnPosition($hubMgr->getHub());
+            $s->broadcastSound(new PopSound(), [$s]);
         } else {
             if ($world->getSafeSpawn() === null) {
                 $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
@@ -104,7 +105,7 @@ class EventListener implements Listener
         $pl = theSpawn::getInstance();
 
         if ($this->getConfig()->get("hub-teleport-on-join") == "true") {
-            $hub = $pl->getHub();
+            $hub = HubManager::getInstance()->getHub();
             if ($hub !== null && $hub !== false) {
                 $event->getPlayer()->teleport($hub);
             } elseif ($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() !== null) {

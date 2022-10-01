@@ -65,7 +65,7 @@ class DelhomeCommand extends theSpawnOwnedCommand
 
         HomeManager::removeHome($home, $s);
         $s->sendMessage($prefix . str_replace(["{home}"], [$args[0]], MsgMgr::getMsg("home-deleted")));
-        $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+        $s->broadcastSound(new GhastShootSound(), [$s]);
         return;
     }
 
@@ -84,7 +84,7 @@ class DelhomeCommand extends theSpawnOwnedCommand
             if ($ev->isCancelled()) return;
 
             $s->sendMessage($prefix . MsgMgr::getMsg("home-deleted", ["{home}" => $args[0]]));
-            $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
+            $s->broadcastSound(new GhastShootSound(), [$s]);
         }
         return;
     }

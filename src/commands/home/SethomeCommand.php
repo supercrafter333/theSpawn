@@ -72,7 +72,7 @@ class SethomeCommand extends theSpawnOwnedCommand
         $homes = count(HomeManager::getHomesOfPlayer($s), COUNT_RECURSIVE);
         if (($maxHomes = HomeManager::getMaxHomesOfPlayer($s)) <= $homes) {
             $s->sendMessage(MsgMgr::getMsg("highest-home-count-reached", ["{max-homes}" => $maxHomes]));
-            $s->getWorld()->addSound($s->getPosition(), new AnvilFallSound());
+            $s->broadcastSound(new AnvilFallSound(), [$s]);
             return;
         }
 
@@ -84,7 +84,7 @@ class SethomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . MsgMgr::getMsg("home-already-exists", ["{home}" => $args[0]]));
         else {
             $s->sendMessage($prefix . MsgMgr::getMsg("home-set", ["{home}" => $args[0]]));
-            $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
+            $s->broadcastSound(new DoorBumpSound(), [$s]);
         }
         return;
     }

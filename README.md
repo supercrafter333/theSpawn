@@ -3,7 +3,7 @@
 > This version is under development and can contain bugs!
 
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0-PM5-dev2  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0-PM5-dev3  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 ✨ **The best teleportation plugin and the best MSpawns alternative!** ✨
 
 <br />
@@ -33,7 +33,7 @@ This plugin won't be out of date, it will get better developed from time to time
 - **TPAs** [default: active]
 - **Random-Hubs** [default: inactive]
 - **`/back`-command** - Teleports you to the position where you have died [default: active]
-- waterdog teleport to hub server support
+- WaterdogPE hub-transfer support
 - Teleport to hub on join [default: active]
 - Teleport to hub on death [default: active]
 - Multiple languages [default: English (BE)]
@@ -51,6 +51,7 @@ This plugin won't be out of date, it will get better developed from time to time
 - [X] `/back`-command ([#43](https://github.com/supercrafter333/theSpawn/issues/43))
 - [X] Hub teleport on death ([#39](https://github.com/supercrafter333/theSpawn/issues/39))
 - [X] Option to see the number of people in the world when using the warp-form ([#57](https://github.com/supercrafter333/theSpawn/issues/57))
+- [ ] Add player warps ([#59](https://github.com/supercrafter333/theSpawn/issues/59))
 
 ### Report Bug
 You've found a Bug?

@@ -53,7 +53,7 @@ class WarpCommand extends theSpawnOwnedCommand
                     (new WarpForms())->open($s);
                 else {
                     $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
-                    $s->getWorld()->addSound($s->getPosition(), new XpCollectSound());
+                    $s->broadcastSound(new XpCollectSound(), [$s]);
                 }
         elseif (count($args) < 1) {
             $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
