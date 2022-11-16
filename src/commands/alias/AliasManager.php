@@ -7,6 +7,7 @@ use pocketmine\utils\Config;
 use pocketmine\world\World;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
+use function strtolower;
 
 class AliasManager
 {
@@ -51,6 +52,7 @@ class AliasManager
      */
     public static function setAlias(string $aliasName, World $world): void
     {
+        $aliasName = strtolower($aliasName);
         $cfg = self::getAliasConfig();
         $cfg->set($aliasName, $world->getFolderName());
         $cfg->save();

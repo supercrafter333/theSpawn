@@ -34,13 +34,13 @@ class EditwarpCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (!isset($args[0])) {
-            (new WarpForms())->openChooseEditWarp($s);
+            $s->sendForm((new WarpForms())->openChooseEditWarp($s));
             return;
         }
 
         if (($warp = WarpManager::getWarp(implode(" ", $args))) === null)
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-not-exists", ["{warpname}" => (string)$args[0]]));
         else
-            (new WarpForms())->openEditWarp($s, $warp);
+            $s->sendForm((new WarpForms())->openEditWarp($s, $warp));
     }
 }

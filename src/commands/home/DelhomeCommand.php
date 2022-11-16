@@ -50,7 +50,7 @@ class DelhomeCommand extends theSpawnOwnedCommand
 
         if (count($args) < 1) {
             if (is_string($pl->listHomes($s)) && $pl->useForms())
-                (new HomeForms($s->getName()))->openRmHome($s);
+                $s->sendForm((new HomeForms())->openRmHome($s));
             elseif (!$pl->useForms() && is_string($pl->listHomes($s)))
                 $s->sendMessage($this->usageMessage);
             elseif (!$pl->useForms() && !is_string($pl->listHomes($s)))

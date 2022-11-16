@@ -4,6 +4,7 @@ namespace supercrafter333\theSpawn;
 
 use pocketmine\entity\Location;
 use pocketmine\world\Position;
+use function floatval;
 
 class LocationHelper
 {
@@ -17,10 +18,10 @@ class LocationHelper
     {
         $locArr = explode('|', $locationString);
         return Location::fromObject(new Position(
-            $locArr[0], $locArr[1], $locArr[2],
+            floatval($locArr[0]), floatval($locArr[1]), floatval($locArr[2]),
             theSpawn::getInstance()->checkWorld($locArr[3])),
             theSpawn::getInstance()->checkWorld($locArr[3]),
-            $locArr[4], $locArr[5]);
+            floatval($locArr[4]), floatval($locArr[5]));
     }
 
     /**

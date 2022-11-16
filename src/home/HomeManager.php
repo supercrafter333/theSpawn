@@ -191,7 +191,7 @@ class HomeManager
     /**
      * Return an array of all homes by a player.
      * @param IPlayer $player
-     * @return array
+     * @return string[]
      */
     public static function getHomesOfPlayer(IPlayer $player): array
     {

@@ -3,7 +3,7 @@
 namespace supercrafter333\theSpawn;
 
 use DateTime;
-use jojoe77777\FormAPI\Form;
+use EasyUI\Form;
 use JsonException;
 use pocketmine\block\{Air, Crops, DoubleTallGrass, Flower, Grass, Liquid, Sapling, TallGrass, Torch};
 use pocketmine\entity\Location;
@@ -18,7 +18,7 @@ use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\World;
-use supercrafter333\theSpawn\commands\alias\{AliasManager, RemovealiasCommand, SetaliasCommand};
+use supercrafter333\theSpawn\commands\alias\{AliasesCommand, AliasManager, RemovealiasCommand, SetaliasCommand};
 use supercrafter333\theSpawn\commands\BackCommand;
 use supercrafter333\theSpawn\commands\home\{DelhomeCommand, EdithomeCommand, HomeCommand, SethomeCommand};
 use supercrafter333\theSpawn\commands\hub\{DelhubCommand, HubCommand, SethubCommand};
@@ -31,6 +31,8 @@ use supercrafter333\theSpawn\warp\WarpManager;
 use function class_exists;
 use function file_exists;
 use function implode;
+use function str_contains;
+use function strtolower;
 
 /**
  * Class theSpawn
@@ -55,11 +57,6 @@ class theSpawn extends PluginBase
     public Config $msgCfg;
 
     /**
-     * @var array
-     */
-    public array $TPAs = [];
-
-    /**
      * @var string[]
      */
     public array $spawnDelays = [];
@@ -68,9 +65,6 @@ class theSpawn extends PluginBase
      * @var array
      */
     public array $lastDeathPositions = [];
-
-
-    public const DEVELOPMENT_VERSION = true;
 
 
 
@@ -89,7 +83,7 @@ class theSpawn extends PluginBase
     {
         $pluginVersion = $this->getDescription()->getVersion();
 
-        if (self::DEVELOPMENT_VERSION)
+        if (str_contains(strtolower($this->getDescription()->getVersion()), "dev"))
             $this->getLogger()->warning("You're using a development version of theSpawn ({$pluginVersion})!! This version can contain bugs, please report them on github!");
 
         if ($this->getServer()->getVersion() < 5)
@@ -126,7 +120,8 @@ class theSpawn extends PluginBase
             $cmdMap->registerAll("theSpawn",
                 [
                     new SetaliasCommand("setalias"),
-                    new RemovealiasCommand("removealias")
+                    new RemovealiasCommand("removealias"),
+                    new AliasesCommand("aliases")
                 ]);
             AliasManager::reactivateAliases();
         }
@@ -177,7 +172,9 @@ class theSpawn extends PluginBase
     }
 
     /**
+     * @deprecated This version will be removed when theSpawn v2.0.0 (stable) release
      * @return Config
+     * @see MsgMgr::getMsgs()
      */
     public function getMsgCfg(): Config
     {
@@ -230,7 +227,7 @@ class theSpawn extends PluginBase
                 $this->getLogger()->warning("Your config.yml is outdated but that's not so bad.");
             }
         }
-        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom" && (!$this->getMsgCfg()->exists("version") || $this->getMsgCfg()->get("version") !== $version)) {
+        if (strtolower(MsgMgr::getMessagesLanguage()) == "custom" && (!MsgMgr::getMsgs()->exists("version") || MsgMgr::getMsgs()->get("version") !== $version)) {
             if ($update) {
                 $this->getLogger()->debug("OUTDATED messages.yml!! Your messages.yml is outdated! Your " . MsgMgr::getMessagesLanguage() . ".yml will automatically updated!");
                 if (file_exists($this->getDataFolder() . "Languages/messagesOld.yml")) {

@@ -7,6 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\world\sound\DoorBumpSound;
 use pocketmine\world\World;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\form\AliasForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -46,7 +47,10 @@ class SetaliasCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 2) {
-            $s->sendMessage($this->usageMessage);
+            if ($pl->useForms())
+                $s->sendForm(AliasForms::addAlias($s->getWorld()));
+            else
+                $s->sendMessage($this->usageMessage);
             return;
         }
 

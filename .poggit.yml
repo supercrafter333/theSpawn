@@ -14,5 +14,4 @@ projects:
     path: ""
     php: 8.0
     libs:
-      - src: "https://poggit.pmmp.io/ci/supercrafter333/FormAPI/libFormAPI"
-        version: ^2.1
+      - "https://poggit.pmmp.io/ci/andresbytes/EasyUI/libEasyUI"

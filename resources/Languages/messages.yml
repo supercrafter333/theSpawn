@@ -28,6 +28,8 @@ alias-set: "§aYou've successfully set the alias §b{alias}§a for world §b{wor
 alias-command-description: "§r§aAlias for world §b{world}§a!"
 #uses: {alias}
 alias-removed: "§aYou've successfully removed the alias §b{alias}§a!"
+#uses: {aliases}
+aliases-list: "§r§aAll aliases of this server:{line}§r{aliases}"
 
 #home messages
 #uses: {home}
@@ -144,6 +146,21 @@ form-setHome-menu-inputDescription: "Name of the new home"
 form-rmHome-menu-title: "Delete a home"
 form-rmHome-menu-content: "Here you can delete a home."
 form-rmHome-menu-homeButton: "§b{home}§r{line}§7click to delete"
+#   aliases
+##### (menu)
+form-aliases-menu-title: "All aliases"
+form-aliases-menu-content: "Please choose a alias that you would like to edit or see more information about it."
+form-aliases-menu-aliasButton: "§b{alias}{line}§7{world}"
+form-aliases-menu-addAliasButton: "§aCreate new alias"
+##### (view-alias / edit-alias)
+form-aliases-viewAlias-title: "Alias: §b{alias}"
+form-aliases-viewAlias-content: "Information about the alias: §a{alias}{line}§rWorld: §a{world}"
+form-aliases-viewAlias-deleteButton: "§4Delete"
+##### (add alias)
+form-aliases-addAlias-title: "Add a new alias"
+form-aliases-addAlias-content: "Please fill out the all fields to set the new alias."
+form-aliases-addAlias-inputField: "Alias Name"
+form-aliases-addAlias-dropdownField: "World"
 
 
 #errors
@@ -171,7 +188,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "2.0.0-PM5-dev3"
+version: "2.0.0-PM5-dev4"
 
 
 ############################

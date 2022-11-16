@@ -50,7 +50,7 @@ class DelwarpCommand extends theSpawnOwnedCommand
                 if ($pl->listWarps() == null)
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
                 else
-                    (new WarpForms())->openRmWarp($s);
+                    $s->sendForm((new WarpForms())->openRmWarp($s));
             } else
                 $s->sendMessage($this->usageMessage);
             return;

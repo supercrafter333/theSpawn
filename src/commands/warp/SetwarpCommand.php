@@ -48,7 +48,7 @@ class SetwarpCommand extends theSpawnOwnedCommand
 
         if (count($args) < 1) {
             if ($pl->useForms())
-                (new WarpForms())->openSetWarp($s);
+                $s->sendForm((new WarpForms())->openSetWarp($s));
             else
                 $s->sendMessage($this->usageMessage);
             return;

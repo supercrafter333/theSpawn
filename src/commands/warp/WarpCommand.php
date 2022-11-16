@@ -50,7 +50,7 @@ class WarpCommand extends theSpawnOwnedCommand
 
         if (count($args) < 1 && $pl->listWarps() !== null)
                 if ($pl->useForms())
-                    (new WarpForms())->open($s);
+                    $s->sendForm((new WarpForms())->open($s));
                 else {
                     $s->sendMessage($prefix . str_replace(["{warplist}"], [$pl->listWarps()], MsgMgr::getMsg("warplist")));
                     $s->broadcastSound(new XpCollectSound(), [$s]);

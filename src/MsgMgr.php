@@ -113,24 +113,26 @@ class MsgMgr
     /**
      * @param string $message
      * @param array|null $replace
+     * @param bool $prefix
      * @return string
      */
-    public static function getMsg(string $message, array|null $replace = null): string
+    public static function getMsg(string $message, array|null $replace = null, bool $prefix = false): string
     {
+        $prefixStr = $prefix ? theSpawn::$prefix : "";
         if (self::getMsgs()->exists($message)) {
             if ($replace === null) return self::getMsgs()->get($message);
             $replaced = self::getMsgs()->get($message);
             foreach (array_keys($replace) as $i) {
                 $replaced = str_replace($i, $replace[$i], $replaced);
             }
-            return str_replace("{line}", "\n", $replaced);
+            return $prefixStr . str_replace("{line}", "\n", $replaced);
         } elseif (self::getDefaultMsgs()->exists($message)) {
             if ($replace === null) return self::getDefaultMsgs()->get($message);
             $replaced = self::getDefaultMsgs()->get($message);
             foreach (array_keys($replace) as $i) {
-                $replaced = str_replace($i, $replace[$i], $replaced);
+                $replaced = $prefixStr . str_replace($i, $replace[$i], $replaced);
             }
-            return str_replace("{line}", "\n", $replaced);
+            return $prefixStr . str_replace("{line}", "\n", $replaced);
         }
         return "ERROR";
     }

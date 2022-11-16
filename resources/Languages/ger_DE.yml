@@ -31,6 +31,8 @@ alias-set: "§aDu hast erfolgreich den Alias §b{alias}§a für die Welt §b{wor
 alias-command-description: "§r§aAlias für die Welt §b{world}§a!"
 #uses: {alias}
 alias-removed: "§aDu hast erfolgreich den Alias §b{alias}§a entfernt!"
+#uses: {aliases}
+aliases-list: "§r§aAlle Aliase dieses Servers:{line}§r{aliases}"
 
 #home messages
 #uses: {home}
@@ -147,6 +149,21 @@ form-setHome-menu-inputDescription: "Name des Homes"
 form-rmHome-menu-title: "Lösche ein Home"
 form-rmHome-menu-content: "Hier kannst du ein Home löschen."
 form-rmHome-menu-homeButton: "§b{home}§r{line}§7Klicke zum Löschen"
+#   aliases
+##### (menu)
+form-aliases-menu-title: "Alle Aliase"
+form-aliases-menu-content: "Bitte wähle einen Alias aus um mehr Informationen über ihn zu erhalten oder ihn zu bearbeiten."
+form-aliases-menu-aliasButton: "§b{alias}{line}§7{world}"
+form-aliases-menu-addAliasButton: "§aNeuen Alias erstellen"
+##### (view-alias / edit-alias)
+form-aliases-viewAlias-title: "Alias: §b{alias}"
+form-aliases-viewAlias-content: "Informationen über den Alias: §a{alias}{line}§rWelt: §a{world}"
+form-aliases-viewAlias-deleteButton: "§4Löschen"
+##### (add alias)
+form-aliases-addAlias-title: "Alias hinzufügen"
+form-aliases-addAlias-content: "Bitte fülle alle Felder aus, um den neuen Alias hinzuzufügen."
+form-aliases-addAlias-inputField: "Alias Name"
+form-aliases-addAlias-dropdownField: "Welt"
 
 #errors
 #uses: none
@@ -172,7 +189,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v2.0.0-PM5-dev3(and lower)
+#compatible with v2.0.0-PM5-dev4(and lower)
 
 
 ############################

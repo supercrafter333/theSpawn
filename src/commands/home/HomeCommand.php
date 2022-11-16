@@ -51,7 +51,7 @@ class HomeCommand extends theSpawnOwnedCommand
         if (!isset($args[0])) {
             if ($pl->listHomes($s) !== null)
                 if ($pl->useForms())
-                    (new HomeForms($s->getName()))->open($s);
+                    $s->sendForm((new HomeForms())->open($s));
                 else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("homelist", ["{homelist}" => $pl->listHomes($s)]));
                     $s->broadcastSound(new XpCollectSound(), [$s]);
