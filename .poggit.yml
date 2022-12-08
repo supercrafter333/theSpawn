@@ -12,6 +12,6 @@ projects:
     #################
     icon: "icon.png"
     path: ""
-    php: 8.0
+    php: 8.1
     libs:
       - "https://poggit.pmmp.io/ci/andresbytes/EasyUI/libEasyUI"
