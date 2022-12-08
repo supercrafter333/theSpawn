@@ -28,7 +28,6 @@ class DelwarpCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.delwarp.cmd");
         parent::__construct("delwarp", "Delete a warp!", "§4Use:§r /delwarp <warpname>", ["rmwarp", "deletewarp", "removewarp"]);
     }

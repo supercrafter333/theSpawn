@@ -40,9 +40,8 @@ class EventListener implements Listener
     {
         $pl = theSpawn::getInstance();
         $player = $event->getPlayer();
-        if ($pl->hasSpawnDelay($player)) {
+        if ($pl->hasSpawnDelay($player))
             $pl->stopSpawnDelay($player);
-        }
     }
 
     /**
@@ -53,7 +52,6 @@ class EventListener implements Listener
         $pl = theSpawn::getInstance();
         $hubMgr = HubManager::getInstance();
         $s = $event->getPlayer();
-        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $world = $s->getWorld();
 
         if ($pl->useHubTeleportOnDeath() && $hubMgr->getHub() instanceof Position) {
@@ -81,20 +79,6 @@ class EventListener implements Listener
                 $event->setRespawnPosition($world->getSafeSpawn());
             }
         }
-        /*if ($this->getSpawn($worldname)) {
-            if ($this->getServer()->isLevelLoaded($worldname) == true && !$world == null) {
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
-                $s->getWorld()->addSound($s, new PopSound());
-            } elseif ($world == null) {
-                $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
-                $s->teleport($this->getHub());
-                $s->kick(MsgMgr::getMsg("no-spawn-found-kick"));
-            } elseif (!$this->getServer()->isLevelLoaded($worldname)) {
-                $this->getServer()->loadLevel($worldname);
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
-                $s->getWorld()->addSound($s, new PopSound());
-            }
-        }*/
     }
 
     /**
@@ -119,7 +103,7 @@ class EventListener implements Listener
         $pl = theSpawn::getInstance();
         $player = $ev->getPlayer();
 
-        if ($pl->useBackCommand()) $pl->setLastDeathPosition($player, $player->getLocation());
+        if ($pl->useBackCommand()) LastDeathPositionManager::setLastDeathPosition($player, $player->getLocation());
     }
 
     /**

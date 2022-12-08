@@ -82,6 +82,16 @@ delay-stopped-by-move: "§cTeleport cancelled because you've moved you."
 #position checks
 position-not-safe: "§cThe target position isn't safe. Teleport was cancelled."
 
+#player-warps
+pwarp-already-exists: "§cThe player-warp {warp} already exists!"
+pwarp-maximum-reached: "§cYou've already created the maximum count of {max} player-warps"
+pwarp-created: "§aYou've successfully created the warp §b{warp}§a."
+pwarp-doesnt-exist: "§cThis warp doesn't exist."
+pwarp-not-owner: "§cYou're not the owner of this player-warp! You can't do that!"
+pwarp-removed: "§aYou've successfully removed the player-warp §b{warp}§a."
+pwarp-teleported: "§aYou was successfully teleported to the warp §b{warp}§a of §b{owner}§a at §7{location} §ain world §7{world}§a."
+pwarp-list: "§aHere is a list of all player-warps on this server: §7{list}"
+
 #form
 #   warps
 form-warp-menu-title: "Warps"
@@ -161,6 +171,19 @@ form-aliases-addAlias-title: "Add a new alias"
 form-aliases-addAlias-content: "Please fill out the all fields to set the new alias."
 form-aliases-addAlias-inputField: "Alias Name"
 form-aliases-addAlias-dropdownField: "World"
+#   tpa
+##### (answer tpa)
+form-tpa-answerTpa-title: "Answer Tpa"
+form-tpa-answerTpa-acceptText: "§aAccept"
+form-tpa-answerTpa-denyText: "§cDeny"
+##### (answer tpa-here)
+form-tpa-answerTpaHere-title: "Answer Tpa-Here"
+form-tpa-answerTpaHere-acceptText: "§aAccept"
+form-tpa-answerTpaHere-denyText: "§cDeny"
+##### (send tpa)
+form-tpa-sendTpa-title: "Send tpa"
+form-tpa-sendTpa-input: "Name of the player"
+form-tpa-sendTpa-tpaHereToggle: "Do you want the player to be teleported to you?"
 
 
 #errors
@@ -188,7 +211,7 @@ no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
 #don't change this
-version: "2.0.0-PM5-dev4"
+version: "2.0.0-PM5-dev5"
 
 
 ############################

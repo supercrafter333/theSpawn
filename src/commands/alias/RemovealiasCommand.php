@@ -27,7 +27,6 @@ class RemovealiasCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.removealias.cmd");
         parent::__construct("removealias", "Remove an alias!", "§4Use: §r/removealias <alias>", ["rmalias"]);
     }

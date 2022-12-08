@@ -6,6 +6,7 @@ use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use pocketmine\world\sound\XpLevelUpSound;
+use supercrafter333\theSpawn\events\tpa\TpaAnswerEvent;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\task\TpaTask;
 use supercrafter333\theSpawn\theSpawn;
@@ -22,7 +23,7 @@ class Tpa
      */
     private array|null $tpa;
 
-    public function __construct(private string $source)
+    public function __construct(private readonly string $source)
     {
         $this->tpa = TpaManager::$tpas[$this->source];
     }
@@ -38,9 +39,9 @@ class Tpa
 
     /**
      * @param string $value
-     * @return null|Task|string
+     * @return Task|string|bool|null
      */
-    public function getVal(string $value): null|Task|string
+    public function getVal(string $value): null|Task|string|bool
     {
         if (!$this->isValSet($value)) return null;
         return $this->tpa[$value];
@@ -89,11 +90,11 @@ class Tpa
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isTpaHere(): ?bool
+    public function isTpaHere(): bool
     {
-        return $this->getVal("isTpaHere");
+        return (bool)$this->getVal("isTpaHere");
     }
 
     /**
@@ -111,24 +112,36 @@ class Tpa
         TpaManager::removeTpa($this->getSource());
     }
 
-    public function complete(): void
+    public function complete(): bool
     {
         $this->cancel();
+        $ev = new TpaAnswerEvent($this, true);
+        if ($ev->isCancelled()) return false;
         if (!$this->isTpaHere()) {
             $targetPos = $this->getTargetAsPlayer()->getLocation();
             if (!theSpawn::getInstance()->isPositionSafe($targetPos)) {
                 $this->getSourceAsPlayer()->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("position-not-safe"));
-                return;
+                $ev->cancel();
+                $ev->call();
+                return false;
             }
-            $this->getSourceAsPlayer()->teleport($targetPos);
+            $ev->call();
+            if (!$ev->isCancelled())
+                $this->getSourceAsPlayer()->teleport($targetPos);
         } else {
             $sourcePos = $this->getSourceAsPlayer()->getLocation();
             if (!theSpawn::getInstance()->isPositionSafe($sourcePos)) {
                 $this->getSourceAsPlayer()->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("position-not-safe"));
-                return;
+                $ev->cancel();
+                $ev->call();
+                return false;
             }
-            $this->getTargetAsPlayer()->teleport($sourcePos);
+            $ev->call();
+            if (!$ev->isCancelled())
+                $this->getTargetAsPlayer()->teleport($sourcePos);
         }
+
         $this->getSourceAsPlayer()->broadcastSound(new XpLevelUpSound(mt_rand(1, 100)), [$this->getSourceAsPlayer()]);
+        return $ev->isCancelled();
     }
 }

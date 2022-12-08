@@ -6,12 +6,9 @@ use pocketmine\player\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\world\sound\XpCollectSound;
 use supercrafter333\theSpawn\MsgMgr;
-use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\Tpa;
+use supercrafter333\theSpawn\tpa\TpaManager;
 
-/**
- *
- */
 class TpaTask extends Task
 {
 
@@ -19,7 +16,7 @@ class TpaTask extends Task
      * @param int $seconds
      * @param Tpa $tpa
      */
-    public function __construct(private int $seconds, private Tpa $tpa) {}
+    public function __construct(private int $seconds, private readonly Tpa $tpa) {}
 
     /**
      * Run function xD
@@ -28,18 +25,18 @@ class TpaTask extends Task
     {
         if ($this->tpa->getSourceAsPlayer() == null && $this->tpa->getTargetAsPlayer() instanceof Player) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{source}", $this->tpa->getSource(), MsgMgr::getMsg("tpa-cancelled-by-source")));
-            theSpawn::getInstance()->removeTpa($this->tpa->getSource());
+            TpaManager::removeTpa($this->tpa->getSource());
             $this->getHandler()->cancel();
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() instanceof Player) {
             $this->tpa->getSourceAsPlayer()->sendMessage(str_replace("{target}", $this->tpa->getTarget(), MsgMgr::getMsg("tpa-cancelled-by-target")));
-            theSpawn::getInstance()->removeTpa($this->tpa->getSource());
+            TpaManager::removeTpa($this->tpa->getSource());
             $this->getHandler()->cancel();
             return;
         }
         if ($this->tpa->getTargetAsPlayer() == null && $this->tpa->getSourceAsPlayer() == null) {
-            theSpawn::getInstance()->removeTpa($this->tpa->getSource());
+            TpaManager::removeTpa($this->tpa->getSource());
             $this->getHandler()->cancel();
             return;
         }

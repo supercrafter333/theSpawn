@@ -20,9 +20,9 @@ use supercrafter333\theSpawn\theSpawn;
 abstract class theSpawnOwnedCommand extends Command implements PluginOwned
 {
 
-    protected theSpawn $plugin;
+    protected readonly theSpawn $plugin;
 
-    protected string $prefix;
+    protected readonly string $prefix;
 
     public function __construct(string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [], Permission|string|null $permission = null)
     {

@@ -6,6 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\form\TpaForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\Tpa;
@@ -37,7 +38,10 @@ class TpaCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            $s->sendMessage($this->usageMessage);
+            if ($pl->useForms())
+                $s->sendForm(TpaForms::menu($s));
+            else
+                $s->sendMessage($this->usageMessage);
             return;
         }
         $target = $pl->getServer()->getPlayerByPrefix($args[0]);

@@ -5,7 +5,6 @@ namespace supercrafter333\theSpawn\commands\hub;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
-use pocketmine\utils\Config;
 use pocketmine\world\sound\DoorBumpSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\HubManager;
@@ -29,7 +28,6 @@ class SethubCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.sethub.cmd");
         parent::__construct("sethub", "Set the lobby of this server!", "§4Usage: §r/sethub [randomHubs: number|int]", ["setlobby", "setthehub", "setthelobby"]);
     }
@@ -45,7 +43,7 @@ class SethubCommand extends theSpawnOwnedCommand
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $hubMgr = HubManager::getInstance();
-        $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
+        $hub = $hubMgr->getHubConfig();
         #########################
 
         if (!$this->canUse($s)) return;

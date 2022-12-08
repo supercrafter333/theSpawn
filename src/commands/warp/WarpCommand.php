@@ -31,7 +31,6 @@ class WarpCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.warp.cmd");
         parent::__construct("warp", "Teleport you to a warp!", "§4Use: §r/warp [name]", $aliases);
     }
@@ -82,7 +81,7 @@ class WarpCommand extends theSpawnOwnedCommand
         }
 
         $loc = $warp->getLocation();
-        $posMsg = $loc->getX() . '|' . $loc->getY() . '|' . $loc->getZ();
+        $posMsg = $loc->getFloorX() . ' | ' . $loc->getFloorY() . ' | ' . $loc->getFloorZ();
         $worldName = $loc->getWorld()->getFolderName();
         if (!$pl->isPositionSafe($loc)) {
             $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));

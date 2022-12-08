@@ -6,6 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\events\tpa\TpaAnswerEvent;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\Tpa;
@@ -46,6 +47,11 @@ class TpdeclineCommand extends theSpawnOwnedCommand
             $s->sendMessage(str_replace("{target}", $source, theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;
         }
+
+        $ev = new TpaAnswerEvent($tpaInfo, false);
+        $ev->call();
+        if ($ev->isCancelled()) return;
+
         $sourcePlayer = $tpaInfo->getSourceAsPlayer();
         $tpaInfo->cancel();
         $sourcePlayer->sendMessage(str_replace("{target}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-source")));

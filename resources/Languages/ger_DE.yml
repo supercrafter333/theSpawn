@@ -85,6 +85,16 @@ delay-stopped-by-move: "§cTeleportation fehlgeschlagen! Du hast dich Bewegt."
 #position checks
 position-not-safe: "§cThe target position isn't safe. Teleport was cancelled."
 
+#player-warps
+pwarp-already-exists: "§cDer player-warp {warp} existiert bereits!"
+pwarp-maximum-reached: "§cDU hast bereits die maximale anzahl von {max} player-warps erstellt."
+pwarp-created: "§aDU hast erfolgreich den player-warp §b{warp}§a erstellt."
+pwarp-doesnt-exist: "§cDieser player-warp existiert nicht!"
+pwarp-not-owner: "§cDu bist nicht der Inhaber dieses player-warps! Du kannst dies nicht machen!"
+pwarp-removed: "§aDu hast erfolgreich den player-warp §b{warp}§a entfernt."
+pwarp-teleported: "§aDu wurdest erfolgreich zum player-warp §b{warp}§a von §b{owner}§a bei §7{location} §ain der Welt §7{world}§a teleportiert."
+pwarp-list: "§aHier ist eine Liste aller player-warps dieses Servers: §7{list}"
+
 #form
 #   warps
 form-warp-menu-title: "Warps"
@@ -164,6 +174,19 @@ form-aliases-addAlias-title: "Alias hinzufügen"
 form-aliases-addAlias-content: "Bitte fülle alle Felder aus, um den neuen Alias hinzuzufügen."
 form-aliases-addAlias-inputField: "Alias Name"
 form-aliases-addAlias-dropdownField: "Welt"
+#   tpa
+##### (answer tpa)
+form-tpa-answerTpa-title: "Tpa beantworten"
+form-tpa-answerTpa-acceptText: "§aAkzeptieren"
+form-tpa-answerTpa-denyText: "§cAblehnen"
+##### (answer tpa-here)
+form-tpa-answerTpaHere-title: "Tpa-Here beantworten"
+form-tpa-answerTpaHere-acceptText: "§aAkzeptieren"
+form-tpa-answerTpaHere-denyText: "§cAblehnen"
+##### (send tpa)
+form-tpa-sendTpa-title: "Tpa senden"
+form-tpa-sendTpa-input: "Name des Spielers"
+form-tpa-sendTpa-tpaHereToggle: "Möchtest du, dass der Spieler zu die teleportiert wird?"
 
 #errors
 #uses: none
@@ -189,7 +212,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v2.0.0-PM5-dev4(and lower)
+#compatible with v2.0.0-PM5-dev5(and lower)
 
 
 ############################

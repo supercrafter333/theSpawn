@@ -2,24 +2,21 @@
 
 namespace supercrafter333\theSpawn;
 
-use DateTime;
 use EasyUI\Form;
 use JsonException;
 use pocketmine\block\{Air, Crops, DoubleTallGrass, Flower, Grass, Liquid, Sapling, TallGrass, Torch};
 use pocketmine\entity\Location;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\ScriptCustomEventPacket;
 use pocketmine\permission\PermissionManager;
 use pocketmine\player\IPlayer;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\Task;
-use pocketmine\utils\Binary;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\World;
+use supercrafter333\theSpawn\commands\{BackCommand, PlayerWarpCommand};
 use supercrafter333\theSpawn\commands\alias\{AliasesCommand, AliasManager, RemovealiasCommand, SetaliasCommand};
-use supercrafter333\theSpawn\commands\BackCommand;
 use supercrafter333\theSpawn\commands\home\{DelhomeCommand, EdithomeCommand, HomeCommand, SethomeCommand};
 use supercrafter333\theSpawn\commands\hub\{DelhubCommand, HubCommand, SethubCommand};
 use supercrafter333\theSpawn\commands\spawn\{DelspawnCommand, SetspawnCommand, SpawnCommand};
@@ -31,6 +28,7 @@ use supercrafter333\theSpawn\warp\WarpManager;
 use function class_exists;
 use function file_exists;
 use function implode;
+use function phpversion;
 use function str_contains;
 use function strtolower;
 
@@ -42,29 +40,26 @@ class theSpawn extends PluginBase
 {
 
     /**
-     * @var theSpawn
+     * Displays the minimum php version for running theSpawn.
      */
+    public const MIN_PHP_VERSION = "8.1.0";
+
+    /**
+     * Displays the minimum config.yml version for running theSpawn.
+     */
+    public const MIN_CONFIG_VERSION = "2.0.0";
+
+
     public static theSpawn $instance;
 
-    /**
-     * @var string
-     */
     public static string $prefix;
 
-    /**
-     * @var Config
-     */
     public Config $msgCfg;
 
     /**
      * @var string[]
      */
     public array $spawnDelays = [];
-
-    /**
-     * @var array
-     */
-    public array $lastDeathPositions = [];
 
 
 
@@ -81,9 +76,15 @@ class theSpawn extends PluginBase
      */
     public function onEnable(): void
     {
+        if (phpversion() < self::MIN_PHP_VERSION) {
+            $this->getLogger()->error("[WRONG PHP VERSION] - You're using a too old php version (" . phpversion() . ")!! The minimum php version is 8.1.0!");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return;
+        }
+
         $pluginVersion = $this->getDescription()->getVersion();
 
-        if (str_contains(strtolower($this->getDescription()->getVersion()), "dev"))
+        if (str_contains(strtolower($pluginVersion), "dev"))
             $this->getLogger()->warning("You're using a development version of theSpawn ({$pluginVersion})!! This version can contain bugs, please report them on github!");
 
         if ($this->getServer()->getVersion() < 5)
@@ -98,9 +99,8 @@ class theSpawn extends PluginBase
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
         $cmdMap = $this->getServer()->getCommandMap();
         # Version Check
-        //$this->versionCheck($this->version, true); //UPDATE CONFIG DATAs.
         $cfgVersion = $this->getConfig()->get("version");
-        $this->versionCheck($pluginVersion, ($cfgVersion < "1.8.0"));
+        $this->versionCheck($pluginVersion, ($cfgVersion < self::MIN_CONFIG_VERSION));
         ###
 
         $this->registerPermissions();
@@ -152,6 +152,9 @@ class theSpawn extends PluginBase
                     new TpdeclineCommand("tpdecline")
                 ]);
         if ($this->useBackCommand()) $cmdMap->register("theSpawn", new BackCommand("back"));
+        if ($this->usePlayerWarps()) $cmdMap->register("theSpawn", new PlayerWarpCommand("playerwarp",
+        "Create, remove or teleport you to a player-warp.",
+            "§4Usage: §r/playerwarp <create|remove|list|teleport>", ["pwarp"], "theSpawn.playerwarp.cmd"));
 
     }
 
@@ -268,11 +271,13 @@ class theSpawn extends PluginBase
             "theSpawn.editwarp.cmd",
             "theSpawn.edithome.cmd",
             "theSpawn.back.cmd",
+            "theSpawn.playerwarp.cmd",
 
             # ADMIN PERMISSIONS:
             "theSpawn.warp.admin",
             "theSpawn.homes", #all home permissions
-            "theSpawn.homes.unlimited"
+            "theSpawn.homes.unlimited",
+            "theSpawn.pwarps.unlimited"
         ];
 
         $bypassPerm = PermissionManager::getInstance()->getPermission("theSpawn.bypass");
@@ -329,7 +334,7 @@ class theSpawn extends PluginBase
         $spawn->get($world->getFolderName());
         if ($spawn->exists($world->getFolderName())) {
             $spawnArray = $spawn->get($world->getFolderName(), []);
-            return $this->convertArrayToPosition($spawnArray);
+            return LocationHelper::legacyConvertArrayToPosition($spawnArray);
         } else {
             return false;
         }
@@ -377,7 +382,7 @@ class theSpawn extends PluginBase
      */
     public function getUseRandomHubs(): bool
     {
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        $config = $this->getConfig();
         if ($config->get("use-hub-server") === "true" && $config->get("use-random-hubs") === "true") {
             $this->getLogger()->alert("INFORMATION: Please disable 'use-hub-server' in the config.yml to use random hubs!");
             return false;
@@ -396,25 +401,8 @@ class theSpawn extends PluginBase
      */
     public function getUseHubServer(): bool
     {
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        if ($config->get("use-hub-server") == "true") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function getUseWaterdogTransfer(): bool
-    {
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        if ($config->get("waterdog-hub-teleport") === "true") {
-            return true;
-        } else {
-            return false;
-        }
+        if ($this->getConfig()->get("use-hub-server") == "true" || $this->getConfig()->get("use-hub-server") == "on") return true;
+        return false;
     }
 
     /**
@@ -423,26 +411,11 @@ class theSpawn extends PluginBase
      */
     public function teleportToHubServer(Player $s): bool
     {
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        if ($this->getUseHubServer() == true) {
+        $config = $this->getConfig();
+        if ($this->getUseHubServer())
             return $s->transfer($config->get("hub-server-ip"), $config->get("hub-server-port"));
-        } else {
-            return false;
-        }
+        else return false;
     }
-
-    /*/**
-     * @param Player $player
-     * @param string $server
-     */
-    /*public function teleportToHubServerWithWaterdog(Player $player, string $server) //Thanks to FlxiBoy
-    {
-        API::transfer($player, $server);
-        /*$pk = new ScriptCustomEventPacket();
-        $pk->eventName = "bungeecord:main";
-        $pk->eventData = Binary::writeShort(strlen("Connect"))."Connect".Binary::writeShort(strlen($server)).$server;
-        $player->sendDataPacket($pk);
-    }*/
 
     /**
      * @return bool
@@ -475,19 +448,6 @@ class theSpawn extends PluginBase
     public function useHomes(): bool
     {
         return $this->getConfig()->get("use-homes") == "true" || $this->getConfig()->get("use-homes") == "on";
-    }
-
-    /**
-     * @deprecated This will be removed soon (Reason: Waterdog is outdated and no longer under maintenance)
-     * @param Player $player
-     * @param string $server
-     */
-    public function transferToProxyServer(Player $player, string $server)
-    {
-        $pk = new ScriptCustomEventPacket();
-        $pk->eventName = "bungeecord:main";
-        $pk->eventData = Binary::writeShort(strlen("Connect")) . "Connect" . Binary::writeShort(strlen($server)) . $server;
-        $player->getNetworkSession()->sendDataPacket($pk);
     }
 
     /**
@@ -528,6 +488,22 @@ class theSpawn extends PluginBase
     /**
      * @return bool
      */
+    public function usePlayerWarps(): bool
+    {
+        return $this->getConfig()->get("use-playerwarps") == "true" || $this->getConfig()->get("use-playerwarps") == "on";
+    }
+
+    /**
+     * @return bool
+     */
+    public function useMaxPlayerWarpPermissions(): bool
+    {
+        return $this->getConfig()->get("use-max-playerwarps-permissions") == "true" || $this->getConfig()->get("use-max-playerwarps-permissions") == "on";
+    }
+
+    /**
+     * @return bool
+     */
     public function useSpawnDelays(): bool
     {
         if ($this->getConfig()->get("use-spawnDelay") == "true" || $this->getConfig()->get("use-spawnDelay") == "on") {
@@ -535,40 +511,6 @@ class theSpawn extends PluginBase
         } else {
             return false;
         }
-    }
-
-    /**
-     * @param Player $player
-     */
-    public function startSpawnDelay(Player $player)
-    {
-        $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getConfig()->get("spawn-delay-seconds")), 20);
-        $this->spawnDelays[] = $player->getName();
-        $this->spawnDelays[$player->getName()] = ["task" => $task];
-    }
-
-    /**
-     * @param Player $player
-     * @return bool
-     */
-    public function hasSpawnDelay(Player $player): bool
-    {
-        return isset($this->spawnDelays[$player->getName()]);
-    }
-
-    /**
-     * @param Player $player
-     * @return bool
-     */
-    public function stopSpawnDelay(Player $player): bool
-    {
-        if (!isset($this->spawnDelays[$player->getName()])) return false;
-        $task = $this->spawnDelays["task"];
-        if ($task instanceof Task) {
-            $task->getHandler()->cancel();
-        }
-        unset($this->spawnDelays[$player->getName()]);
-        return true;
     }
 
     /**
@@ -584,31 +526,6 @@ class theSpawn extends PluginBase
                 $cfg->save();
             }
         }
-    }
-
-    /**
-     * @param array $posArray
-     * @return Position|Location|null
-     */
-    public function convertArrayToPosition(array $posArray): Position|Location|null
-    {
-        if (!isset($posArray["level"])) return null;
-
-        if (isset($posArray["yaw"]) && isset($posArray["pitch"])) return new Location(
-            $posArray["X"],
-            $posArray["Y"],
-            $posArray["Z"],
-            $this->checkWorld($posArray["level"]),
-            $posArray["yaw"],
-            $posArray["pitch"]
-        );
-
-        return new Position(
-            $posArray["X"],
-            $posArray["Y"],
-            $posArray["Z"],
-            $this->checkWorld($posArray["level"])
-        );
     }
 
     /**
@@ -676,36 +593,41 @@ class theSpawn extends PluginBase
         return ($this->getConfig()->get("hub-teleport-on-death") == "true" || $this->getConfig()->get("hub-teleport-on-death") == "on");
     }
 
+
+
+    ### Maybe I'll source this out from theSpawn.php:
+
     /**
      * @param Player $player
-     * @param Location|Position $position
-     * @return void
      */
-    public function setLastDeathPosition(Player $player, Location|Position $position): void
+    public function startSpawnDelay(Player $player)
     {
-        $date = (new DateTime('now'))->modify('+' . $this->getConfig()->get("back-time") . ' minutes');
-        $this->lastDeathPositions[$player->getName()] = [$position, $date];
+        $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getConfig()->get("spawn-delay-seconds")), 20);
+        $this->spawnDelays[] = $player->getName();
+        $this->spawnDelays[$player->getName()] = ["task" => $task];
     }
 
     /**
      * @param Player $player
-     * @return Location|Position|null
+     * @return bool
      */
-    public function getLastDeathPosition(Player $player): Location|Position|null
+    public function hasSpawnDelay(Player $player): bool
     {
-        if (!isset($this->lastDeathPositions[$player->getName()])) return null;
+        return isset($this->spawnDelays[$player->getName()]);
+    }
 
-        $dp = $this->lastDeathPositions[$player->getName()];
-        $now = new DateTime('now');
-
-        if ($now > $dp[1]) {
-            unset($this->lastDeathPositions[$player->getName()]);
-            return null;
+    /**
+     * @param Player $player
+     * @return bool
+     */
+    public function stopSpawnDelay(Player $player): bool
+    {
+        if (!isset($this->spawnDelays[$player->getName()])) return false;
+        $task = $this->spawnDelays["task"];
+        if ($task instanceof Task) {
+            $task->getHandler()->cancel();
         }
-
-        $loc = $dp[0];
-        unset($this->lastDeathPositions[$player->getName()]);
-
-        return $loc;
+        unset($this->spawnDelays[$player->getName()]);
+        return true;
     }
 }

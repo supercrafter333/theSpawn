@@ -21,7 +21,7 @@ class Warp
      * @param string|null $iconPath
      */
     public function __construct(private Location $location,
-                                private string $warpName, private bool $permission = false,
+                                private readonly string $warpName, private bool $permission = false,
                                 private string|null $iconPath = null)
     {}
 
@@ -130,9 +130,8 @@ class Warp
          * @var string $name
          * @var Permission $perm
          */
-        foreach ($perms as $name => $perm) {
+        foreach ($perms as $name => $perm)
             if ($name == $permission) return true;
-        }
         return false;
     }
 

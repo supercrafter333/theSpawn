@@ -13,7 +13,7 @@ abstract class theSpawnPlayerTeleportEvent extends Event implements Cancellable
 {
     use CancellableTrait;
 
-    public function __construct(protected Player $player, protected Position|Location $origin, protected Position|Location $target) {}
+    public function __construct(protected readonly Player $player, protected Position|Location $origin, protected Position|Location $target) {}
 
     /**
      * @return Player

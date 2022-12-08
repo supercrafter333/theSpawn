@@ -101,6 +101,7 @@ class AliasManager
      */
     public static function getAliasAsCommand(string $aliasName): AliasCommand|null
     {
+        $aliasName = strtolower($aliasName);
         if (!($world = self::getAliasWorld($aliasName)) instanceof World)
             return null;
 

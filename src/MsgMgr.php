@@ -33,7 +33,7 @@ class MsgMgr
     /**
      * @var MsgMgr
      */
-    private static $Me;
+    private static MsgMgr $Me;
 
     /**
      * MsgMgr constructor.

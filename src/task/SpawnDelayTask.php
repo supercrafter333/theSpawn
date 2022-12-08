@@ -16,9 +16,8 @@ class SpawnDelayTask extends Task
     public function onRun(): void
     {
         $player = $this->player;
-        if ($this->seconds > 3) {
-            $this->seconds--;
-        }
+        if ($this->seconds > 3) $this->seconds--;
+
         if ($this->seconds <= 3 && $this->seconds > 0) {
             $player->sendTip(str_replace("{secs}", (string)$this->seconds, MsgMgr::getMsg("delay-tip")));
             $this->seconds--;

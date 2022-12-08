@@ -14,7 +14,7 @@ class Home
      * @param string $homeName
      * @param Location $location
      */
-    public function __construct(private IPlayer $player, private string $homeName, private Location $location) {}
+    public function __construct(private readonly IPlayer $player, private readonly string $homeName, private Location $location) {}
 
     /**
      * @return IPlayer

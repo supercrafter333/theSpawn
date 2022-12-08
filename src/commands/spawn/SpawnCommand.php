@@ -26,7 +26,6 @@ class SpawnCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         parent::__construct("spawn", "Teleport you to the spawn of this world!", $usageMessage, ["spawntp"]);
     }
 

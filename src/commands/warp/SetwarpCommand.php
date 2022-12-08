@@ -29,7 +29,6 @@ class SetwarpCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.setwarp.cmd");
         parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname> [permission: true|false] [iconPath | iconUrl]", $aliases);
     }
@@ -75,7 +74,7 @@ class SetwarpCommand extends theSpawnOwnedCommand
             if ($ev->isCancelled()) return;
 
             WarpManager::createWarp(new Warp($s->getLocation(), $args[0], $perm, $icon));
-            $posMsg = (string)$s->getPosition()->getX() . $s->getPosition()->getY() . $s->getPosition()->getZ();
+            $posMsg = (string)$s->getPosition()->getFloorX() . ' | ' . $s->getPosition()->getFloorY() . ' | ' . $s->getPosition()->getFloorZ();
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-set", ["{warpname}" => (string)$args[0], "{position}" => $posMsg, "{world}" => $s->getWorld()->getFolderName()]));
         } else
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-already-set", ["{warpname}" => (string)$args[0]]));

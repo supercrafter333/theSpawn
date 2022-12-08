@@ -5,6 +5,7 @@ namespace supercrafter333\theSpawn\commands;
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
+use supercrafter333\theSpawn\LastDeathPositionManager;
 use supercrafter333\theSpawn\MsgMgr;
 
 class BackCommand extends theSpawnOwnedCommand
@@ -26,7 +27,7 @@ class BackCommand extends theSpawnOwnedCommand
     {
         if (!$this->canUse($s)) return;
 
-        if (($pos = $this->plugin->getLastDeathPosition($s)) === null) {
+        if (($pos = LastDeathPositionManager::getLastDeathPosition($s)) === null) {
             $s->sendMessage($this->prefix . MsgMgr::getMsg("no-deathposition-found"));
             return;
         }

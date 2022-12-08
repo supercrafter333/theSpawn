@@ -28,7 +28,6 @@ class SetaliasCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         $this->setPermission("theSpawn.setalias.cmd");
         parent::__construct("setalias", "Register a new alias!", "§4Use: §r/setalias <alias> <worldname>", ["addalias"]);
     }

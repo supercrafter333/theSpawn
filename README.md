@@ -3,7 +3,7 @@
 > This version is under development and can contain bugs!
 
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0-PM5-dev4  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0-PM5-dev5  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 ✨ **The best teleportation plugin and the best MSpawns alternative!** ✨
 
 <br />
@@ -51,7 +51,17 @@ This plugin won't be out of date, it will get better developed from time to time
 - [X] `/back`-command ([#43](https://github.com/supercrafter333/theSpawn/issues/43))
 - [X] Hub teleport on death ([#39](https://github.com/supercrafter333/theSpawn/issues/39))
 - [X] Option to see the number of people in the world when using the warp-form ([#57](https://github.com/supercrafter333/theSpawn/issues/57))
-- [ ] Add player warps ([#59](https://github.com/supercrafter333/theSpawn/issues/59))
+- [X] Add player warps ([#59](https://github.com/supercrafter333/theSpawn/issues/59))
+- [X] Add PM5 support (currently hybrid support for PM4 & PM5)
+- [X] Add PHP 8.1 support
+
+
+### Supported verions
+| theSpawn version(s) | PocketMine-MP version(s) | PHP version(s) |
+|---------------------|--------------------------|--------------|
+| 1.8.x               | 4.4.0+                   | 8.0.x        |
+| 2.0.x               | 5.0.0+  (& 4.4.0+)       | 8.1.x        |
+
 
 ### Report Bug
 You've found a Bug?
@@ -62,30 +72,31 @@ You've found a Bug?
 - Now wait, I'll awnser you soon
 
 ### Commands
-| **Command**                        | **Description**                                  |
-|------------------------------------|--------------------------------------------------|
-| `/setspawn`                        | Set the spawn of a world                         |
-| `/delspawn`                        | Remove spawn of a world                          |
-| `/spawn`                           | Teleport you to spawn                            |
-| `/sethub [randomHubs: number/int]` | Set the hub of the server                        |
-| `/delhub [randomHubs: number/int]` | Remove the hub of the server                     |
-| `/hub`                             | Teleport you to hub                              |
-| `/setalias <alias> <world>`        | Set an alias                                     |
-| `/delalias <alias>`                | Remove an alias                                  |
+| **Command**                        | **Description**                                              |
+|------------------------------------|--------------------------------------------------------------|
+| `/setspawn`                        | Set the spawn of a world                                     |
+| `/delspawn`                        | Remove spawn of a world                                      |
+| `/spawn`                           | Teleport you to spawn                                        |
+| `/sethub [randomHubs: number/int]` | Set the hub of the server                                    |
+| `/delhub [randomHubs: number/int]` | Remove the hub of the server                                 |
+| `/hub`                             | Teleport you to hub                                          |
+| `/setalias <alias> <world>`        | Set an alias                                                 |
+| `/delalias <alias>`                | Remove an alias                                              |
 | `/aliases`                         | Prints a list of all aliases or open a menu to edit aliases. |
-| `/sethome <home>`                  | Set a home                                       |
-| `/delhome <home>`                  | Remove a home                                    |
-| `/home <home>`                     | Teleport you to a home                           |
-| `/setwarp <warp>`                  | Set a warp                                       |
-| `/delwarp <warp>`                  | Remove a warp                                    |
-| `/warp <warp>`                     | Teleport you to a warp                           |
-| `/tpa <player>`                    | Send a teleportation awnser to a player          |
-| `/tpahere <player>`                | Send a teleportation awnser to a player          |
-| `/tpaccept <player>`               | Accept a tpa                                     |
-| `/tpdecline <player>`              | Decline a tpa                                    |
-| `/editwarp [warp]`                 | Edit a warp                                      |
-| `/edithome [home]`                 | Edit a home                                      |
-| `/back`                            | Teleports you to the spot where you died |
+| `/sethome <home>`                  | Set a home                                                   |
+| `/delhome <home>`                  | Remove a home                                                |
+| `/home <home>`                     | Teleport you to a home                                       |
+| `/setwarp <warp>`                  | Set a warp                                                   |
+| `/delwarp <warp>`                  | Remove a warp                                                |
+| `/warp <warp>`                     | Teleport you to a warp                                       |
+| `/tpa <player>`                    | Send a teleportation awnser to a player                      |
+| `/tpahere <player>`                | Send a teleportation awnser to a player                      |
+| `/tpaccept <player>`               | Accept a tpa                                                 |
+| `/tpdecline <player>`              | Decline a tpa                                                |
+| `/editwarp [warp]`                 | Edit a warp                                                  |
+| `/edithome [home]`                 | Edit a home                                                  |
+| `/back`                            | Teleports you to the spot where you died                     |
+| `/playerwarp <subcommand>`         | Manage, create, remove, or teleport you to a player-warp.    |
 
 ### License:
 This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!

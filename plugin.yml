@@ -1,9 +1,12 @@
 name: theSpawn
-version: 2.0.0-PM5-dev4
+version: 2.0.0-PM5-dev5
 api: [4.4.0, 5.0.0]
 main: supercrafter333\theSpawn\theSpawn
 src-namespace-prefix: supercrafter333\theSpawn
 author: supercrafter333
+description: "The best teleportation plugin and the best MSpawns alternative!"
+website: "https://supercrafter333.github.io/theSpawn/"
+
 
 permissions:
   theSpawn.bypass:
@@ -53,4 +56,10 @@ permissions:
   theSpawn.homes.unlimited:
     default: op
   theSpawn.back.cmd:
+    default: true
+  theSpawn.playerwarp.cmd:
+    default: true
+  theSpawn.pwarps.unlimited:
+    default: op
+  theSpawn.pwarps.1:
     default: true

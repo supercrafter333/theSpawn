@@ -1,11 +1,7 @@
 #hub server teleport
 use-hub-server: "false"
 hub-server-ip: "000.00.000.00" #if you use WaterdogPE, please insert the server-name here
-hub-server-port: "19132" #if you use WaterdogPE, please set an empty string here (like: "")
-
-#waterdog (not WDPE) teleport (hub server teleport must be enabled to enable this)
-waterdog-hub-teleport: "false"
-waterdog-servername: "name"
+hub-server-port: "19132" #if you use WaterdogPE, please set an empty string here (like: "") or the port of your hub-server
 
 #random-(/multi-)hubs [true | false]
 ### Only available with deactivated hub servers
@@ -17,8 +13,17 @@ use-aliases: "true"
 #homes [true | false]
 use-homes: "true"
 
+#use max home permissions [true | false]
+use-max-home-permissions: "false"
+
 #warps [true | false]
 use-warps: "true"
+
+#player-warps [true | false]
+use-playerwarps: "true"
+
+#maximum permission for player-warps [true | false]
+use-max-playerwarps-permissions: "true"
 
 #TPAs [true | false]
 use-tpas: "true"
@@ -36,9 +41,6 @@ hub-teleport-on-death: "true"
 
 #use Forms [true | false]
 use-forms: "true"
-
-#use max home permissions [true | false]
-use-max-home-permissions: "false"
 
 # /back command for  return to the point where you have died [true | false]
 use-back-command: "true"
@@ -73,7 +75,7 @@ check-positions: "false"
 
 
 #DON'T CHANGE THIS!!
-version: "2.0.0-PM5-dev4"
+version: "2.0.0-PM5-dev5"
 
 ############################
 ##########theSpawn##########

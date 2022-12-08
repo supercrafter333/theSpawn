@@ -5,7 +5,6 @@ namespace supercrafter333\theSpawn\commands\hub;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
-use pocketmine\utils\Config;
 use pocketmine\world\sound\PopSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
 use supercrafter333\theSpawn\HubManager;
@@ -29,7 +28,6 @@ class HubCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->plugin = theSpawn::getInstance();
         parent::__construct("hub", "Teleport you to the hub/lobby of this server!", $usageMessage, ["lobby", "hubtp", "lobbytp"]);
     }
 
@@ -44,7 +42,7 @@ class HubCommand extends theSpawnOwnedCommand
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $hubMgr = HubManager::getInstance();
-        $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
+        $hub = $hubMgr->getHubConfig();
         $config = $pl->getConfig();
         #########################
 
@@ -82,10 +80,8 @@ class HubCommand extends theSpawnOwnedCommand
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
                 }
-            } elseif ($pl->getUseHubServer() && !$pl->getUseWaterdogTransfer()) {
+            } elseif ($pl->getUseHubServer()) {
                 $pl->teleportToHubServer($s);
-            } elseif ($pl->getUseHubServer() && $pl->getUseWaterdogTransfer()) {
-                $pl->transferToProxyServer($s, $config->get("waterdog-servername"));
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));
             }

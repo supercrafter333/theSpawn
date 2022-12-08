@@ -23,6 +23,16 @@ class HubManager
         return new Config(theSpawn::getInstance()->getDataFolder() . "theRandHubs.yml", Config::YAML);
     }
 
+    public function getHubConfig(): Config
+    {
+        return new Config(theSpawn::getInstance()->getDataFolder() . "theHub.yml", Config::YAML);
+    }
+
+    public function getRandomHubsConfig(): Config
+    {
+        return new Config(theSpawn::getInstance()->getDataFolder() . "theRandHubs.yml", Config::YAML);
+    }
+
     /**
      * @param float $x
      * @param float $y
@@ -35,9 +45,9 @@ class HubManager
      */
     public function setHub(float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null, int $count = null): void
     {
-        $config = new Config(theSpawn::getInstance()->getDataFolder() . "config.yml", Config::YAML);
-        $hub = new Config(theSpawn::getInstance()->getDataFolder() . "theHub.yml", Config::YAML);
-        $randHub = new Config(theSpawn::getInstance()->getDataFolder() . "theRandHubs.yml", Config::YAML);
+        $config = theSpawn::getInstance()->getConfig();
+        $hub = $this->getHubConfig();
+        $randHub = $this->getRandomHubsConfig();
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
         if ($yaw !== null && $pitch !== null) {
             $hubcoords["yaw"] = $yaw;
@@ -107,7 +117,7 @@ class HubManager
      */
     public function getHub(int $count = null): Position|Location|null|false
     {
-        $hub = new Config(theSpawn::getInstance()->getDataFolder() . "theHub.yml", Config::YAML);
+        $hub = $this->getHubConfig();
 
         if ($count !== null && theSpawn::getInstance()->getUseRandomHubs())
             return $this->getRandomHub($count) === null ? false : $this->getRandomHub($count);
@@ -129,7 +139,7 @@ class HubManager
      */
     public function removeHub(int $count = null): bool
     {
-        $hub = new Config(theSpawn::getInstance()->getDataFolder() . "theHub.yml", Config::YAML);
+        $hub = $this->getHubConfig();
         $randHubs = $this->getRandomHubList();
         if ($count !== null && theSpawn::getInstance()->getUseRandomHubs()) {
             if ($randHubs->exists($count)) {
