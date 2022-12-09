@@ -82,7 +82,7 @@ class theSpawn extends PluginBase
     public array $TPAs = [];
 
     /**
-     * @var string[]
+     * @var SpawnDelayTask[]
      */
     public array $spawnDelays = [];
 
@@ -93,10 +93,10 @@ class theSpawn extends PluginBase
 
     public Config $warpCfg;
 
-    public string $version = "1.8.4-dev";
+    public string $version = "1.8.4";
 
 
-    public const DEVELOPMENT_VERSION = true;
+    public const DEVELOPMENT_VERSION = false;
 
 
 
@@ -1176,8 +1176,7 @@ class theSpawn extends PluginBase
     public function startSpawnDelay(Player $player)
     {
         $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getConfig()->get("spawn-delay-seconds")), 20);
-        $this->spawnDelays[] = $player->getName();
-        $this->spawnDelays[$player->getName()] = ["task" => $task];
+        $this->spawnDelays[$player->getName()] = $task->getTask();
     }
 
     /**
@@ -1196,10 +1195,10 @@ class theSpawn extends PluginBase
     public function stopSpawnDelay(Player $player): bool
     {
         if (!isset($this->spawnDelays[$player->getName()])) return false;
-        $task = $this->spawnDelays["task"];
-        if ($task instanceof Task) {
+
+        $task = $this->spawnDelays[$player->getName()];
+        if ($task instanceof Task)
             $task->getHandler()->cancel();
-        }
         unset($this->spawnDelays[$player->getName()]);
         return true;
     }
