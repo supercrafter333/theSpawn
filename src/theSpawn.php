@@ -623,8 +623,6 @@ class theSpawn extends PluginBase
     {
         if (!isset($this->spawnDelays[$player->getName()])) return false;
 
-        echo "lol";
-
         $task = $this->spawnDelays[$player->getName()];
         if ($task instanceof Task)
             $task->getHandler()->cancel();
