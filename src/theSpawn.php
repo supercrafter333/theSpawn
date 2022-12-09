@@ -57,7 +57,7 @@ class theSpawn extends PluginBase
     public Config $msgCfg;
 
     /**
-     * @var string[]
+     * @var SpawnDelayTask[]
      */
     public array $spawnDelays = [];
 
@@ -603,8 +603,7 @@ class theSpawn extends PluginBase
     public function startSpawnDelay(Player $player)
     {
         $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getConfig()->get("spawn-delay-seconds")), 20);
-        $this->spawnDelays[] = $player->getName();
-        $this->spawnDelays[$player->getName()] = ["task" => $task];
+        $this->spawnDelays[$player->getName()] = $task->getTask();
     }
 
     /**
@@ -623,10 +622,12 @@ class theSpawn extends PluginBase
     public function stopSpawnDelay(Player $player): bool
     {
         if (!isset($this->spawnDelays[$player->getName()])) return false;
-        $task = $this->spawnDelays["task"];
-        if ($task instanceof Task) {
+
+        echo "lol";
+
+        $task = $this->spawnDelays[$player->getName()];
+        if ($task instanceof Task)
             $task->getHandler()->cancel();
-        }
         unset($this->spawnDelays[$player->getName()]);
         return true;
     }
