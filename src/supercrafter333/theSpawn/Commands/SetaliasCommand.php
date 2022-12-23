@@ -2,6 +2,7 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
+use JsonException;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\DoorBumpSound;
@@ -36,7 +37,8 @@ class SetaliasCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -64,7 +66,6 @@ class SetaliasCommand extends theSpawnOwnedCommand
         $pl->addAlias($args[0], $args[1]);
         $s->sendMessage($prefix . str_replace(["{alias}"], [$args[0]], str_replace(["{world}"], [$args[1]], MsgMgr::getMsg("alias-set"))));
         $s->getWorld()->addSound($s->getPosition(), new DoorBumpSound());
-        return;
     }
 
     /**

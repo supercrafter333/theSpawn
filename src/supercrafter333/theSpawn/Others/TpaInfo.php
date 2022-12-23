@@ -18,7 +18,7 @@ class TpaInfo
 {
 
     /**
-     * @var array|null
+     * @var string[]|null
      */
     private array|null $tpa;
 

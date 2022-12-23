@@ -12,7 +12,6 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\sound\PopSound;
-use function var_dump;
 
 /**
  * Class EventListener.php
@@ -53,7 +52,6 @@ class EventListener implements Listener
     {
         $pl = theSpawn::getInstance();
         $s = $event->getPlayer();
-        $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
         $world = $s->getWorld();
 
         if ($pl->useHubTeleportOnDeath() && $pl->getHub() instanceof Position) {
@@ -61,7 +59,7 @@ class EventListener implements Listener
             return;
         }
 
-        if ($world === null) {
+        if ($world === null) { //Maybe unnecessary?
             if ($pl->getHub() instanceof Position) {
                 $event->setRespawnPosition($pl->getHub());
             } else {
@@ -81,20 +79,6 @@ class EventListener implements Listener
                 $event->setRespawnPosition($world->getSafeSpawn());
             }
         }
-        /*if ($this->getSpawn($worldname)) {
-            if ($this->getServer()->isLevelLoaded($worldname) == true && !$world == null) {
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
-                $s->getWorld()->addSound($s, new PopSound());
-            } elseif ($world == null) {
-                $s->sendMessage($prefix . MsgMgr::getMsg("world-not-found"));
-                $s->teleport($this->getHub());
-                $s->kick(MsgMgr::getMsg("no-spawn-found-kick"));
-            } elseif (!$this->getServer()->isLevelLoaded($worldname)) {
-                $this->getServer()->loadLevel($worldname);
-                $event->setRespawnPosition(new Position($X, $Y, $Z, $world));
-                $s->getWorld()->addSound($s, new PopSound());
-            }
-        }*/
     }
 
     /**

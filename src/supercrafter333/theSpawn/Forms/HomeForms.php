@@ -51,7 +51,7 @@ class HomeForms
 
     /**
      * @param Player $player
-     * @return SimpleForm
+     * @return SimpleForm|null
      */
     public function openRmHome(Player $player): ?SimpleForm
     {
@@ -73,7 +73,7 @@ class HomeForms
 
     /**
      * @param Player $player
-     * @return CustomForm
+     * @return CustomForm|null
      */
     public function openSetHome(Player $player): ?CustomForm
     {
@@ -142,7 +142,6 @@ class HomeForms
                 $editHome($home->getName(), $player->getLocation());
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
                 $this->openEditHome($player, theSpawn::getInstance()->getHomeInfo($player, $home->getName()));
-                return;
             }
         });
         $form->setTitle(MsgMgr::getMsg("form-editHome-menu-title"));
@@ -186,7 +185,6 @@ class HomeForms
                 $editHome($data["homeName"], $pl->getHomePos($player, $home->getName()));
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
                 $this->openEditHome($player, $pl->getHomeInfo($player, $data["homeName"]));
-                return;
             }
         });
         $form->setTitle(MsgMgr::getMsg("form-editHome-editName-title"));

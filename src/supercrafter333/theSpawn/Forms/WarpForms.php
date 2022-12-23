@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Forms;
 
-use Closure;
 use jojoe77777\FormAPI\CustomForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\entity\Location;
@@ -18,15 +17,12 @@ use supercrafter333\theSpawn\theSpawn;
 use function mb_strlen;
 use function str_contains;
 
-/**
- *
- */
 class WarpForms
 {
 
     /**
      * @param Player $player
-     * @return SimpleForm
+     * @return SimpleForm|null
      */
     public function open(Player $player): ?SimpleForm
     {
@@ -61,7 +57,6 @@ class WarpForms
             if ($result === null) return;
 
             DelwarpCommand::simpleExecute($player, [$result]);
-            return;
         });
         $form->setTitle(MsgMgr::getMsg("form-rmWarp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-rmWarp-menu-content"));
@@ -101,7 +96,6 @@ class WarpForms
                 }
 
                 SetwarpCommand::simpleExecute($player, [$data["warpName"]]);
-                return;
             }
         });
         $form->setTitle(MsgMgr::getMsg("form-setWarp-menu-title"));
@@ -209,9 +203,7 @@ class WarpForms
 
             if ($result == "addIcon") {
                 $this->openEditWarpIcon($player, $warp, false);
-                return;
             }
-            return;
         });
         $form->setTitle(MsgMgr::getMsg("form-editWarp-menu-title"));
         $form->setContent(MsgMgr::getMsg("form-editWarp-menu-content", [
@@ -271,7 +263,6 @@ class WarpForms
                 $editWarp($data["warpName"], $warpPos, ($warpPerm !== null), $warpIcon);
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
                 $this->openEditWarp($player, $pl->getWarpInfo($data["warpName"]));
-                return;
             }
         });
         $form->setTitle(MsgMgr::getMsg("form-editWarp-editName-title"));
@@ -312,7 +303,6 @@ class WarpForms
                 $editWarp($warpName, $warpPos, ($warpPerm !== null), $data["warpIcon"]);
                 $player->broadcastSound(new XpLevelUpSound(mt_rand()), [$player]);
                 $this->openEditWarp($player, $pl->getWarpInfo($warpName));
-                return;
             }
         });
         $form->setTitle(MsgMgr::getMsg("form-editWarp-editIcon-title"));

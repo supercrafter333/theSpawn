@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\PopSound;
@@ -37,16 +36,13 @@ class SpawnCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
         $prefix = theSpawn::$prefix;
         $pl = theSpawn::getInstance();
         $spawn = new Config($pl->getDataFolder() . "theSpawns.yml", Config::YAML);
-        $hub = new Config($pl->getDataFolder() . "theHub.yml", Config::YAML);
-        $msgs = MsgMgr::getMsgs();
-        $config = $pl->getConfig();
         #########################
 
         if (!$this->isPlayer($s)) return;
@@ -66,7 +62,6 @@ class SpawnCommand extends theSpawnOwnedCommand
         } else {
             $s->sendMessage($prefix . MsgMgr::getMsg("no-spawn-set"));
         }
-        return;
     }
 
     /**

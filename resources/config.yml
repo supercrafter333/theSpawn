@@ -1,7 +1,7 @@
 #hub server teleport
 use-hub-server: "false"
 hub-server-ip: "000.00.000.00" #if you use WaterdogPE, please insert the server-name here
-hub-server-port: "19132" #if you use WaterdogPE, please set an empty string here (like: "")
+hub-server-port: "19132" #if you use WaterdogPE, please insert the port of your proxy here
 
 #waterdog (not WDPE) teleport (hub server teleport must be enabled to enable this)
 waterdog-hub-teleport: "false"
@@ -73,7 +73,7 @@ check-positions: "false"
 
 
 #DON'T CHANGE THIS!!
-version: "1.8.3"
+version: "1.8.4"
 
 ############################
 ##########theSpawn##########

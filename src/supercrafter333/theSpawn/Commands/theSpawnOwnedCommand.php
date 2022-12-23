@@ -53,7 +53,6 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
      */
     public function canUse(CommandSender|Player $sender, bool $checkIsPlayer = true): bool
     {
-        $pl = $this->getOwningPlugin();
 
         if ($this->getPermission() !== null && !$this->testPermission($sender, $this->getPermission())) return false;
 

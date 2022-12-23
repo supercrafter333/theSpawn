@@ -11,7 +11,6 @@ use pocketmine\player\Player;
 use pocketmine\world\World;
 use pocketmine\utils\Config;
 use supercrafter333\theSpawn\theSpawn;
-use function in_array;
 
 /**
  * Class WarpInfo
@@ -169,24 +168,6 @@ class WarpInfo
         }
         return null;
     }
-
-    /*public function hasPermission(Player $player): bool //Code implementation from MyPlot (by jasonwynn10)
-    {
-        if ($this->getPermission() === null || $player->hasPermission("theSpawn.warp.admin")) return true;
-
-		$perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
-		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);
-		$perms = array_filter($perms, function(string $name) : bool {
-			return (str_starts_with($name, "theSpawn.warp."));
-		}, ARRAY_FILTER_USE_KEY);
-		if(count($perms) === 0)
-			return 0;
-		krsort($perms, SORT_FLAG_CASE | SORT_NATURAL);
-
-        if (in_array($this->getPermission(), $perms)) return true;
-
-		return false;
-    }*/
 
     public function hasPermission(Player $player): bool
     {

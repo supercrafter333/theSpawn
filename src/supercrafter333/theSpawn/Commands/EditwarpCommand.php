@@ -7,7 +7,6 @@ use pocketmine\lang\Translatable;
 use pocketmine\player\Player;
 use supercrafter333\theSpawn\Forms\WarpForms;
 use supercrafter333\theSpawn\MsgMgr;
-use supercrafter333\theSpawn\theSpawn;
 use function implode;
 
 class EditwarpCommand extends theSpawnOwnedCommand

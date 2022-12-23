@@ -9,9 +9,6 @@ use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\Others\TpaInfo;
 use supercrafter333\theSpawn\theSpawn;
 
-/**
- *
- */
 class TpaTask extends Task
 {
 

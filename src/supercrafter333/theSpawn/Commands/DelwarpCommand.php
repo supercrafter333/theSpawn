@@ -2,7 +2,7 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
+use JsonException;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
@@ -38,6 +38,8 @@ class DelwarpCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
+     * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -68,6 +70,9 @@ class DelwarpCommand extends theSpawnOwnedCommand
         $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
     }
 
+    /**
+     * @throws JsonException
+     */
     public static function simpleExecute(Player $s, array $args): void
     {
         $prefix = theSpawn::$prefix;

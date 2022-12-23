@@ -2,7 +2,7 @@
 
 namespace supercrafter333\theSpawn\Commands;
 
-use pocketmine\command\Command;
+use JsonException;
 use supercrafter333\theSpawn\Commands\theSpawnOwnedCommand;
 use pocketmine\command\CommandSender;
 use pocketmine\world\sound\GhastShootSound;
@@ -35,7 +35,8 @@ class DelhomeCommand extends theSpawnOwnedCommand
      * @param CommandSender|Player $s
      * @param string $commandLabel
      * @param array $args
-     * @return bool
+     * @return void
+     * @throws JsonException
      */
     public function execute(CommandSender $s, string $commandLabel, array $args): void
     {
@@ -63,9 +64,11 @@ class DelhomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-deleted")));
             $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         }
-        return;
     }
 
+    /**
+     * @throws JsonException
+     */
     public static function simpleExecute(Player $s, array $args): void
     {
         $prefix = theSpawn::$prefix;
@@ -79,6 +82,5 @@ class DelhomeCommand extends theSpawnOwnedCommand
             $s->sendMessage($prefix . str_replace(["{home}"], [implode(" ", $args)], MsgMgr::getMsg("home-deleted")));
             $s->getWorld()->addSound($s->getPosition(), new GhastShootSound());
         }
-        return;
     }
 }
