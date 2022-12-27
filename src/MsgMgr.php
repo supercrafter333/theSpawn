@@ -10,6 +10,7 @@ use function strtolower;
 /**
  * Class MsgMgr
  * @package supercrafter333\theSpawn
+ * @internal
  */
 class MsgMgr
 {
@@ -29,19 +30,6 @@ class MsgMgr
         self::LANG_fr_FR => self::LANG_fr_FR,
         self::LANG_CUSTOM => self::LANG_CUSTOM,
     ];
-
-    /**
-     * @var MsgMgr
-     */
-    private static MsgMgr $Me;
-
-    /**
-     * MsgMgr constructor.
-     */
-    public function __construct()
-    {
-        self::$Me = $this;
-    }
 
     /**
      * @return Config
@@ -170,35 +158,10 @@ class MsgMgr
     }
 
     /**
-     * @return static
-     */
-    public static function getMe()
-    {
-        return self::$Me;
-    }
-
-    /**
      * @return Config
      */
     public function getMsgsX(): Config
     {
         return self::getMsgs();
-    }
-
-    /**
-     * @return string
-     */
-    public function getErrorMgsX(): string
-    {
-        return self::getMsg("something-went-wrong");
-    }
-
-    /**
-     * @param string $message
-     * @return bool|mixed
-     */
-    public function getMsgX(string $message)
-    {
-        return self::getMsg($message);
     }
 }

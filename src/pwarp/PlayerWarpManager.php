@@ -9,17 +9,14 @@ use pocketmine\permission\PermissionAttachmentInfo;
 use pocketmine\permission\PermissionManager;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\LocationHelper;
 use supercrafter333\theSpawn\theSpawn;
 use function strtolower;
 
-/**
- *
- */
 class PlayerWarpManager
 {
-
-    //TODO: forms
 
     /**
      * @return Config
@@ -35,7 +32,7 @@ class PlayerWarpManager
      */
     public static function exists(string $warpName): bool
     {
-        return self::getConfig()->exists($warpName);
+        return self::getConfig()->exists(TextFormat::clean($warpName));
     }
 
     /**
@@ -48,7 +45,7 @@ class PlayerWarpManager
         if (!self::exists($warp->getName())) return false;
 
         $cfg = self::getConfig();
-        $cfg->set($warp->getName(), [
+        $cfg->set(TextFormat::clean($warp->getName()), [
             "location" => LocationHelper::locationToString($warp->getLocation()),
             "owner" => $warp->getOwnerName(),
             "iconPath" => $warp->getIconPath()
@@ -75,7 +72,7 @@ class PlayerWarpManager
             $warpArray["iconPath"] = $warp->getIconPath();
 
         $cfg = self::getConfig();
-        $cfg->set($warp->getName(), $warpArray);
+        $cfg->set(TextFormat::clean($warp->getName()), $warpArray);
         $cfg->save();
         return true;
     }
@@ -90,7 +87,7 @@ class PlayerWarpManager
         if (!self::exists($warpName)) return false;
 
         $cfg = self::getConfig();
-        $cfg->remove($warpName);
+        $cfg->remove(TextFormat::clean($warpName));
         $cfg->save();
         return true;
     }
@@ -103,10 +100,10 @@ class PlayerWarpManager
     {
         if (!self::exists($warpName)) return null;
 
-        $warpInfos = self::getConfig()->get($warpName, []);
+        $warpInfos = self::getConfig()->get(TextFormat::clean($warpName), []);
 
         return new PlayerWarp(LocationHelper::stringToLocation($warpInfos["location"]),
-            $warpName,
+            TextFormat::clean($warpName),
             $warpInfos["owner"],
             ($warpInfos["iconPath"] ?? null));
     }
@@ -132,7 +129,7 @@ class PlayerWarpManager
      */
     public static function getMaxPlayerWarpCount(Player $player): int
     {
-        if($player->hasPermission("theSpawn.pwarps.unlimited") || !theSpawn::getInstance()->useMaxHomePermissions()) return PHP_INT_MAX;
+        if($player->hasPermission("theSpawn.pwarps.unlimited") || !ConfigManager::getInstance()->useMaxPlayerWarpPermissions()) return PHP_INT_MAX;
 
 		$perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
 		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);

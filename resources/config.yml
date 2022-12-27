@@ -3,9 +3,23 @@ use-hub-server: "false"
 hub-server-ip: "000.00.000.00" #if you use WaterdogPE, please insert the server-name here
 hub-server-port: "19132" #if you use WaterdogPE, please set an empty string here (like: "") or the port of your hub-server
 
+
+#spawns [true | false]
+use-spawns: "true"
+#Spawn Teleport delay [true | false]
+use-spawnDelay: "false"
+spawn-delay-seconds: 3
+
+#hub(-s) [true | false]
+use-hub: "true"
+#hub teleport on join [true | false]
+hub-teleport-on-join: "true"
+#hub teleport on death [true | false]
+hub-teleport-on-death: "true"
 #random-(/multi-)hubs [true | false]
 ### Only available with deactivated hub servers
 use-random-hubs: "false"
+
 
 #aliases [true | false]
 use-aliases: "true"
@@ -23,21 +37,11 @@ use-warps: "true"
 use-playerwarps: "true"
 
 #maximum permission for player-warps [true | false]
-use-max-playerwarps-permissions: "true"
+use-max-playerwarps-permissions: "false"
 
 #TPAs [true | false]
 use-tpas: "true"
 tpa-time: 30 #seconds
-
-#Spawn Teleport delay [true | false]
-use-spawnDelay: "false"
-spawn-delay-seconds: 3
-
-#hub teleport on join [true | false]
-hub-teleport-on-join: "true"
-
-#hub teleport on death [true | false]
-hub-teleport-on-death: "true"
 
 #use Forms [true | false]
 use-forms: "true"
@@ -75,7 +79,7 @@ check-positions: "false"
 
 
 #DON'T CHANGE THIS!!
-version: "2.0.0-PM5-dev5"
+version: "2.0.0-dev6"
 
 ############################
 ##########theSpawn##########

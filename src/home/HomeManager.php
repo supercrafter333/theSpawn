@@ -11,11 +11,13 @@ use pocketmine\permission\PermissionManager;
 use pocketmine\player\IPlayer;
 use pocketmine\player\Player;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 use pocketmine\world\World;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\LocationHelper;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -38,7 +40,7 @@ class HomeManager
      */
     public static function existsHome(string|Home $home, IPlayer $player = null): bool
     {
-        return self::getHomeConfig(($player instanceof IPlayer ? $player : $home->getPlayer()))->exists(($home instanceof Home ? $home->getName() : $home));
+        return self::getHomeConfig(($player instanceof IPlayer ? $player : $home->getPlayer()))->exists(TextFormat::clean(($home instanceof Home ? $home->getName() : $home)));
     }
     
     /**
@@ -57,7 +59,7 @@ class HomeManager
 
         $homePlayers = [];
 
-        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($worldPath = theSpawn::getInstance()->getDataFolder() . "homes/"), RecursiveIteratorIterator::CHILD_FIRST);
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(theSpawn::getInstance()->getDataFolder() . "homes/"), RecursiveIteratorIterator::CHILD_FIRST);
 		/** @var SplFileInfo $fileInfo */
 		foreach($files as $fileInfo) {
             if ($fileInfo->isFile() && $fileInfo->getExtension() === "yml"
@@ -107,7 +109,7 @@ class HomeManager
 
         self::createHome(new Home(
             $player,
-            $homeName,
+            TextFormat::clean($homeName),
             Location::fromObject(new Position($x, $y, $z, $world), $world, $yaw, $pitch)
         ));
         return true;
@@ -126,7 +128,7 @@ class HomeManager
             return false;
 
         $cfg = self::getHomeConfig($home->getPlayer());
-        $cfg->set($home->getName(), LocationHelper::locationToString($home->getLocation()));
+        $cfg->set(TextFormat::clean($home->getName()), LocationHelper::locationToString($home->getLocation()));
         $cfg->save();
         return true;
     }
@@ -151,7 +153,7 @@ class HomeManager
 
         $cfg = self::getHomeConfig($player);
 
-        $cfg->remove(($home instanceof Home ? $home->getName() : $home));
+        $cfg->remove(TextFormat::clean(($home instanceof Home ? $home->getName() : $home)));
         $cfg->save();
         return true;
     }
@@ -205,7 +207,7 @@ class HomeManager
      */
     public static function getMaxHomesOfPlayer(Player $player): int //copied from MyPlot (by jasonwynn10)
     {
-		if($player->hasPermission("theSpawn.homes.unlimited") || !theSpawn::getInstance()->useMaxHomePermissions()) return PHP_INT_MAX;
+		if($player->hasPermission("theSpawn.homes.unlimited") || !ConfigManager::getInstance()->useMaxHomePermissions()) return PHP_INT_MAX;
 
 		$perms = array_map(fn(PermissionAttachmentInfo $attachment) => [$attachment->getPermission(), $attachment->getValue()], $player->getEffectivePermissions());
 		$perms = array_merge(PermissionManager::getInstance()->getPermission(DefaultPermissions::ROOT_USER)->getChildren(), $perms);

@@ -5,6 +5,7 @@ namespace supercrafter333\theSpawn\warp;
 use JsonException;
 use pocketmine\entity\Location;
 use pocketmine\utils\Config;
+use pocketmine\utils\TextFormat;
 use pocketmine\world\Position;
 use pocketmine\world\World;
 use supercrafter333\theSpawn\LocationHelper;
@@ -79,7 +80,7 @@ class WarpManager
 
         self::createWarp(new Warp(
             Location::fromObject(new Position($x, $y, $z, $world), $world, $yaw, $pitch),
-            $warpName,
+            TextFormat::clean($warpName),
             $perm,
             $iconPath
         ));
@@ -101,7 +102,7 @@ class WarpManager
      */
     public static function existsWarp(string|Warp $warp): bool
     {
-        return self::getWarpConfig()->exists(($warp instanceof Warp ? $warp->getName() : $warp));
+        return self::getWarpConfig()->exists(TextFormat::clean(($warp instanceof Warp ? $warp->getName() : $warp)));
     }
 
     /**
@@ -125,7 +126,7 @@ class WarpManager
         if ($warp->getIconPath() !== null && $warp->getIconPath() !== "")
             $warpArray["iconPath"] = $warp->getIconPath();
 
-        $cfg->set($warp->getName(), $warpArray);
+        $cfg->set(TextFormat::clean($warp->getName()), $warpArray);
         $cfg->save();
         return true;
     }
@@ -144,7 +145,7 @@ class WarpManager
 
         return new Warp(
             LocationHelper::stringToLocation($warpInfos["location"]),
-            $warp,
+            TextFormat::clean($warp),
             (isset($warpInfos["perm"]) ? (bool)$warpInfos["perm"] : false),
             ($warpInfos["iconPath"] ?? null)
         );
@@ -170,7 +171,7 @@ class WarpManager
         if ($warp->getIconPath() !== null && $warp->getIconPath() !== "")
             $warpArray["iconPath"] = $warp->getIconPath();
 
-        $cfg->set($warp->getName(), $warpArray);
+        $cfg->set(TextFormat::clean($warp->getName()), $warpArray);
         $cfg->save();
         return true;
     }
@@ -188,7 +189,7 @@ class WarpManager
             return false;
 
         $cfg = self::getWarpConfig();
-        $cfg->remove(($warp instanceof Warp ? $warp->getName() : $warp));
+        $cfg->remove(TextFormat::clean(($warp instanceof Warp ? $warp->getName() : $warp)));
         $cfg->save();
         return true;
     }

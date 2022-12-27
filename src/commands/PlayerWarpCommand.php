@@ -9,6 +9,7 @@ use pocketmine\player\Player;
 use supercrafter333\theSpawn\events\playerwarp\PlayerWarpCreateEvent;
 use supercrafter333\theSpawn\events\playerwarp\PlayerWarpRemoveEvent;
 use supercrafter333\theSpawn\events\playerwarp\PlayerWarpTeleportEvent;
+use supercrafter333\theSpawn\form\PlayerWarpForms;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\pwarp\PlayerWarp;
 use supercrafter333\theSpawn\pwarp\PlayerWarpManager;
@@ -32,10 +33,11 @@ class PlayerWarpCommand extends theSpawnOwnedCommand
         /**@var Player $s*/
 
         if (count($args) <= 0) {
-            /*if ($pl->useForms())
-                //TODO: open form
-            else*/
+            if ($this->useForms())
+                $s->sendForm(PlayerWarpForms::menu($s));
+            else
                 $s->sendMessage($this->usageMessage);
+            return;
         }
 
         $subCmd = array_shift($args);
@@ -44,7 +46,15 @@ class PlayerWarpCommand extends theSpawnOwnedCommand
             case "add":
             case "create":
                 if (!isset($args[0])) {
-                    $s->sendMessage($this->usageMessage);
+                    if ($this->useForms()) {
+                        if (($max = PlayerWarpManager::getMaxPlayerWarpCount($s)) >= PlayerWarpManager::getPlayerWarpsOf($s->getName())) {
+                            $s->sendMessage(MsgMgr::getMsg("pwarp-maximum-reached", ["{max}" => $max], true));
+                            return;
+                        }
+                        $s->sendForm(PlayerWarpForms::createWarp());
+                    }
+                    else
+                        $s->sendMessage($this->usageMessage);
                     return;
                 }
                 $warpName = implode(" ", $args);

@@ -38,13 +38,13 @@ class TpaCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            if ($pl->useForms())
+            if ($this->useForms())
                 $s->sendForm(TpaForms::menu($s));
             else
                 $s->sendMessage($this->usageMessage);
             return;
         }
-        $target = $pl->getServer()->getPlayerByPrefix($args[0]);
+        $target = $this->getPlayerByPrefix($args[0]);
         if (!$target instanceof Player) {
             $s->sendMessage(str_replace("{name}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;

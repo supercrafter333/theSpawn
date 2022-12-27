@@ -45,7 +45,7 @@ class DelwarpCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            if ($pl->useForms()) {
+            if ($this->useForms()) {
                 if ($pl->listWarps() == null)
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-warps-set"));
                 else

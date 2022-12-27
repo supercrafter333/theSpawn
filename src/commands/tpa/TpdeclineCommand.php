@@ -34,8 +34,8 @@ class TpdeclineCommand extends theSpawnOwnedCommand
             $s->sendMessage($this->usageMessage);
             return;
         }
-        $source = $pl->getServer()->getPlayerByPrefix(implode(" ", $args)) instanceof Player
-        ? $pl->getServer()->getPlayerByPrefix(implode(" ", $args))->getName()
+        $source = $this->getPlayerByPrefix(implode(" ", $args)) instanceof Player
+        ? $this->getPlayerByPrefix(implode(" ", $args))->getName()
         : implode(" ", $args);
 
         if (!TpaManager::hasTpaOf($s->getName(), $source)) {

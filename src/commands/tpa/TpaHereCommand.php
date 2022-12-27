@@ -40,7 +40,7 @@ class TpaHereCommand extends theSpawnOwnedCommand
             $s->sendMessage($this->usageMessage);
             return;
         }
-        $target = $pl->getServer()->getPlayerByPrefix($args[0]);
+        $target = $this->getPlayerByPrefix($args[0]);
         if (!$target instanceof Player) {
             $s->sendMessage(str_replace("{name}", (string)$args[0], theSpawn::$prefix . MsgMgr::getMsg("player-not-found")));
             return;

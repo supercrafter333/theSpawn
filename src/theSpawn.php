@@ -2,16 +2,14 @@
 
 namespace supercrafter333\theSpawn;
 
-use EasyUI\Form;
 use JsonException;
-use pocketmine\block\{Air, Crops, DoubleTallGrass, Flower, Grass, Liquid, Sapling, TallGrass, Torch};
+use pocketmine\block\{Air, Crops, DoubleTallGrass, Flower, Grass, ItemFrame, Liquid, Sapling, TallGrass, Torch};
 use pocketmine\entity\Location;
 use pocketmine\math\Vector3;
 use pocketmine\permission\PermissionManager;
 use pocketmine\player\IPlayer;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
-use pocketmine\scheduler\Task;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
 use pocketmine\world\World;
@@ -25,10 +23,10 @@ use supercrafter333\theSpawn\commands\warp\{DelwarpCommand, EditwarpCommand, Set
 use supercrafter333\theSpawn\home\HomeManager;
 use supercrafter333\theSpawn\task\SpawnDelayTask;
 use supercrafter333\theSpawn\warp\WarpManager;
-use function class_exists;
 use function file_exists;
 use function implode;
 use function phpversion;
+use function sort;
 use function str_contains;
 use function strtolower;
 
@@ -53,8 +51,6 @@ class theSpawn extends PluginBase
     public static theSpawn $instance;
 
     public static string $prefix;
-
-    public Config $msgCfg;
 
     /**
      * @var SpawnDelayTask[]
@@ -88,7 +84,7 @@ class theSpawn extends PluginBase
             $this->getLogger()->warning("You're using a development version of theSpawn ({$pluginVersion})!! This version can contain bugs, please report them on github!");
 
         if ($this->getServer()->getVersion() < 5)
-            $this->getLogger()->error("This version of theSpawn has not been tested in PM4 and may contain bugs on PM4-servers!! You should upgrade to PocketMine-MP 5.0.0 or higher!");
+            $this->getLogger()->error("This version of theSpawn has not been tested in PM4 and may contain bugs on PM4-servers!! You should and you're recommended to upgrade to PocketMine-MP 5.0.0 or higher!");
 
         $this->saveResource("config.yml");
         @mkdir($this->getDataFolder() . "homes");
@@ -104,19 +100,23 @@ class theSpawn extends PluginBase
         ###
 
         $this->registerPermissions();
-
-        $this->msgCfg = MsgMgr::getMsgs();
         self::$prefix = MsgMgr::getPrefix();
-        $cmdMap->registerAll("theSpawn",
+        $cfgMgr = ConfigManager::getInstance();
+        if ($cfgMgr->useSpawns())
+            $cmdMap->registerAll("theSpawn",
             [
                 new SpawnCommand("spawn"),
                 new SetspawnCommand("setspawn"),
-                new DelspawnCommand("delspawn"),
+                new DelspawnCommand("delspawn")
+            ]);
+        if ($cfgMgr->useHub() || $cfgMgr->useRandomHubs())
+            $cmdMap->registerAll("theSpawn",
+            [
                 new HubCommand("hub"),
                 new SethubCommand("sethub"),
                 new DelhubCommand("delhub")
             ]);
-        if ($this->useAliases()) {
+        if ($cfgMgr->useAliases()) {
             $cmdMap->registerAll("theSpawn",
                 [
                     new SetaliasCommand("setalias"),
@@ -125,25 +125,25 @@ class theSpawn extends PluginBase
                 ]);
             AliasManager::reactivateAliases();
         }
-        if ($this->useHomes()) {
+        if ($cfgMgr->useHomes()) {
             $cmdMap->registerAll("theSpawn",
                 [
                     new SethomeCommand("sethome"),
                     new DelhomeCommand("delhome"),
                     new HomeCommand("home")
                 ]);
-            if ($this->useForms()) $cmdMap->register("theSpawn", new EdithomeCommand("edithome"));
+            if ($cfgMgr->useForms()) $cmdMap->register("theSpawn", new EdithomeCommand("edithome"));
         }
-        if ($this->useWarps()) {
+        if ($cfgMgr->useWarps()) {
             $cmdMap->registerAll("theSpawn",
                 [
                     new SetwarpCommand("setwarp"),
                     new DelwarpCommand("delwarp"),
                     new WarpCommand("warp")
                 ]);
-            if ($this->useForms()) $cmdMap->register("theSpawn", new EditwarpCommand("editwarp"));
+            if ($cfgMgr->useForms()) $cmdMap->register("theSpawn", new EditwarpCommand("editwarp"));
         }
-        if ($this->useTPAs())
+        if ($cfgMgr->useTPAs())
             $cmdMap->registerAll("theSpawn",
                 [
                     new TpaCommand("tpa"),
@@ -151,8 +151,8 @@ class theSpawn extends PluginBase
                     new TpacceptCommand("tpaccept"),
                     new TpdeclineCommand("tpdecline")
                 ]);
-        if ($this->useBackCommand()) $cmdMap->register("theSpawn", new BackCommand("back"));
-        if ($this->usePlayerWarps()) $cmdMap->register("theSpawn", new PlayerWarpCommand("playerwarp",
+        if ($cfgMgr->useBackCommand()) $cmdMap->register("theSpawn", new BackCommand("back"));
+        if ($cfgMgr->usePlayerWarps()) $cmdMap->register("theSpawn", new PlayerWarpCommand("playerwarp",
         "Create, remove or teleport you to a player-warp.",
             "§4Usage: §r/playerwarp <create|remove|list|teleport>", ["pwarp"], "theSpawn.playerwarp.cmd"));
 
@@ -183,26 +183,6 @@ class theSpawn extends PluginBase
     {
         return MsgMgr::getMsgs();
     }
-
-     /**
-     * @return bool
-     */
-    public function useForms(): bool
-    {
-        return ($this->getConfig()->get("use-forms") == "true" || $this->getConfig()->get("use-forms") == "on")
-            && class_exists(Form::class);
-    }
-
-    #OLD FUNCTION (new: versionCheck($version, bool $update = true))
-    /*public function checkCfgVersion(string $version): bool
-    {
-        if ($this->getConfig()->exists("version")) {
-            if ($this->getConfig()->get("version") == $version) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 
     /**
      * Check the version of theSpawn.
@@ -306,15 +286,108 @@ class theSpawn extends PluginBase
         return $this->getServer()->getWorldManager()->getWorldByName($worldName);
     }
 
-    /*public function isTpToHubOnRepawnEnabled(): bool
+    /**
+     * @param Player $s
+     * @return bool
+     */
+    public function teleportToHubServer(Player $s): bool
     {
-        $use = $this->getConfig()->get("teleport-to-hub-on-respawn");
-        if ($use == "true") {
-            return true;
-        } else {
-            return false;
+        $config = $this->getConfig();
+        if (ConfigManager::getInstance()->useHubServer())
+            return $s->transfer($config->get("hub-server-ip"), $config->get("hub-server-port"));
+        else return false;
+    }
+
+    /**
+     * @param Player $player
+     * @return string|null
+     */
+    public function listHomes(IPlayer $player): ?string
+    {
+        $homes = HomeManager::getHomesOfPlayer($player);
+        sort($homes);
+        return count($homes) > 0 ? implode(", ", $homes) : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function listWarps(): ?string
+    {
+        if (file_exists($this->getDataFolder() . "warps.yml")) {
+            $warp = WarpManager::getWarpConfig();
+            $all = $warp->getAll(true);
+            sort($all);
+            if (count($all) > 0)
+                return implode(", ", $all);
         }
-    }*/
+
+        return null;
+    }
+
+    /**
+     * @return void
+     * @throws JsonException
+     */
+    private function convertOldWarpPermissions(): void
+    {
+        $cfg = WarpManager::getWarpConfig();
+        foreach ($cfg->getAll() as $warp => $warpArray) {
+            if (isset($warpArray["perm"]) && $warpArray["perm"] !== true && $warpArray["perm"] !== false) {
+                $cfg->setNested($warpArray["warpName"] . ".perm", "true");
+                $cfg->save();
+            }
+        }
+    }
+
+
+    /**
+     * @param Position|Location|false|null $position
+     * @return bool
+     */
+    public function isPositionSafe(Position|Location|null|false $position): bool
+    {
+        if ($position === null || $position === false) return false;
+
+        if (!ConfigManager::getInstance()->usePositionChecks()) return true;
+
+        if (!$position->isValid() || $position->getY() < $position->getWorld()->getMinY()) return false;
+
+        $block0 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY(), $position->getZ()));
+        $block1 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY() + 1, $position->getZ()));
+        $block2 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY() + 2, $position->getZ()));
+
+        $blocksToCheck = [];
+
+        $blocksToCheck[] = $block0->getPosition()->getWorld()->getBlock(new Vector3($block0->getPosition()->getX() + 1, $block0->getPosition()->getY(), $block0->getPosition()->getZ()));
+        $blocksToCheck[] = $block0->getPosition()->getWorld()->getBlock(new Vector3($block0->getPosition()->getX() - 1, $block0->getPosition()->getY(), $block0->getPosition()->getZ()));
+        $blocksToCheck[] = $block0->getPosition()->getWorld()->getBlock(new Vector3($block0->getPosition()->getX(), $block0->getPosition()->getY(), $block0->getPosition()->getZ() + 1));
+        $blocksToCheck[] = $block0->getPosition()->getWorld()->getBlock(new Vector3($block0->getPosition()->getX(), $block0->getPosition()->getY(), $block0->getPosition()->getZ() - 1));
+        
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX() + 1, $block1->getPosition()->getY(), $block1->getPosition()->getZ()));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX() - 1, $block1->getPosition()->getY(), $block1->getPosition()->getZ()));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX(), $block1->getPosition()->getY(), $block1->getPosition()->getZ() + 1));
+        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX(), $block1->getPosition()->getY(), $block1->getPosition()->getZ() - 1));
+
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX() + 1, $block2->getPosition()->getY(), $block2->getPosition()->getZ()));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX() - 1, $block2->getPosition()->getY(), $block2->getPosition()->getZ()));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() + 1));
+        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() - 1));
+
+        foreach ($blocksToCheck as $blockToCheck)
+            if($blockToCheck instanceof Liquid && !$blockToCheck instanceof Air && !$blockToCheck->isSolid())
+                return false;
+
+        if($block0 instanceof Air && $block1 instanceof Air && ($block2 instanceof Air || !$block2->isFullCube())) return true;
+
+        if (($block0 instanceof Air || $block0 instanceof Torch || $block0 instanceof Flower || $block0 instanceof Grass || $block0 instanceof TallGrass || $block0 instanceof DoubleTallGrass || $block0 instanceof Crops || $block0 instanceof Sapling || $block0 instanceof ItemFrame)
+        && ($block1 instanceof Air || $block1 instanceof Torch || $block1 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling || $block1 instanceof ItemFrame)
+        && ($block2 instanceof Air || $block2 instanceof Torch || $block2 instanceof Flower || $block2 instanceof Grass || $block2 instanceof TallGrass || $block2 instanceof DoubleTallGrass || $block2 instanceof Crops || $block2 instanceof Sapling || $block2 instanceof ItemFrame))
+            return true;
+
+        return false;
+    }
+
 
     /**
      * @param World|null $world
@@ -322,6 +395,8 @@ class theSpawn extends PluginBase
      */
     public function getSpawn(?World $world): Position|Location|false
     {
+        if (!ConfigManager::getInstance()->useSpawns()) return false;
+
         if (!$world instanceof World) {
             $hub = HubManager::getInstance()->getHub();
             if (!$hub instanceof Position) {
@@ -332,12 +407,10 @@ class theSpawn extends PluginBase
 
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $spawn->get($world->getFolderName());
-        if ($spawn->exists($world->getFolderName())) {
-            $spawnArray = $spawn->get($world->getFolderName(), []);
-            return LocationHelper::legacyConvertArrayToPosition($spawnArray);
-        } else {
-            return false;
-        }
+        if ($spawn->exists($world->getFolderName()))
+            return LocationHelper::legacyConvertArrayToPosition($spawn->get($world->getFolderName(), []));
+
+        return false;
     }
 
     /**
@@ -348,6 +421,8 @@ class theSpawn extends PluginBase
      */
     public function setSpawn(Player $s, World $world): bool
     {
+        if (!ConfigManager::getInstance()->useSpawns()) return false;
+
         $spawn = new Config($this->getDataFolder() . "theSpawns.yml", Config::YAML);
         $x = $s->getPosition()->getX();
         $y = $s->getPosition()->getY();
@@ -375,258 +450,5 @@ class theSpawn extends PluginBase
         } else {
             return false;
         }
-    }
-
-    /**
-     * @return bool
-     */
-    public function getUseRandomHubs(): bool
-    {
-        $config = $this->getConfig();
-        if ($config->get("use-hub-server") === "true" && $config->get("use-random-hubs") === "true") {
-            $this->getLogger()->alert("INFORMATION: Please disable 'use-hub-server' in the config.yml to use random hubs!");
-            return false;
-        } elseif ($config->get("use-hub-server") === "true") {
-            return false;
-        } elseif (!$config->get("use-random-hubs") == "true") {
-            return false;
-        } elseif ($config->get("use-random-hubs") === "true") {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getUseHubServer(): bool
-    {
-        if ($this->getConfig()->get("use-hub-server") == "true" || $this->getConfig()->get("use-hub-server") == "on") return true;
-        return false;
-    }
-
-    /**
-     * @param Player $s
-     * @return bool
-     */
-    public function teleportToHubServer(Player $s): bool
-    {
-        $config = $this->getConfig();
-        if ($this->getUseHubServer())
-            return $s->transfer($config->get("hub-server-ip"), $config->get("hub-server-port"));
-        else return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function useAliases(): bool
-    {
-        return $this->getConfig()->get("use-aliases") == "true";
-    }
-
-    /**
-     * @param Player $player
-     * @return string|null
-     */
-    public function listHomes(IPlayer $player): ?string
-    {
-        return count(($homes = HomeManager::getHomesOfPlayer($player))) > 0 ? implode(", ", $homes) : null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function useMaxHomePermissions(): bool
-    {
-        return $this->getConfig()->get("use-max-home-permissions") == "true" || $this->getConfig()->get("use-max-home-permissions") == "on";
-    }
-
-    /**
-     * @return bool
-     */
-    public function useHomes(): bool
-    {
-        return $this->getConfig()->get("use-homes") == "true" || $this->getConfig()->get("use-homes") == "on";
-    }
-
-    /**
-     * @return bool
-     */
-    public function useWarps(): bool
-    {
-        return $this->getConfig()->get("use-warps") == "true" || $this->getConfig()->get("use-warps") == "on";
-    }
-
-    /**
-     * @return string|null
-     */
-    public function listWarps(): ?string
-    {
-        $warps = null;
-        if (file_exists($this->getDataFolder() . "warps.yml")) {
-            $warp = WarpManager::getWarpConfig();
-            $all = $warp->getAll(true);
-            $getRight = $all;
-            foreach ($getRight as $warpName) {
-                $right = [$warpName . ", "];
-                $warps .= implode(", ", $right);
-            }
-            return $warps;
-        }
-        return $warps;
-    }
-
-    /**
-     * @return bool
-     */
-    public function useTPAs(): bool
-    {
-        return $this->getConfig()->get("use-tpas") == "true" || $this->getConfig()->get("use-tpas") == "on";
-    }
-
-    /**
-     * @return bool
-     */
-    public function usePlayerWarps(): bool
-    {
-        return $this->getConfig()->get("use-playerwarps") == "true" || $this->getConfig()->get("use-playerwarps") == "on";
-    }
-
-    /**
-     * @return bool
-     */
-    public function useMaxPlayerWarpPermissions(): bool
-    {
-        return $this->getConfig()->get("use-max-playerwarps-permissions") == "true" || $this->getConfig()->get("use-max-playerwarps-permissions") == "on";
-    }
-
-    /**
-     * @return bool
-     */
-    public function useSpawnDelays(): bool
-    {
-        if ($this->getConfig()->get("use-spawnDelay") == "true" || $this->getConfig()->get("use-spawnDelay") == "on") {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return void
-     * @throws JsonException
-     */
-    private function convertOldWarpPermissions(): void
-    {
-        $cfg = WarpManager::getWarpConfig();
-        foreach ($cfg->getAll() as $warp => $warpArray) {
-            if (isset($warpArray["perm"]) && $warpArray["perm"] !== true && $warpArray["perm"] !== false) {
-                $cfg->setNested($warpArray["warpName"] . ".perm", "true");
-                $cfg->save();
-            }
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function usePositionChecks(): bool
-    {
-        return ($this->getConfig()->get("check-positions") == "true" || $this->getConfig()->get("check-positions") == "on");
-    }
-
-    /**
-     * @param Position|Location|false|null $position
-     * @return bool
-     */
-    public function isPositionSafe(Position|Location|null|false $position): bool
-    {
-        if ($position === null || $position === false) return false;
-
-        if (!$this->usePositionChecks()) return true;
-
-        if (!$position->isValid() || $position->getY() < $position->getWorld()->getMinY()) return false;
-
-        $block1 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY() + 1, $position->getZ()));
-        $block2 = $position->getWorld()->getBlock(new Vector3($position->getX(), $position->getY() + 2, $position->getZ()));
-
-        $blocksToCheck = [];
-
-        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX() + 1, $block1->getPosition()->getY(), $block1->getPosition()->getZ()));
-        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX() - 1, $block1->getPosition()->getY(), $block1->getPosition()->getZ()));
-        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX(), $block1->getPosition()->getY(), $block1->getPosition()->getZ() + 1));
-        $blocksToCheck[] = $block1->getPosition()->getWorld()->getBlock(new Vector3($block1->getPosition()->getX(), $block1->getPosition()->getY(), $block1->getPosition()->getZ() - 1));
-
-        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX() + 1, $block2->getPosition()->getY(), $block2->getPosition()->getZ()));
-        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX() - 1, $block2->getPosition()->getY(), $block2->getPosition()->getZ()));
-        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() + 1));
-        $blocksToCheck[] = $block2->getPosition()->getWorld()->getBlock(new Vector3($block2->getPosition()->getX(), $block2->getPosition()->getY(), $block2->getPosition()->getZ() - 1));
-
-        foreach ($blocksToCheck as $blockToCheck)
-            if($blockToCheck instanceof Liquid && !$blockToCheck instanceof Air && !$blockToCheck->isSolid())
-                return false;
-
-        if($block1 instanceof Air && $block2 instanceof Air) return true;
-
-        if (($block1 instanceof Torch || $block1 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling)
-        && ($block2 instanceof Torch || $block2 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling))
-            return true;
-
-        return false;
-    }
-
-    /**
-     * @return bool
-     */
-    public function useBackCommand(): bool
-    {
-        return ($this->getConfig()->get("use-back-command") == "true" || $this->getConfig()->get("use-back-command") == "on");
-    }
-
-    /**
-     * @return bool
-     */
-    public function useHubTeleportOnDeath(): bool
-    {
-        if ($this->getUseHubServer()) return false;
-        return ($this->getConfig()->get("hub-teleport-on-death") == "true" || $this->getConfig()->get("hub-teleport-on-death") == "on");
-    }
-
-
-
-    ### Maybe I'll source this out from theSpawn.php:
-
-    /**
-     * @param Player $player
-     */
-    public function startSpawnDelay(Player $player)
-    {
-        $task = $this->getScheduler()->scheduleRepeatingTask(new SpawnDelayTask($player, $this->getConfig()->get("spawn-delay-seconds")), 20);
-        $this->spawnDelays[$player->getName()] = $task->getTask();
-    }
-
-    /**
-     * @param Player $player
-     * @return bool
-     */
-    public function hasSpawnDelay(Player $player): bool
-    {
-        return isset($this->spawnDelays[$player->getName()]);
-    }
-
-    /**
-     * @param Player $player
-     * @return bool
-     */
-    public function stopSpawnDelay(Player $player): bool
-    {
-        if (!isset($this->spawnDelays[$player->getName()])) return false;
-
-        $task = $this->spawnDelays[$player->getName()];
-        if ($task instanceof Task)
-            $task->getHandler()->cancel();
-        unset($this->spawnDelays[$player->getName()]);
-        return true;
     }
 }

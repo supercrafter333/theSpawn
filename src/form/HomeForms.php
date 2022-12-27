@@ -47,7 +47,9 @@ class HomeForms
         $form = new SimpleForm(MsgMgr::getMsg("form-rmHome-menu-title"));
         $form->setHeaderText(MsgMgr::getMsg("form-rmHome-menu-content"));
 
-        foreach (HomeManager::getHomesOfPlayer($player) as $home)
+        $homes = HomeManager::getHomesOfPlayer($player);
+        sort($homes);
+        foreach ($homes as $home)
             $form->addButton(new Button(MsgMgr::getMsg("form-rmHome-menu-homeButton", ["{home}" => $home, "{line}" => "\n"]), null,
             function (Player $player) use ($home): void {
                 DelhomeCommand::simpleExecute($player, [$home]);
@@ -79,7 +81,10 @@ class HomeForms
     {
         $form = new SimpleForm(MsgMgr::getMsg("form-chooseEditHome-menu-title"));
         $form->setHeaderText(MsgMgr::getMsg("form-chooseEditHome-menu-content"));
-        foreach (HomeManager::getHomesOfPlayer($player) as $home) {
+
+        $homes = HomeManager::getHomesOfPlayer($player);
+        sort($homes);
+        foreach ($homes as $home) {
             $form->addButton(new Button(
                 MsgMgr::getMsg("form-chooseEditHome-menu-homeButton", ["{home}" => $home, "{line}" => "\n"]), null,
             function (Player $player) use ($home): void {
@@ -97,9 +102,9 @@ class HomeForms
         $form->setHeaderText(MsgMgr::getMsg("form-editHome-menu-content", [
             "{home}" => $home->getName(),
             "{world}" => $home->getLocation()->getWorld()->getFolderName(),
-            "{X}" => $home->getLocation()->getX(),
-            "{Y}" => $home->getLocation()->getY(),
-            "{Z}" => $home->getLocation()->getZ(),
+            "{X}" => $home->getLocation()->getFloorX(),
+            "{Y}" => $home->getLocation()->getFloorY(),
+            "{Z}" => $home->getLocation()->getFloorZ(),
             "{yaw}" => $home->getLocation()->getYaw(),
             "{pitch}" => $home->getLocation()->getPitch()
         ]));

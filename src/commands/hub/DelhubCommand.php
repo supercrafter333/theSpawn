@@ -7,6 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\GhastShootSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\HubManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -48,7 +49,7 @@ class DelhubCommand extends theSpawnOwnedCommand
 
         if (!$this->canUse($s)) return;
 
-        if ($pl->getUseRandomHubs()) {
+        if (ConfigManager::getInstance()->useRandomHubs()) {
             if (!count($args) >= 1) {
                 $s->sendMessage($this->usageMessage);
                 return;

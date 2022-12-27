@@ -9,8 +9,8 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\Server;
-use pocketmine\utils\Config;
 use pocketmine\world\Position;
+use pocketmine\world\sound\AnvilFallSound;
 use pocketmine\world\sound\PopSound;
 
 /**
@@ -25,11 +25,11 @@ class EventListener implements Listener
      */
     public function onMove(PlayerMoveEvent $event)
     {
-        $pl = theSpawn::getInstance();
         $player = $event->getPlayer();
-        if ($pl->hasSpawnDelay($player)) {
-            $pl->stopSpawnDelay($player);
+        if (SpawnDelayManager::hasSpawnDelay($player) && !SpawnDelayManager::getSpawnDelayTaskOf($player)->getStartPosition()->equals($player->getPosition())) {
+            SpawnDelayManager::stopSpawnDelay($player);
             $player->sendMessage(theSpawn::$prefix . MsgMgr::getMsg("delay-stopped-by-move"));
+            $player->broadcastSound(new AnvilFallSound(), [$player]);
         }
     }
 
@@ -38,10 +38,9 @@ class EventListener implements Listener
      */
     public function onQuit(PlayerQuitEvent $event)
     {
-        $pl = theSpawn::getInstance();
         $player = $event->getPlayer();
-        if ($pl->hasSpawnDelay($player))
-            $pl->stopSpawnDelay($player);
+        if (SpawnDelayManager::hasSpawnDelay($player))
+            SpawnDelayManager::stopSpawnDelay($player);
     }
 
     /**
@@ -54,18 +53,16 @@ class EventListener implements Listener
         $s = $event->getPlayer();
         $world = $s->getWorld();
 
-        if ($pl->useHubTeleportOnDeath() && $hubMgr->getHub() instanceof Position) {
+        if (ConfigManager::getInstance()->useHubTeleportOnDeath() && $hubMgr->getHub() instanceof Position) {
             $event->setRespawnPosition($hubMgr->getHub());
             return;
         }
 
         if ($world === null) {
-            if ($hubMgr->getHub() instanceof Position) {
-                $event->setRespawnPosition($hubMgr->getHub());
-            } else {
-                $event->setRespawnPosition($pl->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-            }
+            if ($hubMgr->getHub() instanceof Position) $event->setRespawnPosition($hubMgr->getHub());
+            else $event->setRespawnPosition($pl->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
         }
+
         if ($pl->getSpawn($world) instanceof Position) {
             $event->setRespawnPosition($pl->getSpawn($world));
             $s->broadcastSound(new PopSound(), [$s]);
@@ -73,11 +70,8 @@ class EventListener implements Listener
             $event->setRespawnPosition($hubMgr->getHub());
             $s->broadcastSound(new PopSound(), [$s]);
         } else {
-            if ($world->getSafeSpawn() === null) {
-                $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-            } else {
-                $event->setRespawnPosition($world->getSafeSpawn());
-            }
+            if ($world->getSafeSpawn() === null) $event->setRespawnPosition($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
+            else $event->setRespawnPosition($world->getSafeSpawn());
         }
     }
 
@@ -86,24 +80,18 @@ class EventListener implements Listener
      */
     public function onPlayerLogin(PlayerJoinEvent $event)
     {
-        $pl = theSpawn::getInstance();
-
-        if ($this->getConfig()->get("hub-teleport-on-join") == "true") {
-            $hub = HubManager::getInstance()->getHub();
-            if ($hub !== null && $hub !== false) {
+        if (ConfigManager::getInstance()->useHubTeleportOnJoin()) {
+            if (($hub = HubManager::getInstance()->getHub()) instanceof Position)
                 $event->getPlayer()->teleport($hub);
-            } elseif ($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() !== null) {
+            elseif ($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn() !== null)
                 $event->getPlayer()->teleport($this->getServer()->getWorldManager()->getDefaultWorld()->getSafeSpawn());
-            }
         }
     }
 
     public function onPlayerDeath(PlayerDeathEvent $ev): void
     {
-        $pl = theSpawn::getInstance();
         $player = $ev->getPlayer();
-
-        if ($pl->useBackCommand()) LastDeathPositionManager::setLastDeathPosition($player, $player->getLocation());
+        if (ConfigManager::getInstance()->useBackCommand()) LastDeathPositionManager::setLastDeathPosition($player, $player->getLocation());
     }
 
     /**
@@ -112,13 +100,5 @@ class EventListener implements Listener
     private function getServer(): Server
     {
         return theSpawn::getInstance()->getServer();
-    }
-
-    /**
-     * @return Config
-     */
-    private function getConfig(): Config
-    {
-        return theSpawn::getInstance()->getConfig();
     }
 }

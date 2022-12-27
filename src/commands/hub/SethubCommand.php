@@ -7,6 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\DoorBumpSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\HubManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -55,12 +56,12 @@ class SethubCommand extends theSpawnOwnedCommand
         $pitch = $s->getLocation()->getPitch();
         $levelname = $s->getWorld()->getFolderName();
         $level = $s->getWorld();
-        if (!$pl->getUseHubServer()) {
+        if (!ConfigManager::getInstance()->useHubServer()) {
             if ($level === null) {
                 $s->sendMessage($prefix . MsgMgr::getErrorMsg());
                 return;
             }
-            if (count($args) >= 1 && $pl->getUseRandomHubs()) {
+            if (count($args) >= 1 && ConfigManager::getInstance()->useRandomHubs()) {
                 if (!is_numeric($args[0])) {
                     $s->sendMessage($this->usageMessage);
                     return;
@@ -87,7 +88,7 @@ class SethubCommand extends theSpawnOwnedCommand
                 $s->broadcastSound(new DoorBumpSound(), [$s]);
             }
             return;
-        } elseif ($pl->getUseHubServer()) {
+        } elseif (ConfigManager::getInstance()->useHubServer()) {
             $s->sendMessage($prefix . MsgMgr::getMsg("hub-server-is-enabled"));
             return;
         } else {

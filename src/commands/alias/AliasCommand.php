@@ -8,6 +8,7 @@ use pocketmine\player\Player;
 use pocketmine\world\sound\PopSound;
 use pocketmine\world\World;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -41,7 +42,7 @@ class AliasCommand extends theSpawnOwnedCommand
             $s->sendMessage(MsgMgr::getOnlyIGMsg());
             return;
         }
-        if (!theSpawn::getInstance()->useAliases()) {
+        if (!ConfigManager::getInstance()->useAliases()) {
             $s->sendMessage($prefix . MsgMgr::getMsg("aliases-deactivated"));
             return;
         }

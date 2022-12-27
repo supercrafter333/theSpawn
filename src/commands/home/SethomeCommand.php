@@ -51,7 +51,7 @@ class SethomeCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 1) {
-            if ($pl->useForms())
+            if ($this->useForms())
                 $s->sendForm((new HomeForms())->openSetHome($s));
             else
                 $s->sendMessage($this->usageMessage);

@@ -21,6 +21,7 @@ use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\warp\Warp;
 use supercrafter333\theSpawn\warp\WarpManager;
 use function mb_strlen;
+use function sort;
 use function str_contains;
 
 class WarpForms
@@ -35,7 +36,9 @@ class WarpForms
         $form = new SimpleForm(MsgMgr::getMsg("form-warp-menu-title"));
         $form->setHeaderText(MsgMgr::getMsg("form-warp-menu-content"));
 
-        foreach (WarpManager::getWarpConfig()->getAll(true) as $warp) {
+        $warps = WarpManager::getWarpConfig()->getAll(true);
+        sort($warps);
+        foreach ($warps as $warp) {
             $warp = WarpManager::getWarp($warp);
             $warpName = $warp->getName();
             $warpIcon = $warp->getIconPath() === null ? "" : $warp->getIconPath();
@@ -151,9 +154,9 @@ class WarpForms
         $form->setHeaderText(MsgMgr::getMsg("form-editWarp-menu-content", [
             "{warp}" => $warp->getName(),
             "{world}" => $loc->getWorld()->getFolderName(),
-            "{X}" => $loc->getX(),
-            "{Y}" => $loc->getY(),
-            "{Z}" => $loc->getZ(),
+            "{X}" => $loc->getFloorX(),
+            "{Y}" => $loc->getFloorY(),
+            "{Z}" => $loc->getFloorZ(),
             "{yaw}" => ($loc->getYaw() !== null ? $loc->getYaw() : "---"),
             "{pitch}" => ($loc->getPitch() !== null ? $loc->getPitch() : "---"),
             "{permission}" => ($warp->getPermission() !== null ? $warp->getPermission() : "---"),

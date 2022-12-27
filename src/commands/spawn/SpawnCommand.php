@@ -7,7 +7,9 @@ use pocketmine\player\Player;
 use pocketmine\utils\Config;
 use pocketmine\world\sound\PopSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\MsgMgr;
+use supercrafter333\theSpawn\SpawnDelayManager;
 use supercrafter333\theSpawn\theSpawn;
 
 /**
@@ -46,8 +48,8 @@ class SpawnCommand extends theSpawnOwnedCommand
 
         $levelname = $s->getWorld()->getFolderName();
         $level = $s->getWorld();
-        if ($spawn->exists($levelname) && $pl->useSpawnDelays()) {
-            $pl->startSpawnDelay($s);
+        if ($spawn->exists($levelname) && ConfigManager::getInstance()->useSpawnDelays()) {
+            SpawnDelayManager::startSpawnDelay($s);
         } elseif ($spawn->exists($levelname)) {
             if (!$pl->isPositionSafe($pl->getSpawn($level))) {
                 $s->sendMessage($prefix . MsgMgr::getMsg("position-not-safe"));

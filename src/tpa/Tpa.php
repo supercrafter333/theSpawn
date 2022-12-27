@@ -64,20 +64,12 @@ class Tpa
     }
 
     /**
-     * @return Task|null
-     */
-    public function getTask(): ?Task
-    {
-        return $this->getVal("task");
-    }
-
-    /**
      * @return Player|null
      */
     public function getSourceAsPlayer(): ?Player
     {
         if ($this->getSource() === null) return null;
-        return Server::getInstance()->getPlayerByPrefix($this->getSource());
+        return Server::getInstance()->getPlayerExact($this->getSource());
     }
 
     /**
@@ -86,7 +78,7 @@ class Tpa
     public function getTargetAsPlayer(): ?Player
     {
         if ($this->getTarget() === null) return null;
-        return Server::getInstance()->getPlayerByPrefix($this->getTarget());
+        return Server::getInstance()->getPlayerExact($this->getTarget());
     }
 
     /**

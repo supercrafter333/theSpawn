@@ -10,7 +10,9 @@ use pocketmine\permission\Permission;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\plugin\PluginOwned;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 
@@ -77,7 +79,7 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
     {
         if (!$byPrefix && ($player = $this->getOwningPlugin()->getServer()->getPlayerExact(!is_string($sender) ? $sender->getName() : $sender)) && $player->isOnline()) return true;
 
-        if (($player = $this->getOwningPlugin()->getServer()->getPlayerByPrefix(!is_string($sender) ? $sender->getName() : $sender)) && $player->isOnline()) return true;
+        if (($player = $this->getPlayerByPrefix(!is_string($sender) ? $sender->getName() : $sender)) && $player->isOnline()) return true;
 
         return false;
     }
@@ -96,5 +98,38 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
         }
 
         return true;
+    }
+
+    public function useForms(): bool
+    {
+        return ConfigManager::getInstance()->useForms();
+    }
+
+    /**
+	 * Returns an online player whose name begins with or equals the given string (case insensitive).
+	 * The closest match will be returned, or null if there are no online matches.
+     * This function is used as a replacement of the deprecated PocketMine-MP method Server::getPlayerByPrefix()
+	 *
+	 * @see Server::getPlayerExact()
+	 */
+	public function getPlayerByPrefix(string $name) : ?Player
+    {
+        $found = null;
+        $name = strtolower($name);
+        $delta = PHP_INT_MAX;
+        foreach (Server::getInstance()->getOnlinePlayers() as $player) {
+            if (stripos($player->getName(), $name) === 0) {
+                $curDelta = strlen($player->getName()) - strlen($name);
+                if ($curDelta < $delta) {
+                    $found = $player;
+                    $delta = $curDelta;
+                }
+                if ($curDelta === 0) {
+                    break;
+                }
+            }
+        }
+
+        return $found;
     }
 }

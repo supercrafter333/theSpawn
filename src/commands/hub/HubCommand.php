@@ -7,6 +7,7 @@ use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\world\sound\PopSound;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\HubManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -47,8 +48,8 @@ class HubCommand extends theSpawnOwnedCommand
         #########################
 
         if ($this->isPlayer($s)) {
-            if (!$pl->getUseHubServer()) {
-                if ($pl->getUseRandomHubs()) {
+            if (!ConfigManager::getInstance()->useHubServer()) {
+                if (ConfigManager::getInstance()->useRandomHubs()) {
                     $hubPos = $hubMgr->getRandomHub();
                     if ($hubPos !== null) {
                         if (!$pl->isPositionSafe($hubPos)) {
@@ -80,7 +81,7 @@ class HubCommand extends theSpawnOwnedCommand
                 } else {
                     $s->sendMessage($prefix . MsgMgr::getMsg("no-hub-set"));
                 }
-            } elseif ($pl->getUseHubServer()) {
+            } elseif (ConfigManager::getInstance()->useHubServer()) {
                 $pl->teleportToHubServer($s);
             } else {
                 $s->sendMessage($prefix . MsgMgr::getMsg("false-config-setting"));

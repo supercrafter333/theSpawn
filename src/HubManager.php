@@ -16,7 +16,9 @@ class HubManager
     use SingletonTrait;
 
     public function __construct()
-    { self::setInstance($this); }
+    {
+        self::setInstance($this);
+    }
 
     public function getRandomHubList(): Config
     {
@@ -45,7 +47,6 @@ class HubManager
      */
     public function setHub(float $x, float $y, float $z, World $world, float $yaw = null, float $pitch = null, int $count = null): void
     {
-        $config = theSpawn::getInstance()->getConfig();
         $hub = $this->getHubConfig();
         $randHub = $this->getRandomHubsConfig();
         $hubcoords = ["hub", "X" => $x, "Y" => $y, "Z" => $z, "level" => $world->getFolderName()];
@@ -53,7 +54,7 @@ class HubManager
             $hubcoords["yaw"] = $yaw;
             $hubcoords["pitch"] = $pitch;
         }
-        if ($count !== null && theSpawn::getInstance()->getUseRandomHubs()) {
+        if ($count !== null && ConfigManager::getInstance()->useRandomHubs()) {
             $setRandHub = implode('|', [$x, $y, $z, $world->getFolderName()]);
             if ($yaw !== null && $pitch !== null) $setRandHub .= "|" . $yaw . "|" . $pitch;
             $randHub->set($count, $setRandHub);
@@ -71,7 +72,7 @@ class HubManager
     public function getRandomHub(int $count = null): Position|Location|null
     {
         $randHubs = $this->getRandomHubList();
-        if (!theSpawn::getInstance()->getUseRandomHubs()) return null;
+        if (!ConfigManager::getInstance()->useRandomHubs()) return null;
         if ($count === null) {
             $matches = [];
             if (!$randHubs->exists(1)) return null;
@@ -119,10 +120,10 @@ class HubManager
     {
         $hub = $this->getHubConfig();
 
-        if ($count !== null && theSpawn::getInstance()->getUseRandomHubs())
+        if ($count !== null && ConfigManager::getInstance()->useRandomHubs())
             return $this->getRandomHub($count) === null ? false : $this->getRandomHub($count);
 
-        if (theSpawn::getInstance()->getUseRandomHubs())
+        if (ConfigManager::getInstance()->useRandomHubs())
             return $this->getRandomHub() === null ? false : $this->getRandomHub();
 
         if ($hub->exists("hub")) {
@@ -141,10 +142,10 @@ class HubManager
     {
         $hub = $this->getHubConfig();
         $randHubs = $this->getRandomHubList();
-        if ($count !== null && theSpawn::getInstance()->getUseRandomHubs()) {
+        if ($count !== null && ConfigManager::getInstance()->useRandomHubs()) {
             if ($randHubs->exists($count)) {
-                $hub->remove("hub");
-                $hub->save();
+                $randHubs->remove($count);
+                $randHubs->save();
                 return true;
             } else return false;
         } elseif ($hub->exists("hub")) {
@@ -152,5 +153,20 @@ class HubManager
             $hub->save();
             return true;
         } else return false;
+    }
+
+    public function isHubWorld(World $world): bool
+    {
+        $hubCfg = $this->getHubConfig();
+        $randHubsCfg = $this->getRandomHubsConfig();
+
+        if (ConfigManager::getInstance()->useRandomHubs())
+            foreach ($randHubsCfg->getAll(true) as $hubCount)
+                if (($randHub = $this->getRandomHub($hubCount)) !== null && $randHub->getWorld()->getFolderName() === $world->getFolderName())
+                    return true;
+        else
+            return (($loc = LocationHelper::legacyConvertArrayToPosition($hubCfg->get("hub", []))) !== null && $loc->getWorld()->getFolderName() === $world->getFolderName());
+
+        return false;
     }
 }

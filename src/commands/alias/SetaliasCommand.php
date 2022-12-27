@@ -46,7 +46,7 @@ class SetaliasCommand extends theSpawnOwnedCommand
         if (!$this->canUse($s)) return;
 
         if (count($args) < 2) {
-            if ($pl->useForms())
+            if ($this->useForms())
                 $s->sendForm(AliasForms::addAlias($s->getWorld()));
             else
                 $s->sendMessage($this->usageMessage);

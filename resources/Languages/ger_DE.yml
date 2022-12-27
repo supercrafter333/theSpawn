@@ -187,11 +187,48 @@ form-tpa-answerTpaHere-denyText: "§cAblehnen"
 form-tpa-sendTpa-title: "Tpa senden"
 form-tpa-sendTpa-input: "Name des Spielers"
 form-tpa-sendTpa-tpaHereToggle: "Möchtest du, dass der Spieler zu die teleportiert wird?"
+#    Player-Warps
+##### (menu)
+form-playerWarps-menu-title: "Player-Warps"
+form-playerWarps-menu-content: "Bitte wähle eine Option aus."
+form-playerWarps-menu-yourWarpsButton: "§2Deine Player-Warps{line}§7{count} Warps"
+form-playerWarps-menu-teleportButton: "§bTeleport"
+form-playerWarps-menu-createWarpButton: "§eNeuen Player-Warp erstellen"
+##### (own warps)
+form-playerWarps-ownWarps-title: "Deine Player-Warps"
+form-playerWarps-ownWarps-content: "Klicke auf einen Player-Warp um ihn zu bearbeiten oder Informationen über ihn zu sehen."
+form-playerWarps-ownWarps-button: "§b{warp}{line}§7Welt: {world}"
+##### (edit warp)
+form-playerWarps-editWarp-title: "Player-Warp: {warp}"
+form-playerWarps-editWarp-content: "§7Name: §b{warp}{line}§7Inhaber: §b{owner}{line}§7Position: §b{X}, {Y}, {Z}, {world}{line}§7Icon: §b{icon}"
+form-playerWarps-editWarp-setPositionButton: "Position hierher setzen"
+form-playerWarps-editWarp-addIconButton: "Icon hinzufügen"
+form-playerWarps-editWarp-editIconButton: "Icon bearbeiten"
+form-playerWarps-editWarp-removeIconButton: "Icon entfernen"
+##### (edit or add icon)
+form-playerWarps-editOrAddWarpIcon-title: "Player-Warp Icon"
+form-playerWarps-editWarpIcon-content: "Bitte gebe den Icon-Pfad oder die Icon-URL deines Icons ein."
+form-playerWarps-editWarpIcon-iconInput: "Icon-Pfad / Icon-URL"
+form-playerWarps-editWarpIcon-iconEdited: "§aDu hast erfolgreich das Icon von {warp} zu §7{icon}§a geändert."
+form-playerWarps-addWarpIcon-content: "Bitte gebe den Icon-Pfad oder die Icon-URL deines Icons ein."
+form-playerWarps-addWarpIcon-iconInput: "Icon-Pfad / Icon-URL"
+form-playerWarps-addWarpIcon-iconAdded: "§aDu hast erfolgreich das Icon von {warp} zu §7{icon}§a festgelegt."
+form-playerWarps-editWarp-deleteButton: "§cLöschen"
+form-playerWarps-editWarp-deletedMsg: "§aDu hast erfolgreich deinen Player-Warp {warp} gelöscht."
+##### (create warp)
+form-playerWarps-createWarp-title: "Player-Warp Erstellen"
+form-playerWarps-createWarp-nameInput: "Name"
+form-playerWarps-createWarp-iconInput: "Icon"
+#### (teleport to warp)
+form-playerWarps-warpTeleport-title: "Zu Player-Warp teleportieren"
+form-playerWarps-warpTeleport-content: "Bitte wähle einen Player-Warp aus, zu dem du dich Teleportieren möchtest. Player-Warps insgesamt: {count}"
+form-playerWarps-warpTeleport-button: "§b{warp}{line}§7Inhaber: {owner}"
+
 
 #errors
 #uses: none
-no-spawn-set: "§4ERROR --> §cFür diese Welt wurde noch kein Spawn erstellt!"
-no-hub-set: "§4ERROR --> §cEs wurde noch kein Lobby Spawn-Punkt für diesen Server erstellt!"
+no-spawn-set: "§cFür diese Welt wurde noch kein Spawn erstellt!"
+no-hub-set: "§cEs wurde noch kein Lobby Spawn-Punkt für diesen Server erstellt!"
 alias-not-found: "§cDieser Alias existiert nicht!"
 hub-server-is-enabled: "§7'use-hub-server' §cist §7true §cin der config, du kannst keinen Lobby Spawn-Punkt setzen, wenn diese Option auf 'true' steht!"
 something-went-wrong: "§4Ups... Irgendwas ist schiefgelaufen!"
@@ -212,7 +249,7 @@ no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festg
 
 
 
-#compatible with v2.0.0-PM5-dev5(and lower)
+#compatible with v2.0.0-dev6(and lower)
 
 
 ############################
