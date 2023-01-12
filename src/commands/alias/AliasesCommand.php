@@ -28,7 +28,7 @@ class AliasesCommand extends theSpawnOwnedCommand
     {
         if (!$this->canUse($s)) return;
 
-        if ($this->getOwningPlugin()->useForms())
+        if ($this->useForms())
             $s->sendForm(AliasForms::menu());
         else
             $s->sendMessage(MsgMgr::getMsg("aliases-list", ["{aliases}" => implode(", ", AliasManager::getAliasConfig()->getAll(true))]));

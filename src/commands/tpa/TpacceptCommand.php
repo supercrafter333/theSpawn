@@ -6,6 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\Tpa;
@@ -70,6 +71,10 @@ class TpacceptCommand extends theSpawnOwnedCommand
         $tpaInfo->complete();
         $sourcePlayer->sendMessage(str_replace("{target}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
         $s->sendMessage(str_replace("{source}", $source, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
+        if (ConfigManager::getInstance()->useToastNotifications() && $sourcePlayer instanceof Player && $sourcePlayer->isOnline()) {
+            $replace = ["{target}" => $s->getName()];
+            $sourcePlayer->sendToastNotification(MsgMgr::getMsg("tn-tpa-accepted-target-title", $replace), MsgMgr::getMsg("tn-tpa-accepted-target-body", $replace));
+        }
     }
 
     /**

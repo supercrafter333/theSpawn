@@ -18,18 +18,18 @@ class TpaForms
 
     public static function menu(Player $player): ModalForm|CustomForm
     {
-        $tpa = TpaManager::getTpa($player->getName());
+        $tpa = TpaManager::getTPAsOf($player->getName());
         if ($tpa === null)
             return self::sendTpa();
 
-        $target = $tpa->getTarget();
+        $tpa = $tpa[0];
 
         if (!$tpa->isTpaHere()) {
-            $form = new ModalForm(MsgMgr::getMsg("form-tpa-answerTpa-title"), MsgMgr::getMsg("form-tpa-answerTpa-content"));
+            $form = new ModalForm(MsgMgr::getMsg("form-tpa-answerTpa-title"), MsgMgr::getMsg("form-tpa-answerTpa-content", ["{source}" => $tpa->getSource()]));
             $form->setAcceptText(MsgMgr::getMsg("form-tpa-answerTpa-acceptText"));
             $form->setDenyText(MsgMgr::getMsg("form-tpa-answerTpa-denyText"));
         } else {
-            $form = new ModalForm(MsgMgr::getMsg("form-tpa-answerTpaHere-title"), MsgMgr::getMsg("form-tpa-answerTpaHere-content"));
+            $form = new ModalForm(MsgMgr::getMsg("form-tpa-answerTpaHere-title"), MsgMgr::getMsg("form-tpa-answerTpaHere-content", ["{source}" => $tpa->getSource()]));
             $form->setAcceptText(MsgMgr::getMsg("form-tpa-answerTpaHere-acceptText"));
             $form->setDenyText(MsgMgr::getMsg("form-tpa-answerTpaHere-denyText"));
         }
@@ -44,6 +44,8 @@ class TpaForms
                 }
                 $tpa->complete();
                 $sourcePlayer->sendMessage(str_replace("{target}", $player->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-source")));
+                $replace = ["{target}" => $player->getName()];
+                $sourcePlayer->sendToastNotification(MsgMgr::getMsg("tn-tpa-accepted-target-title", $replace), MsgMgr::getMsg("tn-tpa-accepted-target-body", $replace));
                 $player->sendMessage(str_replace("{source}", $source, theSpawn::$prefix . MsgMgr::getMsg("tpa-accepted-target")));
             }
         );
@@ -68,6 +70,8 @@ class TpaForms
 
                 $tpa->cancel();
                 $sourcePlayer->sendMessage(str_replace("{target}", $player->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-source")));
+                $replace = ["{target}" => $player->getName()];
+                $sourcePlayer->sendToastNotification(MsgMgr::getMsg("tn-tpa-declined-target-title", $replace), MsgMgr::getMsg("tn-tpa-declined-target-body", $replace));
                 $player->sendMessage(str_replace("{source}", $source, theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-target")));
             }
         );
@@ -79,8 +83,12 @@ class TpaForms
     {
         $form = new CustomForm(MsgMgr::getMsg("form-tpa-sendTpa-title"),
         function (Player $player, FormResponse $response): void {
-            if (($name = $response->getInputSubmittedText("name")) !== null && $name !== "")
-                theSpawn::getInstance()->getCommand("tpa")?->execute($player, "tpa", [$name]);
+            if (($name = $response->getInputSubmittedText("name")) !== null && $name !== "") {
+                if ($response->getToggleSubmittedChoice("tpaHere"))
+                    theSpawn::getInstance()->getCommand("tpahere")?->execute($player, "tpahere", [$name]);
+                else
+                    theSpawn::getInstance()->getCommand("tpa")?->execute($player, "tpa", [$name]);
+            }
             else
                 $player->sendForm(self::sendTpa());
         });

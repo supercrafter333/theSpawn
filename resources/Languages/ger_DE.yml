@@ -177,10 +177,12 @@ form-aliases-addAlias-dropdownField: "Welt"
 #   tpa
 ##### (answer tpa)
 form-tpa-answerTpa-title: "Tpa beantworten"
+form-tpa-answerTpa-content: "Möchtest du die TPA von {source} wirklich annehmen?"
 form-tpa-answerTpa-acceptText: "§aAkzeptieren"
 form-tpa-answerTpa-denyText: "§cAblehnen"
 ##### (answer tpa-here)
 form-tpa-answerTpaHere-title: "Tpa-Here beantworten"
+form-tpa-answerTpaHere-content: "Möchtest du die TPA-Here von {source} wirklich annehmen?"
 form-tpa-answerTpaHere-acceptText: "§aAkzeptieren"
 form-tpa-answerTpaHere-denyText: "§cAblehnen"
 ##### (send tpa)
@@ -248,8 +250,24 @@ remove-random-hub-before: "§cBitte entferne den Lobby Spawn-Punkt vor diesem Lo
 no-spawn-set-for-world: "§cEs wurde noch kein Spawn für die Welt {world} festgelegt!"
 
 
+#toast-notifications
+##### (TPAs)
+####### - new tpa -
+tn-new-tpa-title: "§l§eNeue TPA!"
+tn-new-tpa-body: "Du hast eine neue TPA von {source} bekommen! Benutze §7/tpaccept§r zum annehmen  und §7/tpdecline§r zum ablehnen der TPA."
+####### - new tpa-here -
+tn-new-tpa-here-title: "§l§eNeue TPA-HERE!"
+tn-new-tpa-here-body: "Du hast eine neue TPA-Here von {source} bekommen! Benutze §7/tpaccept§r zum annehmen  und §7/tpdecline§r zum ablehnen der TPA."
+####### - tpa accepted -
+tn-tpa-accepted-target-title: "§l§aDeine TPA wurde angenommen!"
+tn-tpa-accepted-target-body: "{target} hat deine TPA angenommen. Du wirst jetzt teleportiert."
+####### - tpa declined -
+tn-tpa-declined-target-title: "§l§cTPA abgelehnt!"
+tn-tpa-declined-target-body: "{target} hat deine TPA abgelehnt."
 
-#compatible with v2.0.0-dev6(and lower)
+
+
+#compatible with v2.0.0-dev7(and lower)
 
 
 ############################

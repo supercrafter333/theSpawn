@@ -46,6 +46,9 @@ tpa-time: 30 #seconds
 #use Forms [true | false]
 use-forms: "true"
 
+#use Toast-Notifications [true | false]
+use-toast-notifications: "true"
+
 # /back command for  return to the point where you have died [true | false]
 use-back-command: "true"
 # maximum time in which the player can return to the point of death, setting it to "0" will make it possible for the player to use it whenever he wants
@@ -79,7 +82,7 @@ check-positions: "false"
 
 
 #DON'T CHANGE THIS!!
-version: "2.0.0-dev6"
+version: "2.0.0-dev7"
 
 ############################
 ##########theSpawn##########

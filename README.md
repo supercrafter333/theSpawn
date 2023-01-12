@@ -3,7 +3,7 @@
 > This version is under development and can contain bugs!
 
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0-dev6  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 ✨ **The best teleportation plugin and the best MSpawns alternative!** ✨
 
 <br />
@@ -14,9 +14,9 @@ This plugin won't be out of date, it will get better developed from time to time
 
 ### Features
 - **All MSpawns features**:
-  - set/change/remove spawns
-  - set/change/remove hub
-  - Teleport to spawn/hub
+  - set/change/remove spawns [default: active]
+  - set/change/remove hub [default: active]
+  - Teleport to spawn/hub [default: active]
   - Aliases [default: active]
   - use/don't use hub server
   - API
@@ -33,13 +33,18 @@ This plugin won't be out of date, it will get better developed from time to time
 - **TPAs** [default: active]
 - **Random-Hubs** [default: inactive]
 - **`/back`-command** - Teleports you to the position where you have died [default: active]
-- **PlayerWarps**
-- **Forms / UIs**
+- **PlayerWarps** [default: active]
+  - player-warp editing
+  - player-warp icons
+  - max player-warp count permission [default: inactive]
+- **Forms / UIs** [default: active]
+- Toast-Notifications for special features [default: inactive]
 - WaterdogPE hub-transfer support
 - Teleport to hub on join [default: active]
 - Teleport to hub on death [default: active]
 - Multiple languages [default: English (BE)]
 - Always Up-To-Date (available for PM4, PM5 and PHP 8.1)
+- Highly customizable (you can disable and enable every feature)
 
 ### TODOs
 - [X] Homes
@@ -56,7 +61,7 @@ This plugin won't be out of date, it will get better developed from time to time
 - [X] Add player warps ([#59](https://github.com/supercrafter333/theSpawn/issues/59))
 - [X] Add PM5 support (currently hybrid support for PM4 & PM5)
 - [X] Add PHP 8.1 support
-- [ ] Add toast-notifications for special features
+- [X] Add toast-notifications for special features
 
 
 ### Supported versions

@@ -3,7 +3,17 @@
 namespace supercrafter333\theSpawn;
 
 use JsonException;
-use pocketmine\block\{Air, Crops, DoubleTallGrass, Flower, Grass, ItemFrame, Liquid, Sapling, TallGrass, Torch};
+use pocketmine\block\{Air,
+    Crops,
+    DoubleTallGrass,
+    Flower,
+    Grass,
+    ItemFrame,
+    Liquid,
+    Sapling,
+    SnowLayer,
+    TallGrass,
+    Torch};
 use pocketmine\entity\Location;
 use pocketmine\math\Vector3;
 use pocketmine\permission\PermissionManager;
@@ -380,8 +390,8 @@ class theSpawn extends PluginBase
 
         if($block0 instanceof Air && $block1 instanceof Air && ($block2 instanceof Air || !$block2->isFullCube())) return true;
 
-        if (($block0 instanceof Air || $block0 instanceof Torch || $block0 instanceof Flower || $block0 instanceof Grass || $block0 instanceof TallGrass || $block0 instanceof DoubleTallGrass || $block0 instanceof Crops || $block0 instanceof Sapling || $block0 instanceof ItemFrame)
-        && ($block1 instanceof Air || $block1 instanceof Torch || $block1 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling || $block1 instanceof ItemFrame)
+        if (($block0 instanceof Air || $block0 instanceof Torch || $block0 instanceof Flower || $block0 instanceof Grass || $block0 instanceof TallGrass || $block0 instanceof DoubleTallGrass || $block0 instanceof Crops || $block0 instanceof Sapling || $block0 instanceof ItemFrame || $block0 instanceof SnowLayer)
+        && ($block1 instanceof Air || $block1 instanceof Torch || $block1 instanceof Flower || $block1 instanceof Grass || $block1 instanceof TallGrass || $block1 instanceof DoubleTallGrass || $block1 instanceof Crops || $block1 instanceof Sapling || $block1 instanceof ItemFrame || $block0 instanceof SnowLayer)
         && ($block2 instanceof Air || $block2 instanceof Torch || $block2 instanceof Flower || $block2 instanceof Grass || $block2 instanceof TallGrass || $block2 instanceof DoubleTallGrass || $block2 instanceof Crops || $block2 instanceof Sapling || $block2 instanceof ItemFrame))
             return true;
 

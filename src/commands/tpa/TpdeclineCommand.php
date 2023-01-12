@@ -6,6 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\events\tpa\TpaAnswerEvent;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
@@ -56,6 +57,10 @@ class TpdeclineCommand extends theSpawnOwnedCommand
         $tpaInfo->cancel();
         $sourcePlayer->sendMessage(str_replace("{target}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-source")));
         $s->sendMessage(str_replace("{source}", $source, theSpawn::$prefix . MsgMgr::getMsg("tpa-declined-target")));
+        if (ConfigManager::getInstance()->useToastNotifications() && $sourcePlayer instanceof Player && $sourcePlayer->isOnline()) {
+            $replace = ["{target}" => $s->getName()];
+            $sourcePlayer->sendToastNotification(MsgMgr::getMsg("tn-tpa-declined-target-title", $replace), MsgMgr::getMsg("tn-tpa-declined-target-body", $replace));
+        }
     }
 
     public function getPlugin(): Plugin

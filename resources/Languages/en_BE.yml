@@ -177,10 +177,12 @@ form-aliases-addAlias-dropdownField: "World"
 #   tpa
 ##### (answer tpa)
 form-tpa-answerTpa-title: "Answer Tpa"
+form-tpa-answerTpa-content: "Do you want to accept the tpa of {source}?"
 form-tpa-answerTpa-acceptText: "§aAccept"
 form-tpa-answerTpa-denyText: "§cDeny"
 ##### (answer tpa-here)
 form-tpa-answerTpaHere-title: "Answer Tpa-Here"
+form-tpa-answerTpaHere-content: "Do you want to accept the tpa-here of {source}?"
 form-tpa-answerTpaHere-acceptText: "§aAccept"
 form-tpa-answerTpaHere-denyText: "§cDeny"
 ##### (send tpa)
@@ -248,8 +250,24 @@ remove-random-hub-before: "§cPlease remove the hub before you remove this hub!"
 no-spawn-set-for-world: "§cThere's no spawn set for world {world}!"
 
 
+#toast-notifications
+##### (TPAs)
+####### - new tpa -
+tn-new-tpa-title: "§l§eNew TPA!"
+tn-new-tpa-body: "You got a new tpa from {source}! Use §7/tpaccept§r to accept and §7/tpdecline§r to decline the tpa."
+####### - new tpa-here -
+tn-new-tpa-here-title: "§l§eNew TPA-HERE!"
+tn-new-tpa-here-body: "You got a new tpa-here from {source}! Use §7/tpaccept§r to accept and §7/tpdecline§r to decline the tpa."
+####### - tpa accepted -
+tn-tpa-accepted-target-title: "§l§aYour TPA was accepted!"
+tn-tpa-accepted-target-body: "{target} accepted your tpa. You will be teleported now."
+####### - tpa declined -
+tn-tpa-declined-target-title: "§l§cTPA declined!"
+tn-tpa-declined-target-body: "{target} has declined your tpa."
 
-#compatible with v2.0.0-dev6(and lower)
+
+
+#compatible with v2.0.0-dev7(and lower)
 
 
 ############################

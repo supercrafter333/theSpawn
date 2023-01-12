@@ -6,6 +6,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use supercrafter333\theSpawn\commands\theSpawnOwnedCommand;
+use supercrafter333\theSpawn\ConfigManager;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\Tpa;
@@ -58,6 +59,10 @@ class TpaHereCommand extends theSpawnOwnedCommand
         $tpa->runTask($pl->getConfig()->get("tpa-time"));
         $s->sendMessage(str_replace("{target}", $name, theSpawn::$prefix . MsgMgr::getMsg("tpa-send")));
         $target->sendMessage(str_replace("{source}", $s->getName(), theSpawn::$prefix . MsgMgr::getMsg("new-tpa-here")));
+        if (ConfigManager::getInstance()->useToastNotifications() && $target->isOnline()) {
+            $replace = ["{source}" => $s->getName()];
+            $target->sendToastNotification(MsgMgr::getMsg("tn-new-tpa-here-title", $replace), MsgMgr::getMsg("tn-new-tpa-here-body", $replace));
+        }
     }
 
     /**

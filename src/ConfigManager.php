@@ -166,6 +166,11 @@ class ConfigManager
         return $this->isEnabled("use-hub");
     }
 
+    public function useToastNotifications(): bool
+    {
+        return $this->isEnabled("use-toast-notifications");
+    }
+
     /**
      * @return bool
      */

@@ -68,7 +68,7 @@ class WarpForms
             $warpIcon = $warpInfo->getIconPath() === null ? "" : $warpInfo->getIconPath();
             $iconType = $warpIcon === "" ? -1 : 0;
             if (str_contains($warpIcon, "http")) $iconType = 1;
-            $form->addButton(new Button(str_replace(["{warp}", "{line}", "{player_count}"], [$warpName, "\n", count($warp->getLocation()->getWorld()->getPlayers())], MsgMgr::getMsg("form-rmWarp-menu-warpButton")),
+            $form->addButton(new Button(str_replace(["{warp}", "{line}", "{player_count}"], [$warpName, "\n", count($warpInfo->getLocation()->getWorld()->getPlayers())], MsgMgr::getMsg("form-rmWarp-menu-warpButton")),
                 ($iconType !== null ? new ButtonIcon($warpIcon, $iconType) : null),
                 function (Player $player) use ($warp): void {
                 DelwarpCommand::simpleExecute($player, [$warp->getName()]);
@@ -131,7 +131,7 @@ class WarpForms
                 $warpIcon = $warpInfo->getIconPath() === null ? "" : $warpInfo->getIconPath();
                 $iconType = $warpIcon === "" ? -1 : 0;
                 if (str_contains($warpIcon, "http")) $iconType = 1;
-                $form->addButton(new Button(str_replace(["{warp}", "{line}", "{player_count}"], [$warpName, "\n", count($warp->getLocation()->getWorld()->getPlayers())], MsgMgr::getMsg("form-chooseEditWarp-menu-warpButton")),
+                $form->addButton(new Button(str_replace(["{warp}", "{line}", "{player_count}"], [$warpName, "\n", count($warpInfo->getLocation()->getWorld()->getPlayers())], MsgMgr::getMsg("form-chooseEditWarp-menu-warpButton")),
                     ($iconType !== null ? new ButtonIcon($warpIcon, $iconType) : null),
                     function (Player $player) use ($warpInfo): void {
                     $player->sendForm($this->openEditWarp($player, $warpInfo));

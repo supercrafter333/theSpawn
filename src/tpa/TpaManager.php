@@ -7,7 +7,7 @@ use pocketmine\scheduler\Task;
 class TpaManager
 {
 
-    public static array $tpas;
+    public static array $tpas = [];
 
     /**
      * Returns all tpas.
@@ -57,7 +57,6 @@ class TpaManager
         $isTpaHere = $tpa->isTpaHere();
         $arr = ["target" => $target, "isTpaHere" => $isTpaHere, "task" => $task];
         unset(self::$tpas[$sourcePlayer]);
-        self::$tpas[] = $sourcePlayer;
         self::$tpas[$sourcePlayer] = $arr;
         return true;
     }
@@ -90,15 +89,15 @@ class TpaManager
     /**
      * Returns the tpas of a player.
      * @param string $targetPlayer
-     * @return array|null
+     * @return Tpa[]|null
      */
     public static function getTPAsOf(string $targetPlayer): ?array
     {
         $TPAs = self::getTPAs();
         $newTPAs = [];
-        foreach ($TPAs as $TPA)
-            if (self::hasTpaOf($targetPlayer, $TPA))
-                $newTPAs[] = $TPA;
+        foreach ($TPAs as $source => $tpaArray)
+            if (self::hasTpaOf($targetPlayer, $source))
+                $newTPAs[] = self::getTpa($source);
 
         if (count($newTPAs, COUNT_RECURSIVE) <= 0) return null;
         return $newTPAs;
