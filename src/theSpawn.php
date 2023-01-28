@@ -185,16 +185,6 @@ class theSpawn extends PluginBase
     }
 
     /**
-     * @deprecated This version will be removed when theSpawn v2.0.0 (stable) release
-     * @return Config
-     * @see MsgMgr::getMsgs()
-     */
-    public function getMsgCfg(): Config
-    {
-        return MsgMgr::getMsgs();
-    }
-
-    /**
      * Check the version of theSpawn.
      *
      * @param $version
@@ -403,7 +393,7 @@ class theSpawn extends PluginBase
      * @param World|null $world
      * @return Position|Location|false
      */
-    public function getSpawn(?World $world): Position|Location|false
+    public function getSpawn(World|null $world): Position|Location|false
     {
         if (!ConfigManager::getInstance()->useSpawns()) return false;
 

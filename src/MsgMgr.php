@@ -49,20 +49,6 @@ class MsgMgr
         return new Config(theSpawn::getInstance()->getFile2() . "resources/Languages/" . self::LANG_en_BE . ".yml", Config::YAML);
     }
 
-    /**
-     * @param string $version
-     * @return bool
-     */
-    public function checkMsgCfgVersionX(string $version): bool
-    {
-        if ($this->getMsgsX()->exists("version")) {
-            if ($this->getMsgsX()->get("version") == $version) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private static function getLowerLang(): string
     {
         return strtolower(theSpawn::getInstance()->getConfig()->get("language"));
@@ -73,29 +59,6 @@ class MsgMgr
         if (self::getLowerLang() == "custom") return theSpawn::getInstance()->getConfig()->get("language");
         if (isset(self::$languages[theSpawn::getInstance()->getConfig()->get("language")])) return theSpawn::getInstance()->getConfig()->get("language");
         return self::LANG_en_BE;
-    }
-
-    /**
-     * @param string $version
-     * @return bool
-     */
-    public static function checkMsgCfgVersion(string $version): bool
-    {
-        if (self::getMsgs()->exists("version")) {
-            if (self::getMsgs()->get("version") == $version) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * @return mixed
-     */
-    public static function updateMsgCfg()
-    {
-        rename(theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . ".yml", theSpawn::getInstance()->getDataFolder() . "Languages/" . self::getMessagesLanguage() . "Old.yml");
-        return theSpawn::getInstance()->saveResource("Languages/" . self::getMessagesLanguage() . ".yml");
     }
 
     /**
@@ -155,13 +118,5 @@ class MsgMgr
     public static function getPrefix(): string
     {
         return self::getMsg("prefix");
-    }
-
-    /**
-     * @return Config
-     */
-    public function getMsgsX(): Config
-    {
-        return self::getMsgs();
     }
 }

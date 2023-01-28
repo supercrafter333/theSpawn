@@ -13,8 +13,7 @@ class ConfigManager
      */
     public function __construct(private Config|null $config = null)
     {
-        if ($this->config === null)
-            $this->config = theSpawn::getInstance()->getConfig();
+        $this->config ??= theSpawn::getInstance()->getConfig();
     }
 
     /**

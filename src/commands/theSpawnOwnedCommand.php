@@ -63,9 +63,7 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
 
         if ($checkIsPlayer && $this->isPlayer($sender)) return true;
 
-        if ($checkIsPlayer) {
-            $sender->sendMessage(MsgMgr::getOnlyIGMsg());
-        }
+        if ($checkIsPlayer) $sender->sendMessage(MsgMgr::getOnlyIGMsg());
 
         return !$checkIsPlayer;
     }
@@ -106,6 +104,8 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
     }
 
     /**
+     * @internal Replaces the Server::getPlayerByPrefix() method that will be removed soon.
+     *
 	 * Returns an online player whose name begins with or equals the given string (case insensitive).
 	 * The closest match will be returned, or null if there are no online matches.
      * This function is used as a replacement of the deprecated PocketMine-MP method Server::getPlayerByPrefix()
