@@ -14,8 +14,7 @@ class AliasesCommand extends theSpawnOwnedCommand
 
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.aliases.cmd");
-        parent::__construct("aliases", "Prints a list of all aliases or open a menu to edit aliases.", "§4Use: §r/aliases", ["editaliases"]);
+        parent::__construct("aliases", "theSpawn.aliases.cmd", "Prints a list of all aliases or open a menu to edit aliases.", "§4Use: §r/aliases", ["editaliases"]);
     }
 
     /**

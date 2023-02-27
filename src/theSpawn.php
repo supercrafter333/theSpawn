@@ -163,8 +163,9 @@ class theSpawn extends PluginBase
                 ]);
         if ($cfgMgr->useBackCommand()) $cmdMap->register("theSpawn", new BackCommand("back"));
         if ($cfgMgr->usePlayerWarps()) $cmdMap->register("theSpawn", new PlayerWarpCommand("playerwarp",
+        "theSpawn.playerwarp.cmd",
         "Create, remove or teleport you to a player-warp.",
-            "§4Usage: §r/playerwarp <create|remove|list|teleport>", ["pwarp"], "theSpawn.playerwarp.cmd"));
+            "§4Usage: §r/playerwarp <create|remove|list|teleport>", ["pwarp"]));
 
     }
 
@@ -252,6 +253,9 @@ class theSpawn extends PluginBase
             "theSpawn.edithome.cmd",
             "theSpawn.back.cmd",
             "theSpawn.playerwarp.cmd",
+            "theSpawn.spawn.cmd",
+            "theSpawn.hub.cmd",
+            "theSpawn.alias.cmd",
 
             # ADMIN PERMISSIONS:
             "theSpawn.warp.admin",

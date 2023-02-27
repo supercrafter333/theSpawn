@@ -105,6 +105,6 @@ class AliasManager
         if (!($world = self::getAliasWorld($aliasName)) instanceof World)
             return null;
 
-        return new AliasCommand($aliasName, MsgMgr::getMsg("alias-command-description", ["{alias}" => $aliasName, "{world}" => $world->getFolderName()]));
+        return new AliasCommand($aliasName, "theSpawn.alias.cmd", MsgMgr::getMsg("alias-command-description", ["{alias}" => $aliasName, "{world}" => $world->getFolderName()]));
     }
 }

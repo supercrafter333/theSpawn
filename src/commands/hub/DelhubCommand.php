@@ -29,8 +29,7 @@ class DelhubCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.delhub.cmd");
-        parent::__construct("delhub", "Delete the hub/lobby of this server!", "/delhub [randdomHubs: number|int]", ["dellobby", "rmhub", "rmlobby", "delthehub"]);
+        parent::__construct("delhub", "theSpawn.delhub.cmd", "Delete the hub/lobby of this server!", "/delhub [randdomHubs: number|int]", ["dellobby", "rmhub", "rmlobby", "delthehub"]);
     }
 
     /**

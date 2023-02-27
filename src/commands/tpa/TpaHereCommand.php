@@ -20,8 +20,7 @@ class TpaHereCommand extends theSpawnOwnedCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->pl = theSpawn::getInstance();
-        $this->setPermission("theSpawn.tpahere.cmd");
-        parent::__construct($name, "Start a TPA to you.", "§4Usage: §r/tpahere <player>", $aliases);
+        parent::__construct($name, "theSpawn.tpahere.cmd", "Start a TPA to you.", "§4Usage: §r/tpahere <player>", $aliases);
     }
 
 

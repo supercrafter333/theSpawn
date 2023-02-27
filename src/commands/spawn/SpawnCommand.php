@@ -28,7 +28,7 @@ class SpawnCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        parent::__construct("spawn", "Teleport you to the spawn of this world!", $usageMessage, ["spawntp"]);
+        parent::__construct("spawn", "theSpawn.spawn.cmd", "Teleport you to the spawn of this world!", $usageMessage, ["spawntp"]);
     }
 
     /**

@@ -18,7 +18,7 @@ use supercrafter333\theSpawn\theSpawn;
 class DelspawnCommand extends theSpawnOwnedCommand
 {
 
-    
+
     /**
      * DelspawnCommand constructor.
      * @param string $name
@@ -28,8 +28,7 @@ class DelspawnCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.delspawn.cmd");
-        parent::__construct("delspawn", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn", "delthespawn"]);
+        parent::__construct("delspawn", "theSpawn.delspawn.cmd", "Delete to the spawn of this world!", $usageMessage, ["rmspawn", "deletespawn", "delthespawn"]);
     }
 
     /**

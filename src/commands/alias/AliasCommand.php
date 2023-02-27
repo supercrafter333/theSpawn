@@ -21,11 +21,12 @@ class AliasCommand extends theSpawnOwnedCommand
 
     /**
      * @param string $name
+     * @param string $permission
      * @param Translatable|string $description
      */
-    public function __construct(string $name, Translatable|string $description = "")
+    public function __construct(string $name, string $permission, Translatable|string $description = "")
     {
-        parent::__construct($name, $description);
+        parent::__construct($name, $permission, $description);
     }
 
     /**

@@ -16,8 +16,7 @@ class EditwarpCommand extends theSpawnOwnedCommand
 
     public function __construct(string $name, Translatable|string $description = "Edit a warp.", Translatable|string|null $usageMessage = "§4Usage: §r/editwarp [warpname]", array $aliases = [])
     {
-        $this->setPermission("theSpawn.editwarp.cmd");
-        parent::__construct($name, $description, $usageMessage, $aliases);
+        parent::__construct($name, "theSpawn.editwarp.cmd", $description, $usageMessage, $aliases);
     }
 
     /**

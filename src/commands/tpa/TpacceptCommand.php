@@ -33,8 +33,7 @@ class TpacceptCommand extends theSpawnOwnedCommand
     public function __construct(string $name, string $description = "Accept a tpa.", string $usageMessage = "§4Usage: §r/tpaccept <player>", array $aliases = [])
     {
         $this->pl = theSpawn::getInstance();
-        $this->setPermission("theSpawn.tpaccept.cmd");
-        parent::__construct($name, $description, $usageMessage, $aliases);
+        parent::__construct($name, "theSpawn.tpaccept.cmd", $description, $usageMessage, $aliases);
     }
 
     /**

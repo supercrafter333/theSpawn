@@ -31,8 +31,7 @@ class DelhomeCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.delhome.cmd");
-        parent::__construct("delhome", "Delete a home!", "§4Use: §r/delhome <name>", ["deletehome", "rmhome"]);
+        parent::__construct("delhome", "theSpawn.delhome.cmd", "Delete a home!", "§4Use: §r/delhome <name>", ["deletehome", "rmhome"]);
     }
 
     /**

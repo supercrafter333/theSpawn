@@ -16,8 +16,7 @@ class EdithomeCommand extends theSpawnOwnedCommand
 
     public function __construct(string $name, Translatable|string $description = "Edit a home.", Translatable|string|null $usageMessage = "§4Usage: §r/edithome [home]", array $aliases = [])
     {
-        $this->setPermission("theSpawn.back.cmd");
-        parent::__construct($name, $description, $usageMessage, $aliases);
+        parent::__construct($name, "theSpawn.edithome.cmd", $description, $usageMessage, $aliases);
     }
 
     /**

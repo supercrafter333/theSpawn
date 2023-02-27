@@ -21,8 +21,7 @@ class TpdeclineCommand extends theSpawnOwnedCommand
     public function __construct(string $name, string $description = "Decline a tpa.", string $usageMessage = "§4Usage: §r/tpdecline <player>", array $aliases = [])
     {
         $this->pl = theSpawn::getInstance();
-        $this->setPermission("theSpawn.tpdecline.cmd");
-        parent::__construct($name, $description, $usageMessage, $aliases);
+        parent::__construct($name, "theSpawn.tpdecline.cmd", $description, $usageMessage, $aliases);
     }
 
     public function execute(CommandSender $s, string $commandLabel, array $args): void

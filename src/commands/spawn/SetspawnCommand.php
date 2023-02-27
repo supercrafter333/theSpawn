@@ -28,8 +28,7 @@ class SetspawnCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.setspawn.cmd");
-        parent::__construct("setspawn", "Set the spawn of this world!", $usageMessage, ["setthespawn"]);
+        parent::__construct("setspawn", "theSpawn.setspawn.cmd", "Set the spawn of this world!", $usageMessage, ["setthespawn"]);
     }
 
     /**

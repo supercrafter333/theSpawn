@@ -31,8 +31,7 @@ class HomeCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.home.cmd");
-        parent::__construct("home", "Teleport you to a home or see your homes!", "§4Use: §r/home [name]", $aliases);
+        parent::__construct("home", "theSpawn.home.cmd", "Teleport you to a home or see your homes!", "§4Use: §r/home [name]", $aliases);
     }
 
     /**

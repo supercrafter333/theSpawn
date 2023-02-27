@@ -29,8 +29,7 @@ class SetwarpCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.setwarp.cmd");
-        parent::__construct("setwarp", "Set a new warp!", "§4Use: §r/setwarp <warpname> [permission: true|false] [iconPath | iconUrl]", $aliases);
+        parent::__construct("setwarp", "theSpawn.setwarp.cmd", "Set a new warp!", "§4Use: §r/setwarp <warpname> [permission: true|false] [iconPath | iconUrl]", $aliases);
     }
 
     /**

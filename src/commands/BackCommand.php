@@ -13,8 +13,7 @@ class BackCommand extends theSpawnOwnedCommand
 
     public function __construct(string $name, Translatable|string $description = "Teleports you to the spot where you died.", Translatable|string|null $usageMessage = null, array $aliases = ["deathpos"])
     {
-        $this->setPermission("theSpawn.back.cmd");
-        parent::__construct($name, $description, $usageMessage, $aliases);
+        parent::__construct($name, "theSpawn.back.cmd", $description, $usageMessage, $aliases);
     }
 
     /**

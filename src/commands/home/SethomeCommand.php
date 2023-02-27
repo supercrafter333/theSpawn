@@ -33,8 +33,7 @@ class SethomeCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.sethome.cmd");
-        parent::__construct("sethome", "Set a new home!", "§4Use: §r/sethome <name>", ["addhome"]);
+        parent::__construct("sethome", "theSpawn.sethome.cmd", "Set a new home!", "§4Use: §r/sethome <name>", ["addhome"]);
     }
 
     /**

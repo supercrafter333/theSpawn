@@ -26,11 +26,11 @@ abstract class theSpawnOwnedCommand extends Command implements PluginOwned
 
     protected readonly string $prefix;
 
-    public function __construct(string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [], Permission|string|null $permission = null)
+    public function __construct(string $name, string|Permission $permission, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [])
     {
         $this->plugin = theSpawn::getInstance();
         $this->prefix = theSpawn::$prefix;
-        $this->setPermission($permission);
+        $this->setPermission(($permission instanceof Permission ? $permission->getName() : $permission));
         parent::__construct($name, $description, $usageMessage, $aliases);
     }
 

@@ -21,8 +21,7 @@ class TpaCommand extends theSpawnOwnedCommand
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
         $this->pl = theSpawn::getInstance();
-        $this->setPermission("theSpawn.tpa.cmd");
-        parent::__construct($name, "Start a TPA.", "§4Usage: §r/tpa <player>", $aliases);
+        parent::__construct($name, "theSpawn.tpa.cmd", "Start a TPA.", "§4Usage: §r/tpa <player>", $aliases);
     }
 
 

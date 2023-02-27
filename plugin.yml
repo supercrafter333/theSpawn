@@ -11,14 +11,20 @@ website: "https://supercrafter333.github.io/theSpawn/"
 permissions:
   theSpawn.bypass:
     default: op
+  theSpawn.spawn.cmd:
+    default: true
   theSpawn.setspawn.cmd:
     default: op
   theSpawn.delspawn.cmd:
     default: op
+  theSpawn.hub.cmd:
+    default: true
   theSpawn.sethub.cmd:
     default: op
   theSpawn.delhub.cmd:
     default: op
+  theSpawn.alias.cmd:
+    default: true
   theSpawn.aliases.cmd:
     default: op
   theSpawn.setalias.cmd:

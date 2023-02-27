@@ -4,7 +4,6 @@ namespace supercrafter333\theSpawn\commands;
 
 use pocketmine\command\CommandSender;
 use pocketmine\lang\Translatable;
-use pocketmine\permission\Permission;
 use pocketmine\player\Player;
 use supercrafter333\theSpawn\events\playerwarp\PlayerWarpCreateEvent;
 use supercrafter333\theSpawn\events\playerwarp\PlayerWarpRemoveEvent;
@@ -21,9 +20,9 @@ use function strtolower;
 class PlayerWarpCommand extends theSpawnOwnedCommand
 {
 
-    public function __construct(string $name, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [], Permission|string|null $permission = null)
+    public function __construct(string $name, string $permission, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [])
     {
-        parent::__construct($name, $description, $usageMessage, $aliases, $permission);
+        parent::__construct($name, $permission, $description, $usageMessage, $aliases, $permission);
     }
 
     public function execute(CommandSender $s, string $commandLabel, array $args): void

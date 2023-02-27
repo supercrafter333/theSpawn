@@ -31,8 +31,7 @@ class WarpCommand extends theSpawnOwnedCommand
      */
     public function __construct(string $name, string $description = "", string $usageMessage = null, array $aliases = [])
     {
-        $this->setPermission("theSpawn.warp.cmd");
-        parent::__construct("warp", "Teleport you to a warp!", "§4Use: §r/warp [name]", $aliases);
+        parent::__construct("warp", "theSpawn.warp.cmd", "Teleport you to a warp!", "§4Use: §r/warp [name]", $aliases);
     }
 
     /**
