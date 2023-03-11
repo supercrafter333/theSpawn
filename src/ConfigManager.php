@@ -2,7 +2,6 @@
 
 namespace supercrafter333\theSpawn;
 
-use EasyUI\EasyUI;
 use pocketmine\utils\Config;
 
 class ConfigManager
@@ -175,8 +174,7 @@ class ConfigManager
      */
     public function useForms(): bool
     {
-        return ($this->isEnabled("use-forms"))
-            && class_exists(EasyUI::class);
+        return ($this->isEnabled("use-forms"));
     }
 
     /**
