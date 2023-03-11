@@ -350,7 +350,7 @@ class theSpawn extends PluginBase
     {
         if ($position === null || $position === false) return false;
 
-        if (!$this->checkWorld($position->getWorld()->getFolderName()) instanceof World) return false;
+        if ($position->world === null || !$this->checkWorld($position->world->getFolderName()) instanceof World) return false;
 
         if (!ConfigManager::getInstance()->usePositionChecks()) return true;
 

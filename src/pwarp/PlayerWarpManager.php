@@ -101,8 +101,14 @@ class PlayerWarpManager
         if (!self::exists($warpName)) return null;
 
         $warpInfos = self::getConfig()->get(TextFormat::clean($warpName), []);
+        $location = LocationHelper::stringToLocation($warpInfos["location"]);
 
-        return new PlayerWarp(LocationHelper::stringToLocation($warpInfos["location"]),
+        if (!$location->isValid()) {
+            self::removePlayerWarp($warpName);
+            return null;
+        }
+
+        return new PlayerWarp($location,
             TextFormat::clean($warpName),
             $warpInfos["owner"],
             ($warpInfos["iconPath"] ?? null));

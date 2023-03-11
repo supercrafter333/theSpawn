@@ -142,9 +142,15 @@ class WarpManager
             return null;
 
         $warpInfos = self::getWarpConfig()->get($warp, []);
+        $location = LocationHelper::stringToLocation($warpInfos["location"]);
+
+        if (!$location->isValid()) {
+            self::removeWarp($warp);
+            return null;
+        }
 
         return new Warp(
-            LocationHelper::stringToLocation($warpInfos["location"]),
+            $location,
             TextFormat::clean($warp),
             (isset($warpInfos["perm"]) ? (bool)$warpInfos["perm"] : false),
             ($warpInfos["iconPath"] ?? null)

@@ -166,8 +166,15 @@ class HomeManager
      */
     public static function getHome(string $homeName, IPlayer $player): Home|null
     {
-        if (self::existsHome($homeName, $player))
-            return new Home($player, $homeName, LocationHelper::stringToLocation(self::getHomeConfig($player)->get($homeName)));
+        if (self::existsHome($homeName, $player)) {
+            $location = LocationHelper::stringToLocation(self::getHomeConfig($player)->get($homeName));
+
+            if (!$location->isValid()) {
+                self::removeHome($homeName);
+                return null;
+            }
+            return new Home($player, $homeName, $location);
+        }
 
         return null;
     }
