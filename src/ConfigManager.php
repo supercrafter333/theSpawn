@@ -174,7 +174,7 @@ class ConfigManager
      */
     public function useForms(): bool
     {
-        return ($this->isEnabled("use-forms"));
+        return $this->isEnabled("use-forms");
     }
 
     /**
