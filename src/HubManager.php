@@ -76,9 +76,8 @@ class HubManager
         if ($count === null) {
             $matches = [];
             if (!$randHubs->exists(1)) return null;
-            foreach ($randHubs->getAll() as $all) {
+            foreach ($randHubs->getAll() as $all)
                 $matches[] = $all;
-            }
             $matchCount = count($matches);
             return $this->getRandomHub(mt_rand(1, $matchCount));
         } else {

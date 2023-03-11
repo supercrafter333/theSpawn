@@ -3,6 +3,7 @@
 namespace supercrafter333\theSpawn;
 
 use pocketmine\entity\Location;
+use pocketmine\math\Vector3;
 use pocketmine\world\Position;
 use function floatval;
 
@@ -17,9 +18,8 @@ class LocationHelper
     public static function stringToLocation(string $locationString): Location
     {
         $locArr = explode('|', $locationString);
-        return Location::fromObject(new Position(
-            floatval($locArr[0]), floatval($locArr[1]), floatval($locArr[2]),
-            theSpawn::getInstance()->checkWorld($locArr[3])),
+        return Location::fromObject(new Vector3(
+            floatval($locArr[0]), floatval($locArr[1]), floatval($locArr[2])),
             theSpawn::getInstance()->checkWorld($locArr[3]),
             floatval($locArr[4]), floatval($locArr[5]));
     }
