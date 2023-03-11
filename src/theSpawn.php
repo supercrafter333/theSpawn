@@ -93,9 +93,6 @@ class theSpawn extends PluginBase
         if (str_contains(strtolower($pluginVersion), "dev"))
             $this->getLogger()->warning("You're using a development version of theSpawn ({$pluginVersion})!! This version can contain bugs, please report them on github!");
 
-        if ($this->getServer()->getVersion() < 5)
-            $this->getLogger()->error("This version of theSpawn has not been tested in PM4 and may contain bugs on PM4-servers!! You should and you're recommended to upgrade to PocketMine-MP 5.0.0 or higher!");
-
         $this->saveResource("config.yml");
         @mkdir($this->getDataFolder() . "homes");
         @mkdir($this->getDataFolder() . "Languages");
