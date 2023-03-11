@@ -9,6 +9,6 @@ projects:
     icon: "icon.png"
     path: ""
     php: 8.1
-    libs:
-      - src: "https://poggit.pmmp.io/ci/dresnite/EasyUI/libEasyUI"
-        branch: "pm5"
+#    libs:
+#      - src: "https://poggit.pmmp.io/ci/dresnite/EasyUI/libEasyUI"
+#        branch: "pm5"
