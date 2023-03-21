@@ -23,6 +23,11 @@ class TpaTask extends Task
      */
     public function onRun(): void
     {
+        if (!isset(TpaManager::$tpas[$this->tpa->getSource()])) {
+            $this->getHandler()->cancel();
+            return;
+        }
+
         if ($this->tpa->getSourceAsPlayer() == null && $this->tpa->getTargetAsPlayer() instanceof Player) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{source}", $this->tpa->getSource(), MsgMgr::getMsg("tpa-cancelled-by-source")));
             TpaManager::removeTpa($this->tpa->getSource());
