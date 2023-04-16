@@ -66,8 +66,8 @@ class WarpForms
             $warpInfo = WarpManager::getWarp($warp);
             $warpName = $warpInfo->getName();
             $warpIcon = $warpInfo->getIconPath() === null ? "" : $warpInfo->getIconPath();
-            $iconType = $warpIcon === "" ? -1 : 0;
-            if (str_contains($warpIcon, "http")) $iconType = 1;
+            $iconType = $warpIcon === "" ? null : ButtonIcon::TYPE_PATH;
+            if (str_contains($warpIcon, "http")) $iconType = ButtonIcon::TYPE_URL;
             $form->addButton(new Button(str_replace(["{warp}", "{line}", "{player_count}"], [$warpName, "\n", count($warpInfo->getLocation()->getWorld()->getPlayers())], MsgMgr::getMsg("form-rmWarp-menu-warpButton")),
                 ($iconType !== null ? new ButtonIcon($warpIcon, $iconType) : null),
                 function (Player $player) use ($warpInfo): void {
