@@ -73,7 +73,7 @@ You've found a Bug?
 - Click on [New Issue](https://github.com/supercrafter333/theSpawn/issues/new/choose)
 - Write your bug with all Informations that you have down
 - Send Issue
-- Now wait, I'll awnser you soon
+- Now wait, I'll answer you soon
 
 ### Commands
 | **Command**                        | **Description**                                              |
