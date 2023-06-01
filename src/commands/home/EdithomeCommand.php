@@ -44,6 +44,6 @@ class EdithomeCommand extends theSpawnOwnedCommand
             return;
         }
 
-        $s->sendForm((new HomeForms($s->getName()))->openEditHome($s, $home));
+        $s->sendForm((new HomeForms())->openEditHome($s, $home));
     }
 }

@@ -73,7 +73,7 @@ class SetwarpCommand extends theSpawnOwnedCommand
             if ($ev->isCancelled()) return;
 
             WarpManager::createWarp(new Warp($s->getLocation(), $args[0], $perm, $icon));
-            $posMsg = (string)$s->getPosition()->getFloorX() . ' | ' . $s->getPosition()->getFloorY() . ' | ' . $s->getPosition()->getFloorZ();
+            $posMsg = $s->getPosition()->getFloorX() . ' | ' . $s->getPosition()->getFloorY() . ' | ' . $s->getPosition()->getFloorZ();
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-set", ["{warpname}" => (string)$args[0], "{position}" => $posMsg, "{world}" => $s->getWorld()->getFolderName()]));
         } else
             $s->sendMessage($prefix . MsgMgr::getMsg("warp-already-set", ["{warpname}" => (string)$args[0]]));

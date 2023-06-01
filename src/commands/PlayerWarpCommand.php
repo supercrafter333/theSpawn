@@ -22,7 +22,7 @@ class PlayerWarpCommand extends theSpawnOwnedCommand
 
     public function __construct(string $name, string $permission, Translatable|string $description = "", Translatable|string|null $usageMessage = null, array $aliases = [])
     {
-        parent::__construct($name, $permission, $description, $usageMessage, $aliases, $permission);
+        parent::__construct($name, $permission, $description, $usageMessage, $aliases);
     }
 
     public function execute(CommandSender $s, string $commandLabel, array $args): void

@@ -267,7 +267,7 @@ tn-tpa-declined-target-body: "{target} has declined your tpa."
 
 
 #don't change this
-version: "2.0.0-dev8"
+version: "2.0.0"
 
 
 ############################

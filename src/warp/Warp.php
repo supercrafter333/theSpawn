@@ -130,8 +130,7 @@ class Warp
          * @var string $name
          * @var Permission $perm
          */
-        foreach ($perms as $name => $perm)
-            if ($name == $permission) return true;
+        if (array_key_exists($permission, $perms)) return true;
         return false;
     }
 

@@ -1,7 +1,3 @@
-> **Development Version!!** 
-> 
-> This version is under development and can contain bugs!
-
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
 # <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.0  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 ✨ **The best teleportation plugin and the best MSpawns alternative!** ✨
@@ -43,7 +39,7 @@ This plugin won't be out of date, it will get better developed from time to time
 - Teleport to hub on join [default: active]
 - Teleport to hub on death [default: active]
 - Multiple languages [default: English (BE)]
-- Always Up-To-Date (available for PM4, PM5 and PHP 8.1)
+- Always Up-To-Date (available for PM5 and PHP 8.1)
 - Highly customizable (you can disable and enable every feature)
 
 ### TODOs
