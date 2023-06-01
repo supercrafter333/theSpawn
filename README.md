@@ -63,8 +63,8 @@ This plugin won't be out of date, it will get better developed from time to time
 ### Supported versions
 | theSpawn version(s) | PocketMine-MP version(s) | PHP version(s) |
 |---------------------|--------------------------|--------------|
-| 1.8.x               | 4.4.0+                   | 8.0.x        |
-| 2.0.x               | 5.0.0+  (& 4.4.0+)       | 8.1.x        |
+| 1.8.x (EOL)         | 4.4.0+                   | 8.0.x        |
+| 2.0.x               | 5.0.0+       | 8.1.x        |
 
 
 ### Report Bug
