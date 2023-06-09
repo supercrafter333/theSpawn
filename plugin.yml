@@ -1,6 +1,6 @@
 name: theSpawn
 version: 2.0.0
-api: 5.0.0
+api: [5.0.0]
 main: supercrafter333\theSpawn\theSpawn
 src-namespace-prefix: supercrafter333\theSpawn
 author: supercrafter333
