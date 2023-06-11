@@ -102,8 +102,8 @@ You've found a Bug?
 | `/back`                            | Teleports you to the spot where you died                     |
 | `/playerwarp <subcommand>`         | Manage, create, remove, or teleport you to a player-warp.    |
 
-### License:
-This Plugin has the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
+### License
+This plugin is licensed under the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!
 
 ### Credits
 **Information:** This plugin is inspired by [MSpawns](https://github.com/EvolSoft/MSpawns).
