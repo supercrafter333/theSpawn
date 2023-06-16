@@ -1,0 +1,280 @@
+# Here you can select the messages of theSpawn
+
+# ru_RU by @BlusteryS
+
+# We hate russia, but their language is okay. Please donate for UKRAINE <3
+# Make love, not war - stay with Ukraine & help the ukrainian people :)
+
+
+#prefix
+prefix: "§f[§7the§eSpawn§f] §8»§r "
+
+#setup and tp messages
+#uses: {world}
+spawn-tp: "§aВы успешно перемещены на спавн этого мира! §7[§b{world}§7]"
+hub-tp: "§aВы успешно перемещены на спавн хаба! §7[§b{world}§7]"
+spawn-set: "§aВы успешно §7установили§a спавн для этого мира! §7[§b{world}§7]"
+spawn-changed: "§aВы успешно §7изменили§a спавн для этого мира! §7[§b{world}§7]"
+hub-set: "§aВы успешно §7установили§a хаб в мире §b{world}§a!"
+hub-changed: "§aВы успешно §7изменили§a хаб в мире §b{world}§a!"
+
+#/back команда сообщений
+no-deathposition-found: "§cНе удалось найти вашу последнюю позицию смерти."
+teleported-to-deathposition: "§aВы успешно перемещены на вашу последнюю позицию смерти. §7[§b{X}; {Y}; {Z}; {world}§7]"
+
+#удаление сообщений
+#использует: none
+spawn-removed: "§aВы успешно удалили спавн для этого мира!"
+hub-removed: "§aВы успешно удалили хаб спавна."
+
+#сообщения о псевдонимах
+#использует: {alias} {world}
+alias-teleport: "§aВы были перемещены на псевдоним §7{alias}§a! §7[§b{world}§7]"
+alias-set: "§aВы успешно установили псевдоним §b{alias}§a для мира §b{world}§a!"
+alias-command-description: "§r§aПсевдоним для мира §b{world}§a!"
+#использует: {alias}
+alias-removed: "§aВы успешно удалили псевдоним §b{alias}§a!"
+#использует: {aliases}
+aliases-list: "§r§aВсе псевдонимы этого сервера:{line}§r{aliases}"
+
+#сообщения о доме
+#использует: {home}
+home-teleport: "§aВы успешно перемещены в свой дом §b{home}§a!"
+home-not-exists: "§cВаш дом §b{home}§c не существует!"
+home-set: "§aВы успешно установили свой дом §b{home}§a!"
+home-deleted: "§aВы успешно удалили свой дом §b{home}§a!"
+home-already-exists: "§cВаш дом §b{home}§c уже существует!"
+# Используется: {homelist}
+homelist: "§eВаши дома: §7{homelist}"
+# {max-homes}
+highest-home-count-reached: "§cВы уже достигли максимального количества домов: §r{max-homes}§c!"
+
+# Сообщения о варпах
+# {warpname} {position} {world}
+warp-set: "§aВы установили варп §b{warpname}§a на позиции §7{position}§a в мире §7{world}§a!"
+# {warpname} {position} {world}
+warp-teleport: "§aВы были телепортированы на варп §b{warpname}§a в мире §7{world}§a!"
+# {warpname}
+warp-deleted: "§aВы успешно удалили варп §7{warpname}§a!"
+warp-not-exists: "§cВарп с названием §7{warpname}§c не существует!"
+warp-already-set: "§cВыбранный варп §7[§b{warpname}§7]§c уже существует на этом сервере! Пожалуйста, удалите варп и попробуйте снова!"
+# {warplist}
+warplist: "§eСписок варпов: §7{warplist}"
+# Используется: нет
+no-warps-set: "§cНа этом сервере еще не установлены варпы!"
+
+# Сообщения о TPA
+tpa-send: "§aВы успешно отправили запрос на TPA игроку §7{target}§a!"
+new-tpa: "§7{source}§e отправил вам запрос на TPA для телепортации к вам! Введите §8/tpaccept {source}§e, чтобы принять TPA, или §8/tpdecline {source}§e, чтобы отклонить TPA!"
+new-tpa-here: "§7{source}§e отправил вам запрос на TPA для телепортации к нему! Введите §8/tpaccept {source}§e, чтобы принять TPA, или §8/tpdecline {source}§e, чтобы отклонить TPA!"
+tpa-secs: "§eВаш запрос TPA завершится через §7{secs}§e секунд"
+pending-tpa-error: "§cУ вас есть ожидающий запрос TPA. Пожалуйста, подождите, пока TPA не будет принят или завершен, а затем попробуйте снова."
+no-pending-tpa: "§cУ вас нет ожидающего запроса TPA!"
+no-self-tpa: "§cВы не можете отправить запрос TPA самому себе!"
+tpa-secs-left: "§eЗапрос TPA от {source} завершится через §b{secs} секунд§e!"
+player-not-found: "§cВыбранный игрок §7{name}§c не в сети!"
+tpa-cancelled-by-source: "§cЗапрос TPA от {source} был отменен, потому что игрок вышел из сети."
+tpa-cancelled-by-target: "§cЗапрос TPA для {target} был отменен, потому что игрок вышел из сети."
+tpa-accepted-source: "§7{target}§a принял ваш запрос TPA!"
+tpa-accepted-target: "§aВы успешно приняли запрос TPA от §7{source}§a!"
+tpa-declined-source: "§7{target}§c отклонил ваш запрос TPA!"
+tpa-declined-target: "§aВы успешно отклонили запрос TPA от §7{source}§a!"
+tpa-ended: "Запрос TPA от {source} к {target} завершен."
+
+# Задержки при спавне
+delay-tip: "§8[§eВы будете телепортированы через §7{secs}§e!§8]"
+delay-stopped-by-move: "§cТелепортация отменена, так как вы переместились."
+
+# Проверка позиции
+position-not-safe: "§cЦелевая позиция небезопасна. Телепортация отменена."
+
+# Игроковые варпы
+pwarp-already-exists: "§cИгроковый варп {warp} уже существует!"
+pwarp-maximum-reached: "§cВы уже создали максимальное количество варпов ({max}) для игроков"
+pwarp-created: "§aВы успешно создали варп §b{warp}§a."
+pwarp-doesnt-exist: "§cЭтот варп не существует."
+pwarp-not-owner: "§cВы не являетесь владельцем этого игрокового варпа! Вы не можете это сделать!"
+pwarp-removed: "§aВы успешно удалили игроковый варп §b{warp}§a."
+pwarp-teleported: "§aВы успешно телепортировались на варп §b{warp}§a, принадлежащий §b{owner}§a, на позицию §7{location}§a в мире §7{world}§a."
+pwarp-list: "§aВот список всех игроковых варпов на этом сервере: §7{list}"
+
+
+# Формы
+#   Варпы
+form-warp-menu-title: "Варпы"
+form-warp-menu-content: "Пожалуйста, выберите варп."
+form-warp-menu-warpButton: "§b{warp} §7(§a{player_count}§7)§r{line}§7нажмите, чтобы телепортироваться"
+#   Установка варпа
+form-setWarp-menu-title: "Установить варп"
+form-setWarp-menu-content: "Здесь вы можете установить новый варп."
+form-setWarp-menu-inputNameDescription: "Название нового варпа"
+form-setWarp-menu-togglePermDescription: "Должен ли новый варп иметь разрешение? (необязательно)"
+form-setWarp-menu-inputIconPathDescription: "Путь к иконке нового варпа (необязательно)"
+#   Удаление варпа
+form-rmWarp-menu-title: "Удалить варп"
+form-rmWarp-menu-content: "Здесь вы можете удалить варп."
+form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7нажмите, чтобы удалить"
+#   Редактирование варпа
+##### (выбор варпа)
+form-chooseEditWarp-menu-title: "Редактировать варп"
+form-chooseEditWarp-menu-content: "Пожалуйста, выберите варп для редактирования."
+form-chooseEditWarp-menu-warpButton: "§b{warp}§r{line}§7нажмите, чтобы редактировать"
+##### (выбор действия)
+form-editWarp-menu-title: "Редактировать варп"
+form-editWarp-menu-content: "§bВарп: §7{warp}{line}§bПозиция: §7X={X}; Y={Y}; Z={Z}; Мир={world}{line}§bРазрешение: §7{permission}{line}§bИконка: §7{icon}"
+form-editWarp-menu-button-editName: "Редактировать название"
+form-editWarp-menu-button-editPosition: "Установить новую позицию/местоположение здесь"
+form-editWarp-menu-button-rmPermission: "Удалить разрешение"
+form-editWarp-menu-button-addPermission: "Добавить разрешение"
+form-editWarp-menu-button-editIcon: "Редактировать иконку"
+form-editWarp-menu-button-rmIcon: "Удалить иконку"
+form-editWarp-menu-button-addIcon: "Добавить иконку"
+##### (редактирование названия)
+form-editWarp-editName-title: "Редактировать варп"
+form-editWarp-editName-content: "Здесь вы можете отредактировать название варпа {warp}."
+form-editWarp-editName-inputNameDescription: "Название варпа"
+##### (редактирование пути иконки)
+form-editWarp-editIcon-title: "Редактировать варп"
+form-editWarp-editIcon-content: "Здесь вы можете добавить/редактировать иконку для варпа."
+form-editWarp-editIcon-inputNameDescription: "Путь к иконке"
+#   Редактирование дома
+##### (выбор дома)
+form-chooseEditHome-menu-title: "Редактировать дом"
+form-chooseEditHome-menu-content: "Пожалуйста, выберите дом, который вы хотели бы отредактировать."
+form-chooseEditHome-menu-homeButton: "§b{home}§r{line}§7нажмите, чтобы редактировать"
+##### (выбор действия)
+form-editHome-menu-title: "Редактировать дом"
+form-editHome-menu-content: "§bДом: §7{home}{line}§bПозиция: §7X={X}; Y={Y}; Z={Z}; Мир={world}"
+form-editHome-menu-editNameButton: "Редактировать название"
+form-editHome-menu-editPositionButton: "Установить новую позицию/местоположение здесь"
+##### (редактирование названия)
+form-editHome-editName-title: "Редактировать дом"
+form-editHome-editName-content: "Здесь вы можете отредактировать название дома {home}."
+form-editHome-editName-inputNameDescription: "Название дома"
+#   Дома
+form-home-menu-title: "Дома"
+form-home-menu-content: "Пожалуйста, выберите дом."
+form-home-menu-homeButton: "§b{home}§r{line}§7нажмите, чтобы телепортироваться"
+#   Установка дома
+form-setHome-menu-title: "Установить дом"
+form-setHome-menu-content: "Здесь вы можете установить новый дом."
+form-setHome-menu-inputDescription: "Название нового дома"
+#   Удаление дома
+form-rmHome-menu-title: "Удалить дом"
+form-rmHome-menu-content: "Здесь вы можете удалить дом."
+form-rmHome-menu-homeButton: "§b{home}§r{line}§7нажмите, чтобы удалить"
+#   Псевдонимы
+##### (меню)
+form-aliases-menu-title: "Все псевдонимы"
+form-aliases-menu-content: "Пожалуйста, выберите псевдоним, который вы хотите отредактировать или узнать больше информации о нем."
+form-aliases-menu-aliasButton: "§b{alias}{line}§7{world}"
+form-aliases-menu-addAliasButton: "§aСоздать новый псевдоним"
+##### (просмотр псевдонима / редактирование псевдонима)
+form-aliases-viewAlias-title: "Псевдоним: §b{alias}"
+form-aliases-viewAlias-content: "Информация о псевдониме: §a{alias}{line}§rМир: §a{world}"
+form-aliases-viewAlias-deleteButton: "§4Удалить"
+##### (добавление псевдонима)
+form-aliases-addAlias-title: "Добавить новый псевдоним"
+form-aliases-addAlias-content: "Пожалуйста, заполните все поля для установки нового псевдонима."
+form-aliases-addAlias-inputField: "Название псевдонима"
+form-aliases-addAlias-dropdownField: "Мир"
+#   Tpa
+##### (Ответ на tpa)
+form-tpa-answerTpa-title: "Ответить на Tpa"
+form-tpa-answerTpa-content: "Хотите принять tpa от {source}?"
+form-tpa-answerTpa-acceptText: "§aПринять"
+form-tpa-answerTpa-denyText: "§cОтклонить"
+##### (Ответ на tpa-here)
+form-tpa-answerTpaHere-title: "Ответить на Tpa-Here"
+form-tpa-answerTpaHere-content: "Хотите принять tpa-here от {source}?"
+form-tpa-answerTpaHere-acceptText: "§aПринять"
+form-tpa-answerTpaHere-denyText: "§cОтклонить"
+##### (Отправить tpa)
+form-tpa-sendTpa-title: "Отправить tpa"
+form-tpa-sendTpa-input: "Имя игрока"
+form-tpa-sendTpa-tpaHereToggle: "Хотите, чтобы игрок был телепортирован к вам?"
+#    Player-Warps
+##### (Меню)
+form-playerWarps-menu-title: "Игровые Варпы"
+form-playerWarps-menu-content: "Пожалуйста, выберите опцию."
+form-playerWarps-menu-yourWarpsButton: "§2Ваши игровые варпы{line}§7{count} варпов"
+form-playerWarps-menu-teleportButton: "§bТелепортироваться"
+form-playerWarps-menu-createWarpButton: "§eСоздать новый игровой варп"
+##### (Собственные варпы)
+form-playerWarps-ownWarps-title: "Ваши Игровые Варпы"
+form-playerWarps-ownWarps-content: "Нажмите на варп, чтобы отредактировать или узнать информацию о нем."
+form-playerWarps-ownWarps-button: "§b{warp}{line}§7Мир: {world}"
+##### (Редактировать варп)
+form-playerWarps-editWarp-title: "Игровой Варп: {warp}"
+form-playerWarps-editWarp-content: "§7Название: §b{warp}{line}§7Владелец: §b{owner}{line}§7Позиция: §b{X}, {Y}, {Z}, {world}{line}§7Иконка: §b{icon}"
+form-playerWarps-editWarp-setPositionButton: "Установить позицию здесь"
+form-playerWarps-editWarp-addIconButton: "Добавить иконку"
+form-playerWarps-editWarp-editIconButton: "Редактировать иконку"
+form-playerWarps-editWarp-removeIconButton: "Удалить иконку"
+##### (Редактировать или добавить иконку)
+form-playerWarps-editOrAddWarpIcon-title: "Иконка Игрового Варпа"
+form-playerWarps-editWarpIcon-content: "Пожалуйста, введите новый путь или URL иконки для вашего игрового варпа."
+form-playerWarps-editWarpIcon-iconInput: "Путь к иконке / URL иконки"
+form-playerWarps-editWarpIcon-iconEdited: "§aВы успешно изменили иконку варпа {warp} на §7{icon}"
+form-playerWarps-addWarpIcon-content: "Пожалуйста, введите путь или URL иконки для вашего игрового варпа."
+form-playerWarps-addWarpIcon-iconInput: "Путь к иконке / URL иконки"
+form-playerWarps-addWarpIcon-iconAdded: "§aВы успешно установили иконку варпа {warp} на §7{icon}"
+form-playerWarps-editWarp-deleteButton: "§cУдалить"
+form-playerWarps-editWarp-deletedMsg: "§aВы успешно удалили ваш игровой варп {warp}."
+##### (Создать варп)
+form-playerWarps-createWarp-title: "Создать Игровой Варп"
+form-playerWarps-createWarp-nameInput: "Название"
+form-playerWarps-createWarp-iconInput: "Иконка"
+#### (Телепортироваться к варпу)
+form-playerWarps-warpTeleport-title: "Телепортироваться к Игровому Варпу"
+form-playerWarps-warpTeleport-content: "Пожалуйста, выберите варп для телепортации. Всего игровых варпов: {count}"
+form-playerWarps-warpTeleport-button: "§b{warp}{line}§7Владелец: {owner}"
+
+
+#errors
+#uses: none
+no-spawn-set: "§cДля этого мира не установлена точка возрождения!"
+no-hub-set: "§cНе установлен хаб для этого сервера!"
+alias-not-found: "§cДанного псевдонима не существует!"
+hub-server-is-enabled: "§7'use-hub-server' §cвключено в конфиге, вы не можете установить точку возрождения хаба, если это значение равно true!"
+something-went-wrong: "§4Что-то пошло не так!"
+no-perms: "§cУ вас нет разрешения на использование этого!"
+world-not-found: "§cМир не найден!"
+world-not-found-hub: "§cМир хаба не найден!"
+no-spawn-set-in-this-world: "§cДля этого мира не установлена точка возрождения!"
+aliases-deactivated: "§cАлиасы отключены на этом сервере! Алиасы могут быть включены в config.yml плагина theSpawn!"
+warps-deactivated: "§cВарпы отключены на этом сервере! Варпы могут быть включены в config.yml плагина theSpawn!"
+only-In-Game: "Только в игре!"
+false-config-setting: "§4ФАТАЛЬНАЯ ОШИБКА --> §cЛожное значение в конфиге, 'use-hub-server' <true|false>, но значение не является true или false!"
+no-spawn-found-kick: "§4Точка возрождения не найдена для вашего мира! Вас выкинуло для отладки!"
+no-homes-set: "§cУ вас не установлены дома!"
+set-random-hub-before: "§cПожалуйста, установите хаб перед установкой хаба с этим номером!"
+remove-random-hub-before: "§cПожалуйста, удалите хаб перед удалением этого хаба!"
+#uses: {world}
+no-spawn-set-for-world: "§cДля мира {world} не установлена точка возрождения!"
+
+
+#toast-notifications
+##### (TPA)
+####### - новый TPA -
+tn-new-tpa-title: "§l§eНовый запрос на телепортацию!"
+tn-new-tpa-body: "Вы получили новый запрос на телепортацию от {source}! Используйте §7/tpaccept§r для принятия и §7/tpdecline§r для отклонения TPA."
+####### - новый TPA-сюда -
+tn-new-tpa-here-title: "§l§eНовый запрос на телепортацию к себе!"
+tn-new-tpa-here-body: "Вы получили новый запрос на телепортацию к себе от {source}! Используйте §7/tpaccept§r для принятия и §7/tpdecline§r для отклонения TPA."
+####### - TPA принят -
+tn-tpa-accepted-target-title: "§l§aВаш запрос на телепортацию был принят!"
+tn-tpa-accepted-target-body: "{target} принял ваш запрос на телепортацию. Вы будете телепортированы сейчас."
+####### - TPA отклонён -
+tn-tpa-declined-target-title: "§l§cЗапрос на телепортацию отклонён!"
+tn-tpa-declined-target-body: "{target} отклонил ваш запрос на телепортацию."
+
+
+
+#compatible with v2.0.0(and lower)
+
+
+############################
+##########theSpawn##########
+############################
+#Licensed under Apache License 2.0! Plugin by supercrafter333 inspirated by MSpawns from EvolSoft!
