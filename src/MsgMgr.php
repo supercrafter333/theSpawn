@@ -20,6 +20,8 @@ class MsgMgr
     public const LANG_ger_DE = "ger_DE";
     public const LANG_es_ES = "es_ES";
     public const LANG_fr_FR = "fr_FR";
+
+    public const LANG_ru_RU = "ru_RU";
     public const LANG_CUSTOM = "messages";
 
     public static array $languages = [
@@ -28,6 +30,7 @@ class MsgMgr
         self::LANG_ger_DE => self::LANG_ger_DE,
         self::LANG_es_ES => self::LANG_es_ES,
         self::LANG_fr_FR => self::LANG_fr_FR,
+        self::LANG_ru_RU => self::LANG_ru_RU,
         self::LANG_CUSTOM => self::LANG_CUSTOM,
     ];
 
