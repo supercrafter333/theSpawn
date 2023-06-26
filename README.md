@@ -16,7 +16,7 @@ This plugin won't be out of date, it will get better developed from time to time
   - Aliases [default: active]
   - use/don't use hub server
   - API
-  - Custom Messages
+  - Custom messages
   - Config
 - **Position validation/check** [default: inactive]
 - **Homes** [default: active]
