@@ -1,6 +1,6 @@
 # Aquí puedes seleccionar los mensajes de theSpawn
 
-# es_ES por @MrBlasyMSK
+# es_ES por @MrBlasyMSK  / SnowysOficial
 
 
 #prefijo
@@ -15,8 +15,12 @@ spawn-changed: "§aHas cambiado con éxito §7el spawn de este mundo! §7[§b{wo
 hub-set: "Has conseguido §7establecer §ael hub en el mundo §b{world}§a!"
 hub-changed: "§aHas conseguido §7cambiar §ael hub al mundo §b{world}§a!"
 
+#mensajes de /back
+no-deathposition-found: "§cNo puedo encontrar tu última posición de muerte."
+teleported-to-deathposition: "§aHas sido teletransportado con éxito a tu última posición de muerte. §7[§b{X}; {Y}; {Z}; {world}§7]"
+
 #mensajes de eliminación
-#usos: none
+#usos: ninguno
 spawn-removed: "§aHas eliminado con éxito el spawn de este mundo!"
 hub-removed: "§aHas eliminado con éxito el hub."
 
@@ -27,6 +31,8 @@ alias-set: "§aHas configurado con éxito el alias §b{alias}§a para el mundo �
 alias-command-description: "§r§aAlias para el mundo §b{world}§a!"
 #usos: {alias}
 alias-removed: "§aHas eliminado con éxito el alias §b{alias}§a!"
+#usos: {aliases}
+aliases-list: "§r§aTodos los alias de este servidor:{line}§r{aliases}"
 
 #mensajes de casas
 #usos: {home}
@@ -76,6 +82,19 @@ tpa-ended: "El Tpa de {source} a {target} se ha terminado ahora."
 delay-tip: "§8[§eSeras teletransportado en §7{secs}§e!§8]"
 delay-stopped-by-move: "§cEl teletransporte se ha cancelado porque te has movido."
 
+#comprobaciones de posición
+position-not-safe: "§cLa posición del objetivo no es segura. Teletransporte cancelado."
+
+#warps de jugadores
+pwarp-already-exists: "§cEl warp del jugador llamado {warp} ya existe!"
+pwarp-maximum-reached: "§cYa has creado el número máximo de {max} warps por jugador"
+pwarp-created: "§aHa creado con éxito el warp §b{warp}§a."
+pwarp-doesnt-exist: "§cEste warp no existe."
+pwarp-not-owner: "§c¡Tú no eres el dueño del warp de este jugador! ¡No puedes hacer eso!"
+pwarp-removed: "§aHas eliminado con éxito el warp del jugador §b{warp}§a."
+pwarp-teleported: "§aUsted fue teletransportado con éxito a el warp §b{warp}§a de §b{owner}§a en §7{location} §aen el mundo §7{world}§a."
+pwarp-list: "§aAquí está una lista de todos los warps de jugadores en este servidor: §7{list}"
+
 #formas
 #   warps
 form-warp-menu-title: "Warps"
@@ -91,6 +110,43 @@ form-setWarp-menu-inputIconPathDescription: "Icono del nuevo warp (opcional)"
 form-rmWarp-menu-title: "Eliminar un warp"
 form-rmWarp-menu-content: "Aquí puedes eliminar un warp."
 form-rmWarp-menu-warpButton: "§b{warp}§r{line}§7clic para eliminarlo"
+#   editwarp
+##### (choose warp)
+form-chooseEditWarp-menu-title: "Editar un warp"
+form-chooseEditWarp-menu-content: "Aquí puedes editar un warp."
+form-chooseEditWarp-menu-warpButton: "§b{warp}§r{line}§7click para editar"
+##### (choose action)
+form-editWarp-menu-title: "Editar un warp"
+form-editWarp-menu-content: "§bWarp: §7{warp}{line}§bPosicción: §7X={X}; Y={Y}; Z={Z}; Mundo={world}{line}§bPermisos: §7{permission}{line}§bIcono: §7{icon}"
+form-editWarp-menu-button-editName: "Editar nombre"
+form-editWarp-menu-button-editPosition: "Establezca aquí la nueva posición/ubicación"
+form-editWarp-menu-button-rmPermission: "Eliminar permiso"
+form-editWarp-menu-button-addPermission: "Añadir permission"
+form-editWarp-menu-button-editIcon: "Editar icono"
+form-editWarp-menu-button-rmIcon: "Eliminar icono"
+form-editWarp-menu-button-addIcon: "Añadir icono"
+##### (edit name)
+form-editWarp-editName-title: "Editar un warp"
+form-editWarp-editName-content: "Aquí puedes editar el nombre del warp {warp}."
+form-editWarp-editName-inputNameDescription: "Nombre-Warp"
+##### (edit icon-path)
+form-editWarp-editIcon-title: "Editar un warp"
+form-editWarp-editIcon-content: "Aquí puedes añadir/editar un icono para el warp."
+form-editWarp-editIcon-inputNameDescription: "Ruta-Icono"
+#   edit home
+##### (choose home)
+form-chooseEditHome-menu-title: "Editar una casa"
+form-chooseEditHome-menu-content: "Seleccione la casa que desea editar."
+form-chooseEditHome-menu-homeButton: "§b{home}§r{line}§7click para editar"
+##### (choose action)
+form-editHome-menu-title: "Editar una casa"
+form-editHome-menu-content: "§bCasa: §7{home}{line}§bPosición: §7X={X}; Y={Y}; Z={Z}; Mundo={world}"
+form-editHome-menu-editNameButton: "Editar nombre"
+form-editHome-menu-editPositionButton: "Establecer aquí la nueva posición/ubicación"
+##### (edit name)
+form-editHome-editName-title: "Editar una casa"
+form-editHome-editName-content: "Aquí puede editar el nombre de la casa {home}."
+form-editHome-editName-inputNameDescription: "Nombre-Casa"
 #   homes
 form-home-menu-title: "Casas"
 form-home-menu-content: "Selecciona una casa."
@@ -103,6 +159,73 @@ form-setHome-menu-inputDescription: "Nombre de la nueva casa"
 form-rmHome-menu-title: "Eliminar una casa"
 form-rmHome-menu-content: "Aquí puede eliminar una casa."
 form-rmHome-menu-homeButton: "§b{home}§r{line}§7clic para eliminarla"
+#   aliases
+##### (menu)
+form-aliases-menu-title: "Todos los alias"
+form-aliases-menu-content: "Elija un alias que desee editar o ver más información sobre él."
+form-aliases-menu-aliasButton: "§b{alias}{line}§7{world}"
+form-aliases-menu-addAliasButton: "§aCrear nuevo alias"
+##### (view-alias / edit-alias)
+form-aliases-viewAlias-title: "Alias: §b{alias}"
+form-aliases-viewAlias-content: "Información sobre el alias: §a{alias}{line}§rMundo: §a{world}"
+form-aliases-viewAlias-deleteButton: "§4Eliminar"
+##### (add alias)
+form-aliases-addAlias-title: "Añadir un nuevo alias"
+form-aliases-addAlias-content: "Rellene todos los campos para establecer el nuevo alias."
+form-aliases-addAlias-inputField: "Nombre del alias"
+form-aliases-addAlias-dropdownField: "Mundo"
+#   tpa
+##### (answer tpa)
+form-tpa-answerTpa-title: "Respuesta Tpa"
+form-tpa-answerTpa-content: "¿Quiere aceptar el tpa de {source}?"
+form-tpa-answerTpa-acceptText: "§aAceptar"
+form-tpa-answerTpa-denyText: "§cDenegar"
+##### (answer tpa-here)
+form-tpa-answerTpaHere-title: "Respuesta Tpa-Here"
+form-tpa-answerTpaHere-content: "¿Quiere aceptar el tpa-here de {source}?"
+form-tpa-answerTpaHere-acceptText: "§aAceptar"
+form-tpa-answerTpaHere-denyText: "§cDenegar"
+##### (send tpa)
+form-tpa-sendTpa-title: "Enviar tpa"
+form-tpa-sendTpa-input: "Nombre del jugador"
+form-tpa-sendTpa-tpaHereToggle: "¿Quieres que el jugador sea teletransportado hacia ti?"
+#    Player-Warps
+##### (menu)
+form-playerWarps-menu-title: "Warps De Jugadores"
+form-playerWarps-menu-content: "Por favor, elija una opción."
+form-playerWarps-menu-yourWarpsButton: "§2Tus warps de jugador{line}§7{count} warps"
+form-playerWarps-menu-teleportButton: "§bTeletransporte"
+form-playerWarps-menu-createWarpButton: "§eCrear nuevo warp de jugador"
+##### (own warps)
+form-playerWarps-ownWarps-title: "Tus Warps De Jugador"
+form-playerWarps-ownWarps-content: "Haz clic en el warp para editarlo o ver información sobre el."
+form-playerWarps-ownWarps-button: "§b{warp}{line}§7Mundo: {world}"
+##### (edit warp)
+form-playerWarps-editWarp-title: "Warp-Jugador: {warp}"
+form-playerWarps-editWarp-content: "§7Nombre: §b{warp}{line}§7Dueño: §b{owner}{line}§7Posición: §b{X}, {Y}, {Z}, {world}{line}§7Icono: §b{icon}"
+form-playerWarps-editWarp-setPositionButton: "Fijar posición aquí"
+form-playerWarps-editWarp-addIconButton: "Añadir icono"
+form-playerWarps-editWarp-editIconButton: "Editar icono"
+form-playerWarps-editWarp-removeIconButton: "Eliminar icono"
+##### (edit or add icon)
+form-playerWarps-editOrAddWarpIcon-title: "Warp-Jugadpr Icono"
+form-playerWarps-editWarpIcon-content: "Por favor, introduzca la nueva ruta o URL de icono para su warp-jugador."
+form-playerWarps-editWarpIcon-iconInput: "Icon-Path / Icon-URL"
+form-playerWarps-editWarpIcon-iconEdited: "§aHas cambiado con éxito el icono de {warp} a §7{icon}"
+form-playerWarps-addWarpIcon-content: "Introduzca la ruta o la URL de su icono warp-jugador."
+form-playerWarps-addWarpIcon-iconInput: "Icon-Path / Icon-URL"
+form-playerWarps-addWarpIcon-iconAdded: "§aHas conseguido poner el icono de {warp} a §7{icon}"
+form-playerWarps-editWarp-deleteButton: "§cEliminar"
+form-playerWarps-editWarp-deletedMsg: "§aHas borrado con éxito tu warp-jugador {warp}."
+##### (create warp)
+form-playerWarps-createWarp-title: "Crear Warp De Jugador"
+form-playerWarps-createWarp-nameInput: "Nombre"
+form-playerWarps-createWarp-iconInput: "Icono"
+#### (teleport to warp)
+form-playerWarps-warpTeleport-title: "Teletransporte a warp-jugador"
+form-playerWarps-warpTeleport-content: "Por favor, selecciona un warp al que teletransportarte. Total de warps-jugadores: {count}"
+form-playerWarps-warpTeleport-button: "§b{warp}{line}§7Dueño: {owner}"
+
 
 #errores
 #usos: none
@@ -127,8 +250,24 @@ remove-random-hub-before: "§cPor favor, retire el hub antes de quitar este hub!
 no-spawn-set-for-world: "§cNo hay ningún spawn establecido para el mundo {world}!"
 
 
+#toast-notifications
+##### (TPAs)
+####### - new tpa -
+tn-new-tpa-title: "§l§eNuevo TPA!"
+tn-new-tpa-body: "Tiene una nueva solicitud de TPA de {source}! Usa §7/tpaccept§r para aceptarlo o §7/tpdecline§r para declinar la solicitud de tpa."
+####### - new tpa-here -
+tn-new-tpa-here-title: "§l§eNuevo TPA-HERE!"
+tn-new-tpa-here-body: "Tiene una nueva solicitud de TPA-HERE de {source}! Usa §7/tpaccept§r para aceptarlo o §7/tpdecline§r para declinar la solicitud de tpa-here."
+####### - tpa accepted -
+tn-tpa-accepted-target-title: "§l§aTu solicitud de TPA ha sido aceptada"
+tn-tpa-accepted-target-body: "{target} ha aceptado tu tpa. Seras teletransportado ahora."
+####### - tpa declined -
+tn-tpa-declined-target-title: "§l§cTPA denegado!"
+tn-tpa-declined-target-body: "{target} ha rechazado tu solicitud de tpa."
 
-#compatible con v1.7.1-dev (y versiones anteriores)
+
+
+#compatible with v2.0.0(and lower)
 
 
 ############################
