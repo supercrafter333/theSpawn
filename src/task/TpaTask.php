@@ -55,6 +55,7 @@ class TpaTask extends Task
             $this->seconds--;
         } elseif ($this->seconds <= 0) {
             $this->tpa->getTargetAsPlayer()?->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
+            TpaManager::removeTpa($this->tpa->getSource());
             $this->getHandler()->cancel();
         }
     }
