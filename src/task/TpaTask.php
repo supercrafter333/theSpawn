@@ -18,12 +18,9 @@ class TpaTask extends Task
      */
     public function __construct(private int $seconds, private readonly Tpa $tpa) {}
 
-    /**
-     * Run function xD
-     */
     public function onRun(): void
     {
-        if (!isset(TpaManager::$tpas[$this->tpa->getSource()])) {
+        if (TpaManager::getTpa($this->tpa->getSource()) === null) {
             $this->getHandler()->cancel();
             return;
         }
@@ -49,12 +46,13 @@ class TpaTask extends Task
             $this->seconds--;
             return;
         }
-        if ($this->seconds < 10 && $this->seconds > 0) {
+        if ($this->seconds <= 10 && $this->seconds > 0) {
             $this->tpa->getTargetAsPlayer()->sendMessage(str_replace("{secs}", (string)$this->seconds, MsgMgr::getMsg("tpa-secs")));
             $this->tpa->getTargetAsPlayer()->broadcastSound(new XpCollectSound(), [$this->tpa->getTargetAsPlayer()]);
             $this->seconds--;
         } elseif ($this->seconds <= 0) {
             $this->tpa->getTargetAsPlayer()?->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
+            $this->tpa->getSourceAsPlayer()?->sendMessage(str_replace(["{target}", "{source}"], [$this->tpa->getTarget(), $this->tpa->getSource()], MsgMgr::getMsg("tpa-ended")));
             TpaManager::removeTpa($this->tpa->getSource());
             $this->getHandler()->cancel();
         }

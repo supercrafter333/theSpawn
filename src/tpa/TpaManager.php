@@ -21,11 +21,11 @@ class TpaManager
     /**
      * Returns the Tpa-class of a tpa exists and null if it doesn't.
      * @param string $sourcePlayer
-     * @return Tpa|null
+     * @return string[]|null
      */
-    public static function getTpa(string $sourcePlayer): Tpa|null
+    public static function getTpa(string $sourcePlayer): array|null
     {
-        return isset(self::$tpas[$sourcePlayer]) ? new Tpa($sourcePlayer) : null;
+        return self::$tpas[$sourcePlayer] ?? null;
     }
 
     /**
@@ -89,7 +89,7 @@ class TpaManager
     /**
      * Returns the tpas of a player.
      * @param string $targetPlayer
-     * @return Tpa[]|null
+     * @return string[]|null
      */
     public static function getTPAsOf(string $targetPlayer): ?array
     {
@@ -97,7 +97,7 @@ class TpaManager
         $newTPAs = [];
         foreach ($TPAs as $source => $tpaArray)
             if (self::hasTpaOf($targetPlayer, $source))
-                $newTPAs[] = self::getTpa($source);
+                $newTPAs[$source] = self::getTpa($source);
 
         if (count($newTPAs, COUNT_RECURSIVE) <= 0) return null;
         return $newTPAs;
