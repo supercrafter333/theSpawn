@@ -83,7 +83,7 @@ delay-tip: "§8[§eDu wirst in §7{secs}§e Sekunden Teleportiert!§8]"
 delay-stopped-by-move: "§cTeleportation fehlgeschlagen! Du hast dich Bewegt."
 
 #position checks
-position-not-safe: "§cDie Zeilposition ist nicht sicher. Teleport abgebrochen!"
+position-not-safe: "§cDie Zielposition ist nicht sicher. Teleport abgebrochen!"
 
 #player-warps
 pwarp-already-exists: "§cDer player-warp {warp} existiert bereits!"
