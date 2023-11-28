@@ -12,17 +12,18 @@ use supercrafter333\theSpawn\events\tpa\TpaAnswerEvent;
 use supercrafter333\theSpawn\MsgMgr;
 use supercrafter333\theSpawn\theSpawn;
 use supercrafter333\theSpawn\tpa\TpaManager;
+use function array_keys;
 
 class TpaForms
 {
 
     public static function menu(Player $player): ModalForm|CustomForm
     {
-        $tpa = TpaManager::getTPAsOf($player->getName());
-        if ($tpa === null)
+        $tpas = TpaManager::getTPAsOf($player->getName());
+        if ($tpas === null)
             return self::sendTpa();
 
-        $tpa = $tpa[0];
+        $tpa = $tpas[array_keys($tpas)[0]];
 
         if (!$tpa->isTpaHere()) {
             $form = new ModalForm(MsgMgr::getMsg("form-tpa-answerTpa-title"), MsgMgr::getMsg("form-tpa-answerTpa-content", ["{source}" => $tpa->getSource()]));

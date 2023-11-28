@@ -89,7 +89,7 @@ class TpaManager
     /**
      * Returns the tpas of a player.
      * @param string $targetPlayer
-     * @return string[]|null
+     * @return array<string, Tpa>|null
      */
     public static function getTPAsOf(string $targetPlayer): ?array
     {
