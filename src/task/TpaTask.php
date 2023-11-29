@@ -57,4 +57,12 @@ class TpaTask extends Task
             $this->getHandler()->cancel();
         }
     }
+
+    /**
+     * @return Tpa
+     */
+    public function getTpa(): Tpa
+    {
+        return $this->tpa;
+    }
 }

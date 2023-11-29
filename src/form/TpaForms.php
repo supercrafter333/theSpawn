@@ -10,7 +10,9 @@ use EasyUI\variant\ModalForm;
 use pocketmine\player\Player;
 use supercrafter333\theSpawn\events\tpa\TpaAnswerEvent;
 use supercrafter333\theSpawn\MsgMgr;
+use supercrafter333\theSpawn\task\TpaTask;
 use supercrafter333\theSpawn\theSpawn;
+use supercrafter333\theSpawn\tpa\Tpa;
 use supercrafter333\theSpawn\tpa\TpaManager;
 use function array_keys;
 
@@ -23,7 +25,9 @@ class TpaForms
         if ($tpas === null)
             return self::sendTpa();
 
-        $tpa = $tpas[array_keys($tpas)[0]];
+        $tpaInfo = $tpas[array_keys($tpas)[0]];
+        $tpa = (isset($tpaInfo["task"]) && $tpaInfo["task"] instanceof TpaTask) ? $tpaInfo["task"]->getTpa() : null;
+        if (!$tpa instanceof Tpa) return self::sendTpa();
 
         if (!$tpa->isTpaHere()) {
             $form = new ModalForm(MsgMgr::getMsg("form-tpa-answerTpa-title"), MsgMgr::getMsg("form-tpa-answerTpa-content", ["{source}" => $tpa->getSource()]));

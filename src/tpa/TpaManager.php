@@ -19,7 +19,7 @@ class TpaManager
     }
 
     /**
-     * Returns the Tpa-class of a tpa exists and null if it doesn't.
+     * Returns the Tpa-array if a tpa exists and null if it doesn't.
      * @param string $sourcePlayer
      * @return string[]|null
      */
@@ -89,7 +89,7 @@ class TpaManager
     /**
      * Returns the tpas of a player.
      * @param string $targetPlayer
-     * @return array<string, Tpa>|null
+     * @return array<string, array>|null
      */
     public static function getTPAsOf(string $targetPlayer): ?array
     {
