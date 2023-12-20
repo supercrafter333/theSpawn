@@ -1,5 +1,5 @@
 [![Discord](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/ca6cWPpERp)
-# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.4  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
+# <a href="https://supercrafter333.github.io/theSpawn/"><img src="https://github.com/supercrafter333/theSpawn/blob/master/icon.png?raw=true" width="26" float="left" style="border-radius: 0.3rem"></a> theSpawn - v2.0.5  [![](https://poggit.pmmp.io/shield.state/theSpawn)](https://poggit.pmmp.io/p/theSpawn) [![](https://poggit.pmmp.io/shield.dl.total/theSpawn)](https://poggit.pmmp.io/p/theSpawn)
 ✨ **The best teleportation plugin and the best MSpawns alternative!** ✨
 
 <br />
@@ -93,14 +93,50 @@ You've found a Bug?
 | `/setwarp <warp>`                  | Set a warp                                                   |
 | `/delwarp <warp>`                  | Remove a warp                                                |
 | `/warp <warp>`                     | Teleport you to a warp                                       |
-| `/tpa <player>`                    | Send a teleportation awnser to a player                      |
-| `/tpahere <player>`                | Send a teleportation awnser to a player                      |
+| `/tpa <player>`                    | Send a teleportation answer to a player                      |
+| `/tpahere <player>`                | Send a teleportation answer to a player                      |
 | `/tpaccept <player>`               | Accept a tpa                                                 |
 | `/tpdecline <player>`              | Decline a tpa                                                |
 | `/editwarp [warp]`                 | Edit a warp                                                  |
 | `/edithome [home]`                 | Edit a home                                                  |
 | `/back`                            | Teleports you to the spot where you died                     |
 | `/playerwarp <subcommand>`         | Manage, create, remove, or teleport you to a player-warp.    |
+
+### Permissions
+| **Permission**              | **Description**                                                         | **Default** |
+|-----------------------------|-------------------------------------------------------------------------|-------------|
+| `theSpawn.bypass`           | Bypass permission (includes all permissions of theSpawn)                | op          |
+| `theSpawn.spawn.cmd`        | Command permission for `/spawn`                                         | everyone    |
+| `theSpawn.setspawn.cmd`     | Command permission for `/setspawn`                                      | op          |
+| `theSpawn.delspawn.cmd`     | Command permission for `/delspawn`                                      | op          |
+| `theSpawn.hub.cmd`          | Command permission for `/hub`                                           | everyone    |
+| `theSpawn.sethub.cmd`       | Command permission for `/sethub`                                        | op          |
+| `theSpawn.delhub.cmd`       | Command permission for `/delhub`                                        | op          |
+| `theSpawn.alias.cmd`        | Command permission for every alias-command                              | everyone    |
+| `theSpawn.aliases.cmd`      | Command permission for `/aliases`                                       |             |op
+| `theSpawn.setalias.cmd`     | Command permission for `/setalias`                                      | op          |
+| `theSpawn.removealias.cmd`  | Command permission for `/removealias`                                   | op          |
+| `theSpawn.setwarp.cmd`      | Command permission for `/setwarp`                                       | everyone    |
+| `theSpawn.delwarp.cmd`      | Command permission for `/delwarp`                                       | everyone    |
+| `theSpawn.warp.cmd`         | Command permission for `/warp`                                          | everyone    |
+| `theSpawn.warp.NAME`        | Allows you to teleport to a permission-saved-warp                       | individual  |
+| `theSpawn.warp.admin`       | Bypass permission to be allowed to teleport to every warp               | op          |
+| `theSpawn.homes`            | Bypass permission for home-related things                               | op          |
+| `theSpawn.homes.unlimited`  | Bypass permission to create unlimited homes                             | op          |
+| `theSpawn.sethome.cmd`      | Command permission for `/sethome`                                       | everyone    |
+| `theSpawn.delhome.cmd`      | Command permission for `/delhome`                                       | everyone    |
+| `theSpawn.home.cmd`         | Command permission for `/home`                                          | everyone    |
+| `theSpawn.edithome.cmd`     | Command permission for `/edithome`                                      | everyone    |
+| `theSpawn.tpa.cmd`          | Command permission for `/tpa`                                           | everyone    |
+| `theSpawn.tpahere.cmd`      | Command permission for `/tpahere`                                       | everyone    |
+| `theSpawn.tpaccept.cmd`     | Command permission for `/tpaccept`                                      | everyone    |
+| `theSpawn.tpdecline.cmd`    | Command permission for `/tpdecline`                                     | everyone    |
+| `theSpawn.back.cmd`         | Command permission for `/back`                                          | everyone    |
+| `theSpawn.playerwarp.cmd`   | Command permission for `/playerwarp`                                    | everyone    |
+| `theSpawn.pwarps.unlimited` | Bypass permission to create unlimited player-warps                      | op          |
+| `theSpawn.pwarps.1`         | Allows you to create 1 player-warp                                      | everyone    |
+| `theSpawn.pwarps.AMOUNT`    | Allows you to create AMOUNT (please insert a number there) player-warps | individual  |
+
 
 ### License
 This plugin is licensed under the [Apache License 2.0](/LICENSE)! Plugin by supercrafter333!

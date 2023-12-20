@@ -82,7 +82,7 @@ check-positions: "false"
 
 
 #DON'T CHANGE THIS!!
-version: "2.0.4"
+version: "2.0.5"
 
 ############################
 ##########theSpawn##########
