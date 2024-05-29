@@ -22,7 +22,7 @@ class TpaForms
     public static function menu(Player $player): ModalForm|CustomForm
     {
         $tpas = TpaManager::getTPAsOf($player->getName());
-        if ($tpas === null)
+        if ($tpas === null || !isset(array_keys($tpas)[0]))
             return self::sendTpa();
 
         $tpaInfo = $tpas[array_keys($tpas)[0]];
